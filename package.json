@@ -1,0 +1,33 @@
+{
+  "name": "get-yo-frozen-yogurt",
+  "version": "1.0.0",
+  "description": "Get Yo Frozen Yogurt Cafe - Premium frozen yogurt with fresh toppings in New Jersey",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'",
+    "start": "npx serve .",
+    "supabase:start": "npx supabase start",
+    "supabase:stop": "npx supabase stop",
+    "supabase:reset": "npx supabase db reset",
+    "deploy": "npx supabase functions deploy"
+  },
+  "keywords": [
+    "frozen-yogurt",
+    "ice-cream",
+    "cafe",
+    "new-jersey",
+    "marlboro",
+    "new-providence",
+    "dessert",
+    "healthy-treats"
+  ],
+  "author": "Get Yo Frozen Yogurt",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

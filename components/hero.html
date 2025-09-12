@@ -1,0 +1,79 @@
+<!-- Hero Section -->
+<section class="hero-section relative min-h-screen">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style="background-image: url('assets/images/hero-background.jpg');">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/80 to-white/0"></div>
+    </div>
+
+    <!-- Content Container - FIXED POSITIONING -->
+    <div class="relative z-10 flex items-center min-h-screen pt-16 sm:pt-20">
+        <div class="container mx-auto px-4 py-8">
+            <div class="max-w-2xl">
+                <!-- Main Heading - REDUCED TOP MARGIN -->
+                <h1
+                    class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4 sm:mb-6 leading-tight">
+                    Refreshing & Delicious Frozen Yogurt
+                </h1>
+
+                <!-- Description -->
+                <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 mb-6 sm:mb-8 leading-relaxed">
+                    Indulge in our premium frozen yogurt made with the high quality ingredients and topped with your
+                    favorite treats. No Sugar Added, Non-Fat, Low Fat and Dairy Free options
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
+                    <a href="#locations"
+                        class="bg-primary text-white px-4 sm:px-6 py-3 rounded-button font-medium hover:bg-opacity-90 transition-all text-center inline-flex items-center justify-center text-sm sm:text-base">
+                        <i class="ri-map-pin-line mr-2"></i>
+                        Find Nearest Location
+                    </a>
+                    <a href="#menu"
+                        class="bg-white text-primary border-2 border-primary px-4 sm:px-6 py-3 rounded-button font-medium text-center inline-flex items-center justify-center text-sm sm:text-base">
+                        <i class="ri-restaurant-line mr-2"></i>
+                        View Our Menu
+                    </a>
+                </div>
+
+                <!-- Rewards Card -->
+                <a href="https://get-yo.member.rewardup.io" target="_blank"
+                    class="bg-white/90 backdrop-blur rounded-lg p-4 mb-6 sm:mb-8 shadow-sm hover:shadow-md transition-all flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i class="ri-vip-crown-line text-primary text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-medium text-gray-800 text-sm sm:text-base">
+                            Join <span class="text-primary font-['Pacifico'] text-base sm:text-lg">Ounce&Bounce</span>
+                            Rewards
+                        </p>
+                        <p class="text-xs sm:text-sm text-gray-600">Get 100 bonus points today!</p>
+                    </div>
+                    <button
+                        class="bg-primary text-white px-3 sm:px-4 py-2 rounded-button font-medium hover:bg-opacity-90 transition-all flex-shrink-0 text-sm">
+                        <i class="ri-arrow-right-line"></i>
+                    </button>
+                </a>
+
+                <!-- Store Hours Card -->
+                <div class="bg-white/90 backdrop-blur rounded-lg p-4 shadow-sm">
+                    <h3 class="font-medium text-gray-800 mb-3 text-sm sm:text-base">
+                        Today's Hours (<span id="current-date">Loading...</span>)
+                    </h3>
+                    <div class="space-y-2 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-4">
+                        <div class="flex justify-between items-center py-1 border-b sm:border-b-0 border-gray-200">
+                            <p class="font-medium text-primary text-sm sm:text-base">Marlboro</p>
+                            <p class="text-gray-700 text-xs sm:text-sm font-medium" id="marlboro-hours">Loading...</p>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <p class="font-medium text-primary text-sm sm:text-base">New Providence</p>
+                            <p class="text-gray-700 text-xs sm:text-sm font-medium" id="providence-hours">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

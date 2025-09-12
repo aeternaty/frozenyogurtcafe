@@ -1,0 +1,159 @@
+<!-- Contact Section -->
+<section id="contact" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Get in Touch</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Have questions or feedback? We'd love to hear from you!
+                Reach out to us using the form below or contact one of our locations directly.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Contact Form -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
+                <form id="contact-form" class="contact-form">
+                    <!-- Honeypot fields for spam protection -->
+                    <div style="display:none">
+                        <input type="text" name="website" autocomplete="off" tabindex="-1">
+                        <input type="text" name="email_confirm" autocomplete="off" tabindex="-1">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Your Name</label>
+                            <input type="text" id="name" name="name" required pattern="^[a-zA-Z\s]{2,50}$"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-gray-700"
+                                placeholder="Enter your name">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                            <input type="email" id="email" name="email" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-gray-700"
+                                placeholder="Enter your email">
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
+                        <input type="text" id="subject" name="subject" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-gray-700"
+                            placeholder="Enter subject">
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" required maxlength="500"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-gray-700"
+                            placeholder="Enter your message"></textarea>
+                        <div class="text-sm text-gray-500 mt-1">Characters remaining: <span
+                                id="message-chars">500</span></div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="custom-checkbox flex items-start">
+                            <input type="checkbox" name="newsletter" value="subscribed">
+                            <span class="checkmark"></span>
+                            <span class="ml-6 text-gray-700">Subscribe to our newsletter for updates and special
+                                offers</span>
+                        </label>
+                    </div>
+
+                    <!-- reCAPTCHA -->
+                    <div class="mb-6 recaptcha-wrapper">
+                        <div class="g-recaptcha" id="contact-recaptcha"></div>
+                    </div>
+
+                    <button type="submit"
+                        class="bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-opacity-90 whitespace-nowrap flex items-center"
+                        data-requires-recaptcha="true">
+                        <i class="ri-send-plane-line mr-2"></i>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-6">Contact Information</h3>
+
+                <!-- Marlboro -->
+                <div class="mb-6 pb-6 border-b border-gray-200">
+                    <h4 class="font-medium text-primary mb-3">Marlboro Location</h4>
+                    <div class="flex items-start mb-3">
+                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                            <i class="ri-map-pin-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-700">450 Union Hill Road</p>
+                            <p class="text-gray-700">Morganville, NJ 07751</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-3">
+                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                            <i class="ri-phone-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-700">(732) 617-6332</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                            <i class="ri-mail-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-700">info@getyocafe.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Providence -->
+                <div class="mb-6">
+                    <h4 class="font-medium text-primary mb-3">New Providence Location</h4>
+                    <div class="flex items-start mb-3">
+                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                            <i class="ri-map-pin-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-700">12 South Street</p>
+                            <p class="text-gray-700">New Providence, NJ 07974</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-3">
+                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                            <i class="ri-phone-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-700">(908) 219-4338</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                            <i class="ri-mail-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-700">info@getyocafe.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                <div class="pt-6 border-t border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-700 hover:bg-primary hover:text-white transition-colors">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-700 hover:bg-primary hover:text-white transition-colors">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-700 hover:bg-primary hover:text-white transition-colors">
+                            <i class="ri-twitter-x-line"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
