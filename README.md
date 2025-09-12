@@ -29,7 +29,7 @@ Premium frozen yogurt cafe website with 14 delicious flavors, dairy-free options
 
 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/aeternaty/frozenyogurtcafe
 cd web
 ```
 
