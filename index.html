@@ -12,36 +12,62 @@
 
     <!-- Additional SEO Meta Tags -->
     <meta name="keywords"
-        content="frozen yogurt near me, froyo near me, get yo, frozen yogurt marlboro nj, frozen yogurt new providence nj, dairy free froyo, self serve frozen yogurt, kosher frozen yogurt">
+        content="frozen yogurt near me, froyo near me, get yo, frozen yogurt marlboro nj, frozen yogurt new providence nj, dairy free froyo, self serve frozen yogurt, kosher frozen yogurt, healthy dessert">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="author" content="Get Yo Frozen Yogurt Cafe">
 
-    <!-- Local Business Schema -->
+    <!-- Enhanced Local Business Schema -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "FoodEstablishment",
-        "name": "Get Yo Frozen Yogurt Cafe",
-        "description": "Premium frozen yogurt cafe serving 14 flavors with fresh toppings, dairy-free options",
-        "url": "https://frozenyogurtcafe.com",
-        "telephone": "(732) 617-6332",
-        "servesCuisine": "Frozen Yogurt",
-        "priceRange": "$",
-        "acceptsReservations": false,
-        "hasMenu": "https://frozenyogurtcafe.com/#menu",
-        "location": [
+        "@graph": [
             {
-                "@type": "Place",
-                "name": "Get Yo Marlboro",
+                "@type": "Organization",
+                "@id": "https://frozenyogurtcafe.com/#organization",
+                "name": "Get Yo Frozen Yogurt Cafe",
+                "url": "https://frozenyogurtcafe.com",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://frozenyogurtcafe.com/assets/images/logo.png"
+                },
+                "contactPoint": [
+                    {
+                        "@type": "ContactPoint",
+                        "telephone": "(732) 617-6332",
+                        "contactType": "customer service",
+                        "areaServed": "US-NJ"
+                    }
+                ],
+                "sameAs": [
+                    "https://www.facebook.com/getyofrozenyogurt",
+                    "https://www.instagram.com/getyofrozenyogurt"
+                ]
+            },
+            {
+                "@type": "LocalBusiness",
+                "@id": "https://frozenyogurtcafe.com/#marlboro-location",
+                "name": "Get Yo Frozen Yogurt Cafe - Marlboro",
+                "description": "Premium frozen yogurt cafe serving 14+ flavors with fresh toppings, dairy-free options. Kosher certified location in Marlboro, NJ.",
+                "url": "https://frozenyogurtcafe.com",
+                "telephone": "(732) 617-6332",
+                "email": "info@getyocafe.com",
+                "priceRange": "$",
+                "servesCuisine": "Frozen Yogurt",
+                "paymentAccepted": "Cash, Credit Card",
+                "currenciesAccepted": "USD",
                 "address": {
                     "@type": "PostalAddress",
-                    "streetAddress": "450 Union Hill Road",
+                    "streetAddress": "450 Union Hill Road, Suite 15",
                     "addressLocality": "Morganville",
                     "addressRegion": "NJ",
                     "postalCode": "07751",
                     "addressCountry": "US"
                 },
-                "telephone": "(732) 617-6332",
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 40.339677,
+                    "longitude": -74.305915
+                },
                 "openingHoursSpecification": [
                     {
                         "@type": "OpeningHoursSpecification",
@@ -61,11 +87,49 @@
                         "opens": "13:00",
                         "closes": "22:00"
                     }
-                ]
+                ],
+                "amenityFeature": [
+                    {
+                        "@type": "LocationFeatureSpecification",
+                        "name": "Kosher Certified",
+                        "value": true
+                    },
+                    {
+                        "@type": "LocationFeatureSpecification", 
+                        "name": "Dairy Free Options",
+                        "value": true
+                    },
+                    {
+                        "@type": "LocationFeatureSpecification",
+                        "name": "Self Serve",
+                        "value": true
+                    },
+                    {
+                        "@type": "LocationFeatureSpecification",
+                        "name": "Wheelchair Accessible",
+                        "value": true
+                    }
+                ],
+                "hasMenu": "https://frozenyogurtcafe.com/#menu",
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.8",
+                    "reviewCount": "150"
+                },
+                "keywords": "frozen yogurt near me, froyo marlboro nj, kosher frozen yogurt, dairy free dessert, healthy ice cream alternative"
             },
             {
-                "@type": "Place",
-                "name": "Get Yo New Providence",
+                "@type": "LocalBusiness", 
+                "@id": "https://frozenyogurtcafe.com/#newprovidence-location",
+                "name": "Get Yo Frozen Yogurt Cafe - New Providence",
+                "description": "Premium frozen yogurt cafe serving 14+ flavors with fresh toppings, dairy-free options in New Providence, NJ.",
+                "url": "https://frozenyogurtcafe.com",
+                "telephone": "(908) 219-4338",
+                "email": "info@getyocafe.com",
+                "priceRange": "$",
+                "servesCuisine": "Frozen Yogurt",
+                "paymentAccepted": "Cash, Credit Card",
+                "currenciesAccepted": "USD",
                 "address": {
                     "@type": "PostalAddress",
                     "streetAddress": "12 South Street",
@@ -74,7 +138,11 @@
                     "postalCode": "07974",
                     "addressCountry": "US"
                 },
-                "telephone": "(908) 219-4338",
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 40.705675,
+                    "longitude": -74.406201
+                },
                 "openingHoursSpecification": [
                     {
                         "@type": "OpeningHoursSpecification",
@@ -88,12 +156,32 @@
                         "opens": "12:00",
                         "closes": "23:00"
                     }
-                ]
+                ],
+                "amenityFeature": [
+                    {
+                        "@type": "LocationFeatureSpecification",
+                        "name": "Dairy Free Options",
+                        "value": true
+                    },
+                    {
+                        "@type": "LocationFeatureSpecification",
+                        "name": "Self Serve",
+                        "value": true
+                    },
+                    {
+                        "@type": "LocationFeatureSpecification",
+                        "name": "Wheelchair Accessible", 
+                        "value": true
+                    }
+                ],
+                "hasMenu": "https://frozenyogurtcafe.com/#menu",
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.7",
+                    "reviewCount": "98"
+                },
+                "keywords": "frozen yogurt new providence nj, froyo near me, healthy dessert, dairy free ice cream"
             }
-        ],
-        "sameAs": [
-            "https://www.facebook.com/getyofrozenyogurt",
-            "https://www.instagram.com/getyofrozenyogurt"
         ]
     }
     </script>
@@ -117,8 +205,8 @@
     <!-- Local Business Markup -->
     <meta name="geo.region" content="US-NJ">
     <meta name="geo.placename" content="Marlboro, New Providence">
-    <meta name="geo.position" content="40.3098;-74.2460">
-    <meta name="ICBM" content="40.3098, -74.2460">
+    <meta name="geo.position" content="40.339677;-74.305915">
+    <meta name="ICBM" content="40.339677, -74.305915">
 
     <meta name="theme-color" content="#FF8A3D">
 
@@ -161,13 +249,70 @@
     <!-- reCAPTCHA v2 -->
     <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
 
+    <!-- Google Analytics 4 - Updated -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D8M5Z9J4KL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        // Enhanced GA4 Configuration for GMB Tracking
+        gtag('config', 'G-D8M5Z9J4KL', {
+            enhanced_conversions: true,
+            custom_map: {
+                'custom_parameter_1': 'gmb_source',
+                'custom_parameter_2': 'location_id'
+            }
+        });
+
+        // GMB Traffic Tracking Function
+        function trackGMBClick(location) {
+            gtag('event', 'gmb_website_click', {
+                'event_category': 'GMB',
+                'event_label': location,
+                'custom_parameter_1': 'gmb',
+                'custom_parameter_2': location,
+                'value': 1
+            });
+        }
+
+        // Track phone clicks from GMB
+        function trackPhoneClick(location) {
+            gtag('event', 'phone_click', {
+                'event_category': 'Contact',
+                'event_label': 'Phone from GMB - ' + location,
+                'value': 1
+            });
+        }
+
+        // Track directions from GMB  
+        function trackDirections(location) {
+            gtag('event', 'get_directions', {
+                'event_category': 'GMB',
+                'event_label': 'Directions - ' + location,
+                'value': 1
+            });
+        }
+
+        // Check for GMB UTM parameters and track accordingly
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const utmSource = urlParams.get('utm_source');
+            const utmCampaign = urlParams.get('utm_campaign');
+            
+            if (utmSource === 'gmb') {
+                const location = utmCampaign || 'unknown';
+                trackGMBClick(location);
+            }
+        });
+    </script>
+
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/components.css">
 </head>
 
 <body id="home" class="bg-gray-50">
-    <!-- Header with Working Mobile Menu -->
     <!-- Header with Working Mobile Menu -->
     <header class="bg-white shadow-sm fixed w-full top-0 z-40" style="max-width: 100vw; overflow-x: hidden;">
         <div class="container mx-auto px-4 py-3" style="max-width: 100%; overflow: hidden;">
@@ -346,6 +491,12 @@
         <h2>Self Serve Frozen Yogurt Experience</h2>
         <p>Create your perfect froyo combination with our self-serve stations. Choose from 14 rotating flavors and over
             30 fresh toppings including fruits, nuts, and sweet treats.</p>
+
+        <h2>Kosher Frozen Yogurt Marlboro</h2>
+        <p>Our Marlboro location is kosher certified, serving the Orthodox Jewish community with premium frozen yogurt options that meet strict dietary requirements.</p>
+
+        <h2>Best Frozen Yogurt Shop Near Morganville</h2>
+        <p>Located in Morganville, our Marlboro shop is the go-to destination for families seeking healthy dessert alternatives with fresh daily preparation.</p>
     </div>
 
     <!-- Scripts -->
@@ -554,7 +705,7 @@
                 if (e.key === 'Enter') sendMessage();
             });
 
-            // Bot responses
+            // Bot responses with enhanced frozen yogurt knowledge
             function getBotResponse(message) {
                 const msg = message.toLowerCase();
 
@@ -567,12 +718,33 @@
                 }
 
                 if (msg.includes('address') || msg.includes('location') || msg.includes('where')) {
-                    return 'We have two locations:<br>📍 Marlboro: 450 Union Hill Road, Morganville, NJ<br>📍 New Providence: 12 South Street, New Providence, NJ';
+                    return 'We have two locations:<br>📍 Marlboro: 450 Union Hill Road, Suite 15, Morganville, NJ<br>📍 New Providence: 12 South Street, New Providence, NJ';
+                }
+
+                if (msg.includes('kosher')) {
+                    return 'Our Marlboro location is kosher certified! Perfect for families following kosher dietary requirements. 🏆';
+                }
+
+                if (msg.includes('flavor') || msg.includes('taste')) {
+                    return 'We have 14+ rotating flavors! Popular ones include:<br>🍫 Chocolate<br>🍓 Strawberry<br>🍦 Vanilla<br>🥭 Mango (dairy-free)<br>Plus many more rotating seasonal flavors!';
+                }
+
+                if (msg.includes('topping')) {
+                    return 'We have 30+ fresh toppings!<br>🍓 Fresh fruits<br>🍫 Chocolates & candies<br>🥜 Nuts & granola<br>🍪 Cookie crumbles<br>Create your perfect combination!';
+                }
+
+                if (msg.includes('price') || msg.includes('cost')) {
+                    return 'We charge by weight! Fill your cup with as much or as little as you want. Average small serving is around $4-6. Great value for premium quality! 💰';
+                }
+
+                if (msg.includes('healthy') || msg.includes('nutrition')) {
+                    return 'Our frozen yogurt is a healthy dessert alternative!<br>✅ Lower calories than ice cream<br>✅ Contains probiotics<br>✅ Dairy-free options available<br>✅ No artificial ingredients';
                 }
 
                 const responses = [
-                    'How can I help you today? You can ask about hours, locations, flavors, or anything else about Get Yo!',
-                    'Hi there! I can help with information about our frozen yogurt, locations, hours, and special options. What would you like to know?'
+                    'Hi! I can help with info about our frozen yogurt flavors, locations, hours, and more. What would you like to know?',
+                    'Welcome to Get Yo! Ask me about our 14+ flavors, 30+ toppings, locations, or anything else about our frozen yogurt!',
+                    'How can I help you today? I know all about our delicious frozen yogurt, locations in Marlboro & New Providence, and more!'
                 ];
 
                 return responses[Math.floor(Math.random() * responses.length)];

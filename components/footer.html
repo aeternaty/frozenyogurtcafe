@@ -288,22 +288,30 @@
 
         <!-- Bottom Footer -->
         <div class="border-t border-gray-700 pt-8 flex flex-col lg:flex-row justify-between items-center gap-4">
+            <!-- Left Side - Copyright & Legal Links -->
             <div class="flex flex-col sm:flex-row items-center gap-4 text-gray-400 text-sm">
                 <p>&copy; 2025 Get Yo Frozen Yogurt. All rights reserved.</p>
-                <div class="flex items-center gap-2">
-                    <i class="ri-heart-fill text-primary"></i>
-                    <span>Made with love in New Jersey</span>
+                <div class="flex flex-wrap gap-4">
+                    <a href="privacy-policy.html" class="text-gray-400 hover:text-white transition-colors hover:underline">
+                        <i class="ri-shield-line mr-1"></i>Privacy Policy
+                    </a>
+                    <a href="terms-of-service.html" class="text-gray-400 hover:text-white transition-colors hover:underline">
+                        <i class="ri-file-text-line mr-1"></i>Terms of Service
+                    </a>
                 </div>
             </div>
 
-            <!-- Legal Links -->
-            <div class="flex flex-wrap justify-center gap-6 text-sm">
-                <a href="privacy-policy.html" class="text-gray-400 hover:text-white transition-colors">Privacy
-                    Policy</a>
-                <a href="terms-of-service.html" class="text-gray-400 hover:text-white transition-colors">Terms of
-                    Service</a>
-                <a href="accessibility.html" class="text-gray-400 hover:text-white transition-colors">Accessibility</a>
-            </div>
+            <!-- Right Side - Additional Info
+            <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+                <span class="flex items-center">
+                    <i class="ri-map-pin-line mr-1 text-primary"></i>
+                    Serving New Jersey
+                </span>
+                <span class="flex items-center">
+                    <i class="ri-time-line mr-1 text-secondary"></i>
+                    Since 2020
+                </span>
+            </div> -->
         </div>
     </div>
 </footer>
@@ -319,5 +327,23 @@
     .hover\:transform:hover {
         transform: translateY(-4px);
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Social Icon Styles */
+    .social-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #374151;
+        color: #d1d5db;
+        border-radius: 9999px;
+        transition: all 0.2s;
+    }
+    
+    .social-icon:hover {
+        background-color: #FF8A3D;
+        color: white;
     }
 </style>

@@ -1,4 +1,4 @@
-# Robots.txt for FrozenYogurtCafe.com
+# Robots.txt for FrozenYogurtCafe.com - 2025 SEO Optimized
 User-agent: *
 Allow: /
 
@@ -15,20 +15,61 @@ User-agent: Slurp
 Allow: /
 Crawl-delay: 1
 
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
 # Block access to admin areas and sensitive files
 Disallow: /config/
+Disallow: /supabase/
+Disallow: /.env
+Disallow: /.git/
+Disallow: /node_modules/
 Disallow: *.js$
 Disallow: *.css$
 Disallow: /assets/css/
 Disallow: /assets/js/
 Allow: /assets/images/
 
-# Allow images for Google Image Search
+# Allow images for Google Image Search - Important for frozen yogurt visual searches
 User-agent: Googlebot-Image
 Allow: /assets/images/
+Allow: /assets/images/flavors/
+Allow: /assets/images/locations/
 
-# Sitemap location
+# Allow access to important SEO files
+Allow: /sitemap.xml
+Allow: /sitemap-images.xml
+Allow: /favicon.png
+Allow: /favicon.ico
+
+# Block common spam/scraping bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# Sitemap locations - Critical for local SEO
 Sitemap: https://frozenyogurtcafe.com/sitemap.xml
-
-# Additional sitemaps
 Sitemap: https://frozenyogurtcafe.com/sitemap-images.xml
+
+# Local business specific URLs for frozen yogurt searches
+Allow: /marlboro
+Allow: /new-providence
+Allow: /morganville
+Allow: /freehold
+Allow: /manalapan
+Allow: /dairy-free-frozen-yogurt
+Allow: /kosher-frozen-yogurt
+Allow: /self-serve-frozen-yogurt
+Allow: /healthy-dessert
