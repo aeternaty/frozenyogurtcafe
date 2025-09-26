@@ -1,7 +1,7 @@
 class DynamicMenuSystem {
     constructor() {
         this.config = {
-            API_BASE_URL: 'https://getyocafe.com/api/public',
+            API_BASE_URL: 'https://getyocafe.com/api/public',//'https://getyocafe.com/api/public',
             IMAGE_BASE_URL: 'https://irbbgsekymaxpvtdncpd.supabase.co/storage/v1/object/public/images/',
             CERT_BASE_URL: 'assets/images/cert/',
             CACHE_DURATION: 5 * 60 * 1000,
@@ -307,9 +307,28 @@ class DynamicMenuSystem {
         });
     }
 
+    isFlavorOutOfStock(flavor) {
+        // API'den gelen stockInfo'yu kontrol et
+        if (flavor.stockInfo) {
+            const locationSlug = this.state.activeLocation.toLowerCase();
+            const stockData = flavor.stockInfo[locationSlug];
+            
+            // Eğer bu lokasyon için stok bilgisi varsa ve out_of_stock ise
+            if (stockData && stockData.stock_status === 'out_of_stock') {
+                return true;
+            }
+        }
+        
+        // Alternatif olarak available field'ını da kontrol et
+        return !flavor.available;
+    }
+
     createFlavorCard(flavor) {
         const card = document.createElement('div');
-        card.className = 'flavor-card animate-fade-in';
+        const isOutOfStock = this.isFlavorOutOfStock(flavor);
+        
+        // Add different classes based on stock status
+        card.className = `flavor-card animate-fade-in ${isOutOfStock ? 'out-of-stock opacity-75' : ''}`;
         
         const imageUrl = flavor.image_path 
             ? `${this.config.IMAGE_BASE_URL}${flavor.image_path}`
@@ -320,21 +339,38 @@ class DynamicMenuSystem {
         ).join('');
         
         card.innerHTML = `
-            <div class="overflow-hidden">
-                <img class="flavor-image" src="${imageUrl}" alt="${flavor.name}" 
+            <div class="overflow-hidden relative">
+                <img class="flavor-image ${isOutOfStock ? 'grayscale' : ''}" 
+                     src="${imageUrl}" alt="${flavor.name}" 
                      onerror="this.src='assets/images/flavors/placeholder.jpg'">
+                ${isOutOfStock ? `
+                    <div class="absolute inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center z-20">
+                        <div class="text-center space-y-2">
+                            <div class="bg-red-500 text-white px-6 py-3 rounded-2xl text-base font-bold shadow-2xl border border-red-300">
+                                Out of stock for today
+                            </div>
+                        </div>
+                    </div>
+                ` : ''}
             </div>
             <div class="p-4">
-                <h3 class="text-lg font-bold text-gray-800 mb-2">${flavor.name}</h3>
-                ${flavor.description ? `<p class="text-gray-600 text-sm mb-3 line-clamp-2">${flavor.description}</p>` : ''}
+                <h3 class="text-lg font-bold mb-2 ${isOutOfStock ? 'text-slate-500' : 'text-gray-800'}">${flavor.name}</h3>
+                ${flavor.description ? `<p class="text-sm mb-3 line-clamp-2 ${isOutOfStock ? 'text-slate-400' : 'text-gray-600'}">${flavor.description}</p>` : ''}
                 <div class="flex flex-wrap gap-2 mb-2">
                     ${categoryBadges}
                 </div>
-                ${flavor.calories ? `<p class="text-orange-500 font-semibold">${flavor.calories} kcal</p>` : ''}
+                ${flavor.calories ? `<p class="font-semibold ${isOutOfStock ? 'text-slate-400' : 'text-orange-500'}">${flavor.calories} kcal</p>` : ''}
             </div>
         `;
         
-        card.addEventListener('click', () => this.showFlavorModal(flavor));
+        // Only add click event listener if flavor is in stock
+        if (!isOutOfStock) {
+            card.addEventListener('click', () => this.showFlavorModal(flavor));
+            card.style.cursor = 'pointer';
+        } else {
+            card.style.cursor = 'not-allowed';
+        }
+        
         return card;
     }
 
@@ -421,6 +457,8 @@ class DynamicMenuSystem {
     }
 
     createToppingCard(topping) {
+        const isOutOfStock = !topping.available; // Toppings için available field'ını kullan
+        
         const imageUrl = topping.image_path 
             ? `${this.config.IMAGE_BASE_URL}${topping.image_path}`
             : 'assets/images/toppings/placeholder.jpg';
@@ -429,15 +467,30 @@ class DynamicMenuSystem {
             `<span class="badge badge-${cat}">${this.formatCategoryName(cat)}</span>`
         ).join('');
         
+        // Conditionally add click handler and styling based on stock status
+        const clickHandler = isOutOfStock ? '' : `onclick="window.menuSystem.showToppingModal(${JSON.stringify(topping).replace(/"/g, '&quot;')})"`;
+        const cardClass = `topping-card animate-fade-in ${isOutOfStock ? 'out-of-stock opacity-75' : ''}`;
+        const cursorStyle = isOutOfStock ? 'cursor: not-allowed;' : 'cursor: pointer;';
+        
         return `
-            <div class="topping-card animate-fade-in" onclick="window.menuSystem.showToppingModal(${JSON.stringify(topping).replace(/"/g, '&quot;')})">
-                <div class="overflow-hidden">
-                    <img class="topping-image" src="${imageUrl}" alt="${topping.name}" 
+            <div class="${cardClass}" ${clickHandler} style="${cursorStyle}">
+                <div class="overflow-hidden relative">
+                    <img class="topping-image ${isOutOfStock ? 'grayscale' : ''}" 
+                         src="${imageUrl}" alt="${topping.name}" 
                          onerror="this.src='assets/images/toppings/placeholder.jpg'">
+                    ${isOutOfStock ? `
+                        <div class="absolute inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center z-20">
+                            <div class="text-center space-y-2">
+                                <div class="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-2xl border border-red-300">
+                                    Out of stock for today
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
                 <div class="p-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">${topping.name}</h3>
-                    ${topping.description ? `<p class="text-gray-600 text-sm mb-3 line-clamp-2">${topping.description}</p>` : ''}
+                    <h3 class="text-lg font-bold mb-2 ${isOutOfStock ? 'text-slate-500' : 'text-gray-800'}">${topping.name}</h3>
+                    ${topping.description ? `<p class="text-sm mb-3 line-clamp-2 ${isOutOfStock ? 'text-slate-400' : 'text-gray-600'}">${topping.description}</p>` : ''}
                     <div class="flex flex-wrap gap-2 mb-2">
                         ${categoryBadges}
                     </div>
@@ -447,6 +500,11 @@ class DynamicMenuSystem {
     }
 
     showFlavorModal(flavor) {
+        // Check if flavor is out of stock before showing modal
+        if (this.isFlavorOutOfStock(flavor)) {
+            return;
+        }
+        
         const modal = document.getElementById('flavor-modal');
         
         document.getElementById('modal-title').textContent = flavor.name;
@@ -496,6 +554,11 @@ class DynamicMenuSystem {
     }
 
     showToppingModal(topping) {
+        // Check if topping is out of stock before showing modal
+        if (!topping.available) {
+            return;
+        }
+        
         const modal = document.getElementById('topping-modal');
         
         document.getElementById('topping-modal-title').textContent = topping.name;
