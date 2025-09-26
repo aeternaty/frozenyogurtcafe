@@ -317,7 +317,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                    <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th> -->
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
@@ -792,21 +792,21 @@
             }
         }
 
-        // Delete functionality
+        // Delete functionality with real database deletion
         function deleteContact(index) {
-            deleteItem = { type: 'contact', index: index };
+            deleteItem = { type: 'contact', index: index, id: allData.contacts[index].id };
             document.getElementById('delete-message').textContent = 'Are you sure you want to delete this contact submission? This action cannot be undone.';
             document.getElementById('delete-modal').classList.remove('hidden');
         }
 
         function deleteApplication(index) {
-            deleteItem = { type: 'application', index: index };
+            deleteItem = { type: 'application', index: index, id: allData.applications[index].id };
             document.getElementById('delete-message').textContent = 'Are you sure you want to delete this job application? This action cannot be undone.';
             document.getElementById('delete-modal').classList.remove('hidden');
         }
 
         function deleteNewsletter(index) {
-            deleteItem = { type: 'newsletter', index: index };
+            deleteItem = { type: 'newsletter', index: index, id: allData.newsletter[index].id };
             document.getElementById('delete-message').textContent = 'Are you sure you want to delete this newsletter subscriber? This action cannot be undone.';
             document.getElementById('delete-modal').classList.remove('hidden');
         }
@@ -816,10 +816,45 @@
             deleteItem = null;
         }
 
-        function confirmDelete() {
+        async function confirmDelete() {
             if (!deleteItem) return;
 
+            const deleteButton = document.querySelector('#delete-modal button[onclick="confirmDelete()"]');
+            const originalText = deleteButton.textContent;
+            
             try {
+                // Show loading state
+                deleteButton.disabled = true;
+                deleteButton.textContent = 'Deleting...';
+                
+                // Determine table name and make API call
+                let tableName;
+                switch(deleteItem.type) {
+                    case 'contact':
+                        tableName = 'contact_submissions';
+                        break;
+                    case 'application':
+                        tableName = 'job_applications';
+                        break;
+                    case 'newsletter':
+                        tableName = 'newsletter_subscribers';
+                        break;
+                }
+
+                // Delete from database
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}?id=eq.${deleteItem.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete from database');
+                }
+
+                // Remove from local data
                 switch(deleteItem.type) {
                     case 'contact':
                         allData.contacts.splice(deleteItem.index, 1);
@@ -837,11 +872,17 @@
                 
                 updateStats();
                 closeDeleteModal();
-                alert('Item deleted successfully.\n\nNote: In a production system, this would also remove the item from the database.');
+                
+                // Show success message
+                alert('Item deleted successfully from database.');
                 
             } catch (error) {
                 console.error('Delete error:', error);
-                alert('Error deleting item. Please try again.');
+                alert('Error deleting item: ' + error.message);
+            } finally {
+                // Restore button state
+                deleteButton.disabled = false;
+                deleteButton.textContent = originalText;
             }
         }
 

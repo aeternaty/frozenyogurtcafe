@@ -99,9 +99,12 @@ function initializeContactForm() {
         try {
             showLoadingState(submitButton);
             
-            // Real API call to Supabase function
-            const response = await fetch('/supabase/functions/v1/contact-form', {
+            // Real API call to Supabase function - FIXED URL with Auth
+            const response = await fetch('https://mempftwiiwfiqdmhrxwq.supabase.co/functions/v1/contact-form', {
                 method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw'
+                },
                 body: formData
             });
             
@@ -182,9 +185,12 @@ function initializeJobApplicationForm() {
         try {
             showLoadingState(submitButton);
             
-            // Real API call to Supabase function
-            const response = await fetch('/supabase/functions/v1/career-form', {
+            // Real API call to Supabase function - FIXED URL with Auth
+            const response = await fetch('https://mempftwiiwfiqdmhrxwq.supabase.co/functions/v1/career-form', {
                 method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw'
+                },
                 body: formData
             });
             
