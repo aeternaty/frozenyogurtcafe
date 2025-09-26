@@ -1,601 +1,268 @@
-<!-- Menu Section -->
 <section id="menu" class="py-16 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Menu</h2>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Discover our delicious selection of frozen yogurt flavors
-                and toppings. Mix and match to create your perfect treat!</p>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Discover our delicious selection of frozen yogurt flavors and toppings. Mix and match to create your perfect treat!</p>
         </div>
 
-        <!-- Location and Menu Tabs -->
+        <!-- Location Tabs -->
         <div class="max-w-3xl mx-auto mb-12">
             <div class="mb-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Select Location</h3>
-                <div class="bg-white rounded-full p-1 flex justify-between shadow-sm">
-                    <button class="location-tab flex-1 py-2 px-4 rounded-full text-white bg-primary font-medium"
-                        data-location="marlboro">
-                        <i class="ri-store-2-line mr-2"></i>Marlboro
-                        <span class="text-xs block mt-1">All 14 Flavors</span>
-                    </button>
-                    <button class="location-tab flex-1 py-2 px-4 rounded-full text-gray-700"
-                        data-location="newprovidence">
-                        <i class="ri-store-2-line mr-2"></i>New Providence
-                        <span class="text-xs block mt-1">7 Selected Flavors</span>
-                    </button>
+                <div id="location-tabs" class="bg-white rounded-full p-1 flex shadow-sm">
+                    <!-- Dynamically generated -->
                 </div>
             </div>
 
-            <div class="bg-white rounded-full p-1 flex justify-between shadow-sm">
-                <button class="menu-tab flex-1 py-2 px-4 rounded-full text-white bg-primary font-medium"
-                    data-tab="flavors">
+            <!-- Menu Type Tabs -->
+            <div class="bg-white rounded-full p-1 flex shadow-sm">
+                <button class="menu-tab flex-1 py-3 px-4 rounded-full text-white bg-orange-500 font-medium transition-all duration-200" data-tab="flavors">
                     <i class="ri-ice-cream-line mr-2"></i>Flavors
                 </button>
-                <button class="menu-tab flex-1 py-2 px-4 rounded-full text-gray-700" data-tab="toppings">
+                <button class="menu-tab flex-1 py-3 px-4 rounded-full text-gray-700 font-medium transition-all duration-200" data-tab="toppings">
                     <i class="ri-leaf-line mr-2"></i>Toppings
                 </button>
             </div>
         </div>
 
-        <!-- Flavors Tab Content -->
+        <!-- Flavors Content -->
         <div class="menu-content" id="flavors-content">
             <div class="mb-8">
-                <div class="flex flex-wrap gap-4 mb-6">
-                    <button class="flavor-filter-btn bg-primary text-white px-4 py-2 rounded-full text-sm font-medium"
-                        data-filter="all">All Flavors</button>
-                    <button class="flavor-filter-btn bg-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium"
-                        data-filter="dairy-free">Dairy Free</button>
-                    <button class="flavor-filter-btn bg-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium"
-                        data-filter="no-sugar">No Sugar Added</button>
-                    <button class="flavor-filter-btn bg-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium"
-                        data-filter="non-fat">Non Fat</button>
-                    <button class="flavor-filter-btn bg-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium"
-                        data-filter="low-fat">Low Fat</button>
+                <div id="flavor-category-filters" class="flex flex-wrap gap-3 mb-6">
+                    <!-- Dynamically generated -->
                 </div>
 
-                <!-- Allergen Information -->
-                <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">Allergen Information</h3>
-                    <p class="text-gray-600 mb-4">Click on an allergen to see associated flavors. Please note that all
-                        products are produced in a facility that processes these allergens.</p>
-                    <div class="flex flex-wrap gap-3">
-                        <button
-                            class="allergen-btn bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50"
-                            data-allergen="milk">
-                            <i class="ri-drop-line mr-1"></i>Milk
-                        </button>
-                        <button
-                            class="allergen-btn bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50"
-                            data-allergen="egg">
-                            <i class="ri-egg-line mr-1"></i>Egg
-                        </button>
-                        <button
-                            class="allergen-btn bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50"
-                            data-allergen="wheat">
-                            <i class="ri-plant-line mr-1"></i>Wheat
-                        </button>
-                        <button
-                            class="allergen-btn bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50"
-                            data-allergen="soy">
-                            <i class="ri-seedling-line mr-1"></i>Soy
-                        </button>
-                        <button
-                            class="allergen-btn bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50"
-                            data-allergen="tree-nut">
-                            <i class="ri-leaf-line mr-1"></i>Tree Nut
-                        </button>
-                        <button
-                            class="allergen-btn bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50"
-                            data-allergen="peanut">
-                            <i class="ri-plant-line mr-1"></i>Peanut
-                        </button>
-                        <button
-                            class="allergen-btn bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-50"
-                            data-allergen="sesame">
-                            <i class="ri-seed-line mr-1"></i>Sesame
-                        </button>
+                <div class="bg-white p-6 rounded-xl shadow-sm mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Allergen Information</h3>
+                    <p class="text-gray-600 mb-4">Click on an allergen to see associated flavors. All products are produced in a shared facility.</p>
+                    <div id="flavor-allergen-filters" class="flex flex-wrap gap-3">
+                        <!-- Dynamically generated -->
                     </div>
                 </div>
             </div>
 
-            <!-- Flavor Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-                <!-- Dairy Free Options - Marlboro Only -->
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="dairy-free"
-                    data-locations="marlboro" data-allergens="">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/pink-lemonade.png" alt="Pink Lemonade"
-                            class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Pink Lemonade</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Refreshing pink lemonade flavor with a perfect balance of
-                            sweet and tart, dairy-free and delicious.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium self-start">Dairy
-                                Free</span>
-                            <span class="text-primary font-medium text-sm">120 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="dairy-free"
-                    data-locations="marlboro" data-allergens="">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/mango.jpeg" alt="Mango"
-                            class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Mango</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Tropical mango flavor bursting with fresh fruit taste,
-                            dairy-free delight.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium self-start">Dairy
-                                Free</span>
-                            <span class="text-primary font-medium text-sm">140 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="dairy-free"
-                    data-locations="marlboro" data-allergens="">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/watermelon.jpeg" alt="Watermelon"
-                            class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Watermelon</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Refreshing watermelon flavor, perfect for a dairy-free
-                            summer treat.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium self-start">Dairy
-                                Free</span>
-                            <span class="text-primary font-medium text-sm">110 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- No Sugar Added Options -->
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="no-sugar non-fat"
-                    data-locations="marlboro,newprovidence" data-allergens="milk">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/tahitian-vanilla.jpeg" alt="Tahitian Vanilla"
-                            class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Tahitian Vanilla</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Classic vanilla flavor without added sugar, naturally
-                            sweetened.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium self-start">No
-                                Sugar Added</span>
-                            <span
-                                class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium self-start">Non
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">90 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="no-sugar non-fat"
-                    data-locations="marlboro" data-allergens="milk">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/chocolate-no-sugar.png" alt="Chocolate"
-                            class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Chocolate</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Rich chocolate taste without added sugar, perfect for
-                            health-conscious chocolate lovers.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium self-start">No
-                                Sugar Added</span>
-                            <span
-                                class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium self-start">Non
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">100 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="no-sugar non-fat"
-                    data-locations="marlboro" data-allergens="milk">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/banana-royale.png" alt="Banana Royale"
-                            class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Banana Royale</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Creamy banana flavor without added sugar, naturally sweet
-                            and satisfying.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium self-start">No
-                                Sugar Added</span>
-                            <span
-                                class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium self-start">Non
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">90 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="no-sugar non-fat"
-                    data-locations="marlboro,newprovidence" data-allergens="milk">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/wild-strawberry.jpeg" alt="Wild Strawberry"
-                            class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Wild Strawberry</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Fresh wild strawberry flavor without added sugar,
-                            naturally fruity and delicious.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium self-start">No
-                                Sugar Added</span>
-                            <span
-                                class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium self-start">Non
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">90 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Non Fat Option -->
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="non-fat"
-                    data-locations="marlboro,newprovidence" data-allergens="milk">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/california-tart.jpeg" alt="California Tart"
-                            class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">California Tart</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Classic tart flavor, completely non-fat and refreshingly
-                            delicious.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium self-start">Non
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">110 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Low Fat Options -->
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="low-fat"
-                    data-locations="marlboro,newprovidence" data-allergens="milk">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/cake-batter.png" alt="Cake Batter"
-                            class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Cake Batter</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Classic cake batter flavor with a low-fat twist.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium self-start">Low
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">130 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="low-fat"
-                    data-locations="marlboro,newprovidence" data-allergens="milk,soy">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/cookie-monster.jpeg" alt="Cookie Monster"
-                            class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Cookie Monster</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Blue vanilla flavor with cookie pieces, in a low-fat
-                            formula.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium self-start">Low
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">140 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="low-fat"
-                    data-locations="marlboro,newprovidence" data-allergens="milk,wheat,soy">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/cookies-n-cream.jpeg" alt="Cookies 'N Cream"
-                            class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Cookies 'N Cream</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Classic cookies and cream flavor in a low-fat version.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium self-start">Low
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">150 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="low-fat"
-                    data-locations="marlboro" data-allergens="milk">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/espresso.jpeg" alt="Espresso"
-                            class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Espresso</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Rich coffee flavor in a low-fat frozen yogurt base.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium self-start">Low
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">140 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="low-fat"
-                    data-locations="marlboro" data-allergens="milk,peanut">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/peanut-butter.jpeg" alt="Old Fashioned Peanut Butter"
-                            class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Old Fashioned Peanut Butter</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Classic peanut butter taste in a low-fat formula.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium self-start">Low
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">170 cal per 2/3 cup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flavor-card bg-white rounded-lg overflow-hidden shadow-sm" data-category="low-fat"
-                    data-locations="marlboro,newprovidence" data-allergens="milk,wheat,soy">
-                    <div class="h-48 bg-gray-200 relative">
-                        <img src="assets/images/flavors/sea-salt-caramel.png" alt="Sea Salt Caramel Pretzel"
-                            class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-1">Sea Salt Caramel Pretzel</h3>
-                        <p class="text-gray-600 mb-3 text-sm">Sweet and salty caramel flavor with pretzel pieces,
-                            low-fat.</p>
-                        <div class="flex flex-col gap-2">
-                            <span
-                                class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium self-start">Low
-                                Fat</span>
-                            <span class="text-primary font-medium text-sm">140 cal per 2/3 cup</span>
-                        </div>
-                    </div>
+            <div id="flavor-results-info" class="text-center text-gray-600 mb-6"></div>
+            <div id="flavors-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="col-span-full text-center py-12">
+                    <div class="animate-spin w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p class="text-gray-600">Loading delicious flavors...</p>
                 </div>
             </div>
         </div>
 
-        <!-- Toppings Tab Content -->
+        <!-- Toppings Content -->
         <div class="menu-content hidden" id="toppings-content">
-            <div class="bg-white rounded-lg p-6 shadow-sm">
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 w-6 h-6 flex items-center justify-center text-yellow-400">
-                            <i class="ri-alert-line"></i>
-                        </div>
-                        <div class="ml-3">
-                            <h3 class="text-sm font-medium text-yellow-800">Allergy Alert</h3>
-                            <p class="text-sm text-yellow-700 mt-1">Our toppings bar may contain traces of common
-                                allergens including but not limited to peanuts, tree nuts, dairy, soy, wheat and eggs
-                                due to shared serving equipment. We cannot guarantee against cross-contamination. If you
-                                have food allergies, please only use hot fudge or sauces that are in their original
-                                containers.</p>
-                        </div>
-                    </div>
+            <div class="mb-8">
+                <div id="topping-category-filters" class="flex flex-wrap gap-3 mb-6">
+                    <!-- Dynamically generated -->
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Fresh Fruits -->
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Fresh Fruits</h3>
-                        <ul class="space-y-2">
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Strawberries
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Blueberries
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Crunchy Toppings -->
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Crunchy Toppings</h3>
-                        <ul class="space-y-2">
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Granola
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Almonds
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Walnuts
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Coconut Flakes
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Toasted Coconuts
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Graham Cracker Crumbs
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Chocolate Crunch
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Sunflower Seeds
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Waffle Pieces
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Sweet Treats -->
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Sweet Treats</h3>
-                        <ul class="space-y-2">
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Chocolate Chips
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Semi Sweet Chocolate Chips
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Yogurt Chips
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Peanut Chips
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Carob Chips
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Sprinkles
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                M&Ms
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Strawberry Topping
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Maraschino Cherries
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Brownies
-                            </li>
-                            <li class="flex items-center text-gray-700">
-                                <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                </div>
-                                Wet Walnuts
-                            </li>
-                        </ul>
+                <div class="bg-white p-6 rounded-xl shadow-sm mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Allergen Information</h3>
+                    <p class="text-gray-600 mb-4">Click on an allergen to see associated toppings. All products are produced in a shared facility.</p>
+                    <div id="topping-allergen-filters" class="flex flex-wrap gap-3">
+                        <!-- Dynamically generated -->
                     </div>
                 </div>
+            </div>
 
-                <div class="mt-8 pt-6 border-t border-gray-200">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Sauces & Drizzles</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="flex items-center text-gray-700">
-                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                <i class="ri-checkbox-circle-line"></i>
-                            </div>
-                            Hot Fudge
-                        </div>
-                        <div class="flex items-center text-gray-700">
-                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                <i class="ri-checkbox-circle-line"></i>
-                            </div>
-                            Caramel Fudge
-                        </div>
-                        <div class="flex items-center text-gray-700">
-                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                <i class="ri-checkbox-circle-line"></i>
-                            </div>
-                            Chocolate Sauce
-                        </div>
-                        <div class="flex items-center text-gray-700">
-                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                <i class="ri-checkbox-circle-line"></i>
-                            </div>
-                            Caramel Sauce
-                        </div>
-                        <div class="flex items-center text-gray-700">
-                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                <i class="ri-checkbox-circle-line"></i>
-                            </div>
-                            Strawberry Syrup
-                        </div>
-                        <div class="flex items-center text-gray-700">
-                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
-                                <i class="ri-checkbox-circle-line"></i>
-                            </div>
-                            Marshmallows
-                        </div>
-                    </div>
+            <div id="topping-results-info" class="text-center text-gray-600 mb-6"></div>
+            <div id="topping-categories" class="space-y-8">
+                <div class="text-center py-12">
+                    <div class="animate-spin w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p class="text-gray-600">Loading toppings...</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Flavor Modal -->
+<div id="flavor-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+            <h2 id="modal-title" class="text-2xl font-bold text-gray-800"></h2>
+            <button id="close-flavor-modal" class="text-gray-400 hover:text-gray-600 text-2xl">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        
+        <div class="p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <img id="modal-image" src="" alt="" class="w-full h-64 object-cover rounded-xl">
+                    <div id="modal-certifications" class="flex flex-wrap gap-2"></div>
+                </div>
+                
+                <div class="space-y-4">
+                    <p id="modal-description" class="text-gray-600 text-lg leading-relaxed"></p>
+                    <div id="modal-categories" class="flex flex-wrap gap-2"></div>
+                    <div id="modal-nutrition" class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">Nutrition (per serving)</h4>
+                        <div class="grid grid-cols-2 gap-2 text-sm"></div>
+                    </div>
+                    <div id="modal-allergens" class="bg-red-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-red-800 mb-2">Allergens</h4>
+                        <p class="text-red-700 text-sm"></p>
+                    </div>
+                    <div id="modal-ingredients" class="bg-blue-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">Ingredients</h4>
+                        <p class="text-blue-700 text-sm"></p>
+                    </div>
+                    <div id="modal-pairings" class="bg-green-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-green-800 mb-2">Perfect Pairings</h4>
+                        <p class="text-green-700 text-sm"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Topping Modal -->
+<div id="topping-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+            <h2 id="topping-modal-title" class="text-2xl font-bold text-gray-800"></h2>
+            <button id="close-topping-modal" class="text-gray-400 hover:text-gray-600 text-2xl">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <img id="topping-modal-image" src="" alt="" class="w-full h-48 object-cover rounded-xl">
+                    <div id="topping-modal-certifications" class="flex flex-wrap gap-2"></div>
+                </div>
+                
+                <div class="space-y-4">
+                    <p id="topping-modal-description" class="text-gray-600 text-lg leading-relaxed"></p>
+                    <div id="topping-modal-categories" class="flex flex-wrap gap-2"></div>
+                    <div id="topping-modal-allergens" class="bg-red-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-red-800 mb-2">Allergens</h4>
+                        <p class="text-red-700 text-sm"></p>
+                    </div>
+                    <div id="topping-modal-locations" class="bg-blue-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">Available Locations</h4>
+                        <p class="text-blue-700 text-sm"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.flavor-card, .topping-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.flavor-card:hover, .topping-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.flavor-image, .topping-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.flavor-card:hover .flavor-image,
+.topping-card:hover .topping-image {
+    transform: scale(1.05);
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+    background: white;
+    color: #374151;
+    cursor: pointer;
+}
+
+.filter-btn:hover {
+    background: #f3f4f6;
+}
+
+.filter-btn.active {
+    background: #f97316;
+    color: white;
+    border-color: #f97316;
+}
+
+.badge {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-dairy-free { background: #f3e8ff; color: #7c3aed; }
+.badge-no-sugar { background: #dbeafe; color: #2563eb; }
+.badge-non-fat { background: #d1fae5; color: #059669; }
+.badge-low-fat { background: #fef3c7; color: #d97706; }
+
+.cert-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    border-radius: 6px;
+    background: white;
+    padding: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category-badge {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 500;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+@media (max-width: 640px) {
+    .flavor-card, .topping-card {
+        border-radius: 12px;
+    }
+    
+    .flavor-image, .topping-image {
+        height: 160px;
+    }
+    
+    .cert-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+</style>

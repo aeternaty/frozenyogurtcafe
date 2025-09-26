@@ -9,7 +9,7 @@ window.recaptchaWidgets = {
 
 // Initialize reCAPTCHA when ready
 window.initializeRecaptcha = function() {
-    console.log('🔐 Initializing reCAPTCHA...');
+    console.log('🔑 Initializing reCAPTCHA...');
     
     // Initialize contact form reCAPTCHA
     const contactElement = document.getElementById('contact-recaptcha');
@@ -60,7 +60,7 @@ function initializeForms() {
     console.log('✅ Forms initialized');
 }
 
-// Contact Form
+// Contact Form - Updated with real API call
 function initializeContactForm() {
     const contactForm = document.getElementById('contact-form');
     if (!contactForm) return;
@@ -93,16 +93,26 @@ function initializeContactForm() {
             return;
         }
         
-        formData.append('g-recaptcha-response', recaptchaResponse);
+        // Add reCAPTCHA token to form data
+        formData.append('recaptcha_token', recaptchaResponse);
         
         try {
             showLoadingState(submitButton);
             
-            // Simulate form submission (replace with actual endpoint)
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Real API call to Supabase function
+            const response = await fetch('/supabase/functions/v1/contact-form', {
+                method: 'POST',
+                body: formData
+            });
             
-            // Show success message at the bottom of form
-            showSuccessMessage(this, 'Thank you for your message! We will get back to you soon.');
+            const result = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to submit form');
+            }
+            
+            // Show success message
+            showSuccessMessage(this, result.message || 'Thank you for your message! We will get back to you soon.');
             
             // Reset form
             this.reset();
@@ -120,7 +130,7 @@ function initializeContactForm() {
             
         } catch (error) {
             console.error('Contact Form error:', error);
-            showErrorMessage(this, 'Something went wrong. Please try again later.');
+            showErrorMessage(this, error.message || 'Something went wrong. Please try again later.');
             if (typeof trackEvent === 'function') {
                 trackEvent('form_submit', 'contact', 'error');
             }
@@ -130,7 +140,7 @@ function initializeContactForm() {
     });
 }
 
-// Job Application Form
+// Job Application Form - Updated with real API call
 function initializeJobApplicationForm() {
     const jobForm = document.getElementById('job-application-form');
     if (!jobForm) return;
@@ -166,16 +176,26 @@ function initializeJobApplicationForm() {
             return;
         }
         
-        formData.append('g-recaptcha-response', recaptchaResponse);
+        // Add reCAPTCHA token to form data
+        formData.append('recaptcha_token', recaptchaResponse);
         
         try {
             showLoadingState(submitButton);
             
-            // Simulate form submission (replace with actual endpoint)
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Real API call to Supabase function
+            const response = await fetch('/supabase/functions/v1/career-form', {
+                method: 'POST',
+                body: formData
+            });
             
-            // Show success message at the bottom of form
-            showSuccessMessage(this, 'Thank you for your application! We will review it and contact you soon.');
+            const result = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to submit application');
+            }
+            
+            // Show success message
+            showSuccessMessage(this, result.message || 'Thank you for your application! We will review it and contact you soon.');
             
             // Reset form
             this.reset();
@@ -193,7 +213,7 @@ function initializeJobApplicationForm() {
             
         } catch (error) {
             console.error('Job application error:', error);
-            showErrorMessage(this, 'Something went wrong. Please try again later.');
+            showErrorMessage(this, error.message || 'Something went wrong. Please try again later.');
             if (typeof trackEvent === 'function') {
                 trackEvent('form_submit', 'careers', 'error');
             }
@@ -361,6 +381,43 @@ function resetConsentCheckbox() {
         consentCheckbox.checked = false;
         updateConsentVisual();
     }
+}
+
+// Loading and Button State Functions
+function showLoadingState(button) {
+    if (!button) return;
+    
+    button.disabled = true;
+    button.classList.add('opacity-50', 'cursor-not-allowed');
+    
+    // Store original content
+    if (!button.dataset.originalText) {
+        button.dataset.originalText = button.innerHTML;
+    }
+    
+    // Show loading
+    button.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Submitting...';
+}
+
+function restoreButtonState(button) {
+    if (!button) return;
+    
+    setTimeout(() => {
+        button.disabled = false;
+        button.classList.remove('opacity-50', 'cursor-not-allowed');
+        
+        // Restore original text or set default based on form type
+        if (button.dataset.originalText) {
+            button.innerHTML = button.dataset.originalText;
+        } else {
+            const form = button.closest('form');
+            if (form?.id === 'contact-form') {
+                button.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Send Message';
+            } else if (form?.id === 'job-application-form') {
+                button.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Submit Application';
+            }
+        }
+    }, 100);
 }
 
 // Validation Functions
@@ -573,33 +630,6 @@ function showSuccessMessage(container, message) {
     // Add to the end of form
     container.appendChild(successDiv);
     
-    // Force restore all submit buttons in the container
-    const submitButtons = container.querySelectorAll('button[type="submit"]');
-    submitButtons.forEach(submitButton => {
-        // Determine which form this is and restore appropriate text
-        if (container.id === 'contact-form') {
-            submitButton.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Send Message';
-        } else if (container.id === 'job-application-form') {
-            submitButton.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Submit Application';
-        } else {
-            // Generic fallback
-            submitButton.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Submit';
-        }
-        submitButton.disabled = false;
-        // Force remove any loading classes
-        submitButton.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
-        console.log(`✅ Button restored in showSuccessMessage for form: ${container.id}`);
-    });
-    
-    // Double-check after a short delay
-    setTimeout(() => {
-        const submitButton = container.querySelector('button[type="submit"]');
-        if (submitButton && submitButton.disabled) {
-            submitButton.disabled = false;
-            console.log('✅ Button re-enabled in delayed check');
-        }
-    }, 50);
-    
     // Auto-remove after 8 seconds
     setTimeout(() => {
         if (successDiv.parentNode) {
@@ -625,33 +655,6 @@ function showErrorMessage(container, message) {
     
     // Add to the end of form
     container.appendChild(errorDiv);
-    
-    // Force restore all submit buttons in the container
-    const submitButtons = container.querySelectorAll('button[type="submit"]');
-    submitButtons.forEach(submitButton => {
-        // Determine which form this is and restore appropriate text
-        if (container.id === 'contact-form') {
-            submitButton.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Send Message';
-        } else if (container.id === 'job-application-form') {
-            submitButton.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Submit Application';
-        } else {
-            // Generic fallback
-            submitButton.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Submit';
-        }
-        submitButton.disabled = false;
-        // Force remove any loading classes
-        submitButton.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
-        console.log(`✅ Button restored in showErrorMessage for form: ${container.id}`);
-    });
-    
-    // Double-check after a short delay
-    setTimeout(() => {
-        const submitButton = container.querySelector('button[type="submit"]');
-        if (submitButton && submitButton.disabled) {
-            submitButton.disabled = false;
-            console.log('✅ Button re-enabled in delayed check');
-        }
-    }, 50);
     
     // Auto-remove after 8 seconds
     setTimeout(() => {

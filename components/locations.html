@@ -51,9 +51,13 @@
                         </div>
                         <div>
                             <p class="text-gray-700 font-medium">Hours:</p>
-                            <p class="text-gray-700">Mon-Thu: 3:00 PM - 10:00 PM</p>
-                            <p class="text-gray-700">Fri-Sat: 1:00 PM - 11:00 PM</p>
-                            <p class="text-gray-700">Sun: 1:00 PM - 10:00 PM</p>
+                            <div id="marlboro-location-hours">
+                                <!-- Dynamic hours will be loaded here -->
+                                <div class="text-center py-2">
+                                    <div class="animate-spin w-4 h-4 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
+                                    <p class="text-gray-500 text-sm">Loading hours...</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -102,8 +106,13 @@
                         </div>
                         <div>
                             <p class="text-gray-700 font-medium">Hours:</p>
-                            <p class="text-gray-700">Mon-Thu: 12:00 PM - 10:00 PM</p>
-                            <p class="text-gray-700">Fri-Sun: 12:00 PM - 11:00 PM</p>
+                            <div id="providence-location-hours">
+                                <!-- Dynamic hours will be loaded here -->
+                                <div class="text-center py-2">
+                                    <div class="animate-spin w-4 h-4 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
+                                    <p class="text-gray-500 text-sm">Loading hours...</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -117,3 +126,13 @@
         </div>
     </div>
 </section>
+
+<style>
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+</style>

@@ -253,9 +253,9 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-D8M5Z9J4KL"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-        
+
         // Enhanced GA4 Configuration for GMB Tracking
         gtag('config', 'G-D8M5Z9J4KL', {
             enhanced_conversions: true,
@@ -295,11 +295,11 @@
         }
 
         // Check for GMB UTM parameters and track accordingly
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const utmSource = urlParams.get('utm_source');
             const utmCampaign = urlParams.get('utm_campaign');
-            
+
             if (utmSource === 'gmb') {
                 const location = utmCampaign || 'unknown';
                 trackGMBClick(location);
@@ -420,11 +420,11 @@
     <div id="simple-chat-widget"
         style="position: fixed !important; bottom: 24px !important; right: 24px !important; z-index: 99999 !important;">
         <!-- Chat Button -->
-        <button id="simple-chat-button"
+        <!-- <button id="simple-chat-button"
             style="width: 56px; height: 56px; background-color: #FF8A3D; color: white; border: none; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;"
             aria-label="Chat with us about frozen yogurt">
             <i class="ri-customer-service-2-line"></i>
-        </button>
+        </button> -->
 
         <!-- Chat Window -->
         <div id="simple-chat-window"
@@ -493,18 +493,21 @@
             30 fresh toppings including fruits, nuts, and sweet treats.</p>
 
         <h2>Kosher Frozen Yogurt Marlboro</h2>
-        <p>Our Marlboro location is kosher certified, serving the Orthodox Jewish community with premium frozen yogurt options that meet strict dietary requirements.</p>
+        <p>Our Marlboro location is kosher certified, serving the Orthodox Jewish community with premium frozen yogurt
+            options that meet strict dietary requirements.</p>
 
         <h2>Best Frozen Yogurt Shop Near Morganville</h2>
-        <p>Located in Morganville, our Marlboro shop is the go-to destination for families seeking healthy dessert alternatives with fresh daily preparation.</p>
+        <p>Located in Morganville, our Marlboro shop is the go-to destination for families seeking healthy dessert
+            alternatives with fresh daily preparation.</p>
     </div>
 
     <!-- Scripts -->
     <script src="config/supabase.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/store-hours.js"></script>
-    <script src="assets/js/menu.js"></script>
+
     <script src="assets/js/forms.js"></script>
+    <script src="assets/js/menu.js"></script>
 
     <!-- Styles for Mobile Menu -->
     <style>
