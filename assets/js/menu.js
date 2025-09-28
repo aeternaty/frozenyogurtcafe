@@ -617,15 +617,15 @@ class DynamicMenuSystem {
                         <div class="space-y-4">
                             <div>
                                 <h4 class="text-sm font-medium text-slate-700 mb-3">Active Yogurt Cultures:</h4>
-                                <div class="bg-gradient-to-r from-orange-100 to-orange-200 rounded-xl p-4 border-2 border-orange-300 shadow-sm">
+                                <div class="bg-gradient-to-r from-green-100 to-green-200 rounded-xl p-4 border-2 border-green-300 shadow-sm">
                                     <div class="flex flex-wrap gap-2">
                                         ${standardCultures.map(culture => 
-                                            `<span class="bg-gradient-to-br from-orange-200 to-orange-300 text-orange-900 px-3 py-2 rounded-full text-sm font-medium border border-orange-400 shadow-sm">
+                                            `<span class="bg-gradient-to-br from-green-200 to-green-300 text-green-900 px-3 py-2 rounded-full text-sm font-medium border border-green-400 shadow-sm">
                                                 ${culture}
                                             </span>`
                                         ).join('')}
                                     </div>
-                                    <p class="text-orange-800 text-xs mt-2 font-medium">
+                                    <p class="text-green-800 text-xs mt-2 font-medium">
                                         These beneficial probiotics support digestive health
                                     </p>
                                 </div>
