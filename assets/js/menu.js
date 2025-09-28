@@ -1,7 +1,7 @@
 class DynamicMenuSystem {
     constructor() {
         this.config = {
-            API_BASE_URL: 'https://getyocafe.com/api/public',//'https://getyocafe.com/api/public',
+            API_BASE_URL: 'https://getyocafe.com/api/public',
             IMAGE_BASE_URL: 'https://irbbgsekymaxpvtdncpd.supabase.co/storage/v1/object/public/images/',
             CERT_BASE_URL: 'assets/images/cert/',
             CACHE_DURATION: 5 * 60 * 1000,
@@ -15,11 +15,11 @@ class DynamicMenuSystem {
             filters: {
                 flavors: {
                     category: 'all',
-                    allergen: null
+                    allergens: []
                 },
                 toppings: {
                     category: 'all',
-                    allergen: null
+                    allergens: []
                 }
             }
         };
@@ -109,32 +109,18 @@ class DynamicMenuSystem {
             'newprovidence': 'New Providence',
         };
         
-
         const lowerLocation = location.toLowerCase();
         if (locationMap[lowerLocation]) {
             return locationMap[lowerLocation];
         }
         
-        let formatted = location;
-        
-        formatted = formatted.replace(/^new([a-z])/i, 'New $1');
-        formatted = formatted.replace(/^old([a-z])/i, 'Old $1');
-        formatted = formatted.replace(/^south([a-z])/i, 'South $1');
-        formatted = formatted.replace(/^north([a-z])/i, 'North $1');
-        formatted = formatted.replace(/^east([a-z])/i, 'East $1');
-        formatted = formatted.replace(/^west([a-z])/i, 'West $1');
-        
-        return formatted
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .split(/[\s-_]+/)
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-            .join(' ')
-            .trim();
+        return location.charAt(0).toUpperCase() + location.slice(1);
     }
 
     generateLocationTabs(locations) {
         const container = document.getElementById('location-tabs');
+        if (!container) return;
+        
         container.innerHTML = '';
         
         locations.forEach((location, index) => {
@@ -163,110 +149,127 @@ class DynamicMenuSystem {
     }
 
     generateFlavorFilters(flavors) {
+        // Category filters (single selection)
         const categories = new Set(['all']);
         flavors.forEach(flavor => {
             flavor.categories.forEach(cat => categories.add(cat));
         });
         
         const categoryContainer = document.getElementById('flavor-category-filters');
-        categoryContainer.innerHTML = '';
-        
-        Array.from(categories).forEach((category, index) => {
-            const button = document.createElement('button');
-            button.className = `filter-btn ${index === 0 ? 'active' : ''}`;
-            button.dataset.filter = category;
+        if (categoryContainer) {
+            categoryContainer.innerHTML = '';
             
-            const displayName = category === 'all' ? 'All Flavors' : 
-                category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-            
-            button.textContent = displayName;
-            categoryContainer.appendChild(button);
-        });
+            Array.from(categories).forEach((category, index) => {
+                const button = document.createElement('button');
+                button.className = `filter-btn ${index === 0 ? 'active' : ''}`;
+                button.dataset.filter = category;
+                button.dataset.type = 'category';
+                
+                const displayName = category === 'all' ? 'All Flavors' : 
+                    category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                
+                button.textContent = displayName;
+                categoryContainer.appendChild(button);
+            });
+        }
 
+        // Allergen filters (multiple selection)
         const allergens = new Set();
         flavors.forEach(flavor => {
             flavor.allergens.forEach(allergen => allergens.add(allergen.toLowerCase()));
         });
         
         const allergenContainer = document.getElementById('flavor-allergen-filters');
-        allergenContainer.innerHTML = '';
-        
-        Array.from(allergens).forEach(allergen => {
-            const button = document.createElement('button');
-            button.className = 'filter-btn';
-            button.dataset.allergen = allergen;
+        if (allergenContainer) {
+            allergenContainer.innerHTML = '';
             
-            const iconMap = {
-                'milk': 'ri-drop-line',
-                'egg': 'ri-egg-line',
-                'wheat': 'ri-plant-line',
-                'soy': 'ri-seedling-line',
-                'peanuts': 'ri-plant-line',
-                'tree nuts': 'ri-leaf-line'
-            };
-            
-            const icon = iconMap[allergen] || 'ri-alert-line';
-            const displayName = allergen.charAt(0).toUpperCase() + allergen.slice(1);
-            
-            button.innerHTML = `<i class="${icon} mr-2"></i>${displayName}`;
-            allergenContainer.appendChild(button);
-        });
+            Array.from(allergens).forEach(allergen => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.dataset.allergen = allergen;
+                button.dataset.type = 'allergen';
+                
+                const iconMap = {
+                    'milk': 'ri-drop-line',
+                    'egg': 'ri-egg-line',
+                    'wheat': 'ri-plant-line',
+                    'soy': 'ri-seedling-line',
+                    'peanuts': 'ri-plant-line',
+                    'tree nuts': 'ri-leaf-line'
+                };
+                
+                const icon = iconMap[allergen] || 'ri-alert-line';
+                const displayName = allergen.charAt(0).toUpperCase() + allergen.slice(1);
+                
+                button.innerHTML = `<i class="${icon} mr-2"></i>${displayName}`;
+                allergenContainer.appendChild(button);
+            });
+        }
     }
 
     generateToppingFilters(toppings) {
+        // Category filters (single selection)
         const categories = new Set(['all']);
         toppings.forEach(topping => {
             topping.categories.forEach(cat => categories.add(cat));
         });
         
         const categoryContainer = document.getElementById('topping-category-filters');
-        categoryContainer.innerHTML = '';
-        
-        Array.from(categories).forEach((category, index) => {
-            const button = document.createElement('button');
-            button.className = `filter-btn ${index === 0 ? 'active' : ''}`;
-            button.dataset.filter = category;
+        if (categoryContainer) {
+            categoryContainer.innerHTML = '';
             
-            const displayName = category === 'all' ? 'All Toppings' : 
-                category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-            
-            button.textContent = displayName;
-            categoryContainer.appendChild(button);
-        });
+            Array.from(categories).forEach((category, index) => {
+                const button = document.createElement('button');
+                button.className = `filter-btn ${index === 0 ? 'active' : ''}`;
+                button.dataset.filter = category;
+                button.dataset.type = 'category';
+                
+                const displayName = category === 'all' ? 'All Toppings' : 
+                    category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                
+                button.textContent = displayName;
+                categoryContainer.appendChild(button);
+            });
+        }
 
+        // Allergen filters (multiple selection)
         const allergens = new Set();
         toppings.forEach(topping => {
             topping.allergens.forEach(allergen => allergens.add(allergen.toLowerCase()));
         });
         
         const allergenContainer = document.getElementById('topping-allergen-filters');
-        allergenContainer.innerHTML = '';
-        
-        Array.from(allergens).forEach(allergen => {
-            const button = document.createElement('button');
-            button.className = 'filter-btn';
-            button.dataset.allergen = allergen;
+        if (allergenContainer) {
+            allergenContainer.innerHTML = '';
             
-            const iconMap = {
-                'milk': 'ri-drop-line',
-                'egg': 'ri-egg-line',
-                'wheat': 'ri-plant-line',
-                'soy': 'ri-seedling-line',
-                'peanuts': 'ri-plant-line',
-                'tree nuts': 'ri-leaf-line'
-            };
-            
-            const icon = iconMap[allergen] || 'ri-alert-line';
-            const displayName = allergen.charAt(0).toUpperCase() + allergen.slice(1);
-            
-            button.innerHTML = `<i class="${icon} mr-2"></i>${displayName}`;
-            allergenContainer.appendChild(button);
-        });
+            Array.from(allergens).forEach(allergen => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.dataset.allergen = allergen;
+                button.dataset.type = 'allergen';
+                
+                const iconMap = {
+                    'milk': 'ri-drop-line',
+                    'egg': 'ri-egg-line',
+                    'wheat': 'ri-plant-line',
+                    'soy': 'ri-seedling-line',
+                    'peanuts': 'ri-plant-line',
+                    'tree nuts': 'ri-leaf-line'
+                };
+                
+                const icon = iconMap[allergen] || 'ri-alert-line';
+                const displayName = allergen.charAt(0).toUpperCase() + allergen.slice(1);
+                
+                button.innerHTML = `<i class="${icon} mr-2"></i>${displayName}`;
+                allergenContainer.appendChild(button);
+            });
+        }
     }
 
     renderFlavors() {
         const filteredFlavors = this.getFilteredFlavors();
         const container = document.getElementById('flavors-grid');
+        if (!container) return;
         
         if (filteredFlavors.length === 0) {
             container.innerHTML = `
@@ -297,10 +300,13 @@ class DynamicMenuSystem {
                 return false;
             }
             
-            if (this.state.filters.flavors.allergen && !flavor.allergens.some(allergen => 
-                allergen.toLowerCase() === this.state.filters.flavors.allergen
-            )) {
-                return false;
+            if (this.state.filters.flavors.allergens.length > 0) {
+                const hasAllSelectedAllergens = this.state.filters.flavors.allergens.every(selectedAllergen =>
+                    flavor.allergens.some(allergen => allergen.toLowerCase() === selectedAllergen)
+                );
+                if (!hasAllSelectedAllergens) {
+                    return false;
+                }
             }
             
             return true;
@@ -308,18 +314,15 @@ class DynamicMenuSystem {
     }
 
     isFlavorOutOfStock(flavor) {
-        // API'den gelen stockInfo'yu kontrol et
         if (flavor.stockInfo) {
             const locationSlug = this.state.activeLocation.toLowerCase();
             const stockData = flavor.stockInfo[locationSlug];
             
-            // Eğer bu lokasyon için stok bilgisi varsa ve out_of_stock ise
             if (stockData && stockData.stock_status === 'out_of_stock') {
                 return true;
             }
         }
         
-        // Alternatif olarak available field'ını da kontrol et
         return !flavor.available;
     }
 
@@ -327,7 +330,6 @@ class DynamicMenuSystem {
         const card = document.createElement('div');
         const isOutOfStock = this.isFlavorOutOfStock(flavor);
         
-        // Add different classes based on stock status
         card.className = `flavor-card animate-fade-in ${isOutOfStock ? 'out-of-stock opacity-75' : ''}`;
         
         const imageUrl = flavor.image_path 
@@ -342,7 +344,8 @@ class DynamicMenuSystem {
             <div class="overflow-hidden relative">
                 <img class="flavor-image ${isOutOfStock ? 'grayscale' : ''}" 
                      src="${imageUrl}" alt="${flavor.name}" 
-                     onerror="this.src='assets/images/flavors/placeholder.jpg'">
+                     onerror="this.src='assets/images/flavors/placeholder.jpg'"
+                     style="width: 100%; height: 200px; object-fit: contain; background-color: white;">
                 ${isOutOfStock ? `
                     <div class="absolute inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center z-20">
                         <div class="text-center space-y-2">
@@ -363,7 +366,6 @@ class DynamicMenuSystem {
             </div>
         `;
         
-        // Only add click event listener if flavor is in stock
         if (!isOutOfStock) {
             card.addEventListener('click', () => this.showFlavorModal(flavor));
             card.style.cursor = 'pointer';
@@ -382,6 +384,7 @@ class DynamicMenuSystem {
         const filteredToppings = this.getFilteredToppings();
         const groupedToppings = this.groupToppingsByCategory(filteredToppings);
         const container = document.getElementById('topping-categories');
+        if (!container) return;
         
         container.innerHTML = '';
         
@@ -425,20 +428,17 @@ class DynamicMenuSystem {
                 return false;
             }
             
-            if (this.state.filters.toppings.allergen && !topping.allergens.some(allergen => 
-                allergen.toLowerCase() === this.state.filters.toppings.allergen
-            )) {
-                return false;
+            if (this.state.filters.toppings.allergens.length > 0) {
+                const hasAllSelectedAllergens = this.state.filters.toppings.allergens.every(selectedAllergen =>
+                    topping.allergens.some(allergen => allergen.toLowerCase() === selectedAllergen)
+                );
+                if (!hasAllSelectedAllergens) {
+                    return false;
+                }
             }
             
             return true;
         });
-    }
-
-    getLocationToppings() {
-        return this.state.data.toppings.filter(topping => 
-            topping.locations.some(loc => loc.toLowerCase() === this.state.activeLocation.toLowerCase())
-        );
     }
 
     groupToppingsByCategory(toppings) {
@@ -457,7 +457,7 @@ class DynamicMenuSystem {
     }
 
     createToppingCard(topping) {
-        const isOutOfStock = !topping.available; // Toppings için available field'ını kullan
+        const isOutOfStock = !topping.available;
         
         const imageUrl = topping.image_path 
             ? `${this.config.IMAGE_BASE_URL}${topping.image_path}`
@@ -467,7 +467,6 @@ class DynamicMenuSystem {
             `<span class="badge badge-${cat}">${this.formatCategoryName(cat)}</span>`
         ).join('');
         
-        // Conditionally add click handler and styling based on stock status
         const clickHandler = isOutOfStock ? '' : `onclick="window.menuSystem.showToppingModal(${JSON.stringify(topping).replace(/"/g, '&quot;')})"`;
         const cardClass = `topping-card animate-fade-in ${isOutOfStock ? 'out-of-stock opacity-75' : ''}`;
         const cursorStyle = isOutOfStock ? 'cursor: not-allowed;' : 'cursor: pointer;';
@@ -477,7 +476,8 @@ class DynamicMenuSystem {
                 <div class="overflow-hidden relative">
                     <img class="topping-image ${isOutOfStock ? 'grayscale' : ''}" 
                          src="${imageUrl}" alt="${topping.name}" 
-                         onerror="this.src='assets/images/toppings/placeholder.jpg'">
+                         onerror="this.src='assets/images/toppings/placeholder.jpg'"
+                         style="width: 100%; height: 150px; object-fit: contain; background-color: white;">
                     ${isOutOfStock ? `
                         <div class="absolute inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center z-20">
                             <div class="text-center space-y-2">
@@ -490,7 +490,6 @@ class DynamicMenuSystem {
                 </div>
                 <div class="p-4">
                     <h3 class="text-lg font-bold mb-2 ${isOutOfStock ? 'text-slate-500' : 'text-gray-800'}">${topping.name}</h3>
-                    ${topping.description ? `<p class="text-sm mb-3 line-clamp-2 ${isOutOfStock ? 'text-slate-400' : 'text-gray-600'}">${topping.description}</p>` : ''}
                     <div class="flex flex-wrap gap-2 mb-2">
                         ${categoryBadges}
                     </div>
@@ -500,173 +499,368 @@ class DynamicMenuSystem {
     }
 
     showFlavorModal(flavor) {
-        // Check if flavor is out of stock before showing modal
         if (this.isFlavorOutOfStock(flavor)) {
             return;
         }
         
         const modal = document.getElementById('flavor-modal');
+        if (!modal) return;
         
-        document.getElementById('modal-title').textContent = flavor.name;
-        document.getElementById('modal-description').textContent = flavor.description || 'Delicious frozen yogurt';
+        const titleElement = document.getElementById('modal-title');
+        const descriptionElement = document.getElementById('modal-description');
+        const imageElement = document.getElementById('modal-image');
+        const categoriesElement = document.getElementById('modal-categories');
+        const certificationsElement = document.getElementById('modal-certifications');
+        
+        if (titleElement) titleElement.textContent = flavor.name;
+        if (descriptionElement) descriptionElement.textContent = flavor.description || 'Delicious frozen yogurt';
         
         const imageUrl = flavor.image_path 
             ? `${this.config.IMAGE_BASE_URL}${flavor.image_path}`
             : 'assets/images/flavors/placeholder.jpg';
         
-        const modalImage = document.getElementById('modal-image');
-        modalImage.src = imageUrl;
-        modalImage.alt = flavor.name;
+        if (imageElement) {
+            imageElement.src = imageUrl;
+            imageElement.alt = flavor.name;
+        }
         
         const categoryBadges = flavor.categories.map(cat => 
             `<span class="badge badge-${cat}">${this.formatCategoryName(cat)}</span>`
         ).join('');
-        document.getElementById('modal-categories').innerHTML = categoryBadges;
+        if (categoriesElement) categoriesElement.innerHTML = categoryBadges;
         
         const certIcons = flavor.certifications.map(cert => {
             const file = this.certMap[cert];
             return file ? `<img src="${this.config.CERT_BASE_URL}${file}" alt="${cert}" class="cert-icon w-12 h-12 sm:w-16 sm:h-16 object-contain" title="${cert}">` : '';
         }).filter(Boolean).join('');
-        document.getElementById('modal-certifications').innerHTML = certIcons;
+        if (certificationsElement) certificationsElement.innerHTML = certIcons;
         
-        const nutrition = flavor.nutrition || {};
-        const nutritionGrid = document.querySelector('#modal-nutrition .grid');
-        nutritionGrid.innerHTML = Object.entries(nutrition).map(([key, value]) => 
-            value ? `<div><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</div>` : ''
-        ).filter(Boolean).join('') || 'Nutrition information not available';
-        
-        const allergenElement = document.querySelector('#modal-allergens p');
-        if (flavor.allergens.length > 0) {
-            allergenElement.innerHTML = `<span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">Contains: ${flavor.allergens.join(', ')}</span>`;
-        } else {
-            allergenElement.innerHTML = `<span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">No allergens</span>`;
+        // Nutrition section with visual nutrition label - mobile first
+        const nutritionSection = document.getElementById('modal-nutrition');
+        if (nutritionSection) {
+            if (flavor.nutrition_image_path) {
+                const nutritionImageUrl = `${this.config.IMAGE_BASE_URL}${flavor.nutrition_image_path}`;
+                nutritionSection.innerHTML = `
+                    <div class="text-center">
+                        <img src="${nutritionImageUrl}" 
+                             alt="Nutrition Facts for ${flavor.name}" 
+                             class="w-full max-w-xs mx-auto cursor-pointer hover:opacity-80 transition-opacity rounded-lg border border-gray-200"
+                             onclick="window.menuSystem.showNutritionModal('${nutritionImageUrl}', '${flavor.name}')"
+                             onerror="this.parentElement.parentElement.style.display='none'"
+                             style="object-fit: contain; background-color: white; max-height: 300px;">
+                        <p class="text-xs text-gray-500 mt-2">Tap to view full nutrition facts</p>
+                    </div>
+                `;
+                nutritionSection.style.display = 'block';
+            } else {
+                nutritionSection.style.display = 'none';
+            }
         }
         
-        document.querySelector('#modal-ingredients p').textContent = flavor.ingredients && flavor.ingredients.length > 0 
-            ? flavor.ingredients.join(', ')
-            : 'Ingredient list not available';
+        // Live Cultures & Health Benefits section - mobile optimized
+        const benefitsSection = document.getElementById('modal-benefits');
+        if (benefitsSection) {
+            if (flavor.nutritional_benefits && flavor.nutritional_benefits.length > 0) {
+                const benefitsList = flavor.nutritional_benefits.map(benefit => 
+                    `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200 mb-1">
+                        <i class="ri-check-line mr-1"></i>${benefit}
+                    </span>`
+                ).join('');
+                
+                benefitsSection.innerHTML = `
+                    <div class="bg-green-50 rounded-lg p-3 border border-green-200">
+                        <h4 class="font-semibold text-green-800 mb-2 flex items-center text-sm">
+                            <i class="ri-heart-pulse-line mr-2"></i>Live Cultures & Health Benefits
+                        </h4>
+                        <div class="flex flex-wrap gap-1">
+                            ${benefitsList}
+                        </div>
+                    </div>
+                `;
+                benefitsSection.style.display = 'block';
+            } else {
+                benefitsSection.style.display = 'none';
+            }
+        }
         
-        document.querySelector('#modal-pairings p').textContent = flavor.pairing_suggestions && flavor.pairing_suggestions.length > 0 
-            ? flavor.pairing_suggestions.join(', ')
-            : 'Try with any of our delicious toppings!';
+        const allergenElement = document.querySelector('#modal-allergens p');
+        if (allergenElement) {
+            if (flavor.allergens.length > 0) {
+                allergenElement.innerHTML = `<span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">Contains: ${flavor.allergens.join(', ')}</span>`;
+            } else {
+                allergenElement.innerHTML = `<span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">No allergens</span>`;
+            }
+        }
+        
+        const ingredientsElement = document.querySelector('#modal-ingredients');
+        if (ingredientsElement) {
+            if (flavor.ingredients && flavor.ingredients.length > 0) {
+                // Check for yogurt cultures
+                const hasYogurtCultures = flavor.ingredients.some(ingredient =>
+                    ingredient.toLowerCase().includes('active yogurt cultures') ||
+                    ingredient.toLowerCase().includes('yogurt cultures') ||
+                    ingredient.toLowerCase().includes('live cultures')
+                );
+
+                let ingredientsHTML = '';
+
+                if (hasYogurtCultures) {
+                    const standardCultures = [
+                        'S. Thermophilus',
+                        'L. Bulgaricus', 
+                        'L. Acidophilus',
+                        'B. Bifidus',
+                        'L. Casei'
+                    ];
+
+                    ingredientsHTML += `
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-slate-700 mb-3">Active Yogurt Cultures:</h4>
+                                <div class="bg-gradient-to-r from-orange-100 to-orange-200 rounded-xl p-4 border-2 border-orange-300 shadow-sm">
+                                    <div class="flex flex-wrap gap-2">
+                                        ${standardCultures.map(culture => 
+                                            `<span class="bg-gradient-to-br from-orange-200 to-orange-300 text-orange-900 px-3 py-2 rounded-full text-sm font-medium border border-orange-400 shadow-sm">
+                                                ${culture}
+                                            </span>`
+                                        ).join('')}
+                                    </div>
+                                    <p class="text-orange-800 text-xs mt-2 font-medium">
+                                        These beneficial probiotics support digestive health
+                                    </p>
+                                </div>
+                            </div>
+                    `;
+
+                    // Other ingredients
+                    const otherIngredients = flavor.ingredients.filter(ingredient =>
+                        !ingredient.toLowerCase().includes('active yogurt cultures') &&
+                        !ingredient.toLowerCase().includes('yogurt cultures') &&
+                        !ingredient.toLowerCase().includes('live cultures')
+                    );
+
+                    if (otherIngredients.length > 0) {
+                        ingredientsHTML += `
+                            <div>
+                                <h4 class="text-sm font-medium text-slate-700 mb-3">Other Ingredients:</h4>
+                                <p class="text-slate-600 leading-relaxed text-sm">
+                                    ${otherIngredients.join(', ')}
+                                </p>
+                            </div>
+                        `;
+                    }
+
+                    ingredientsHTML += '</div>';
+                } else {
+                    // No yogurt cultures, just show ingredients normally
+                    ingredientsHTML = `<p class="text-slate-600 leading-relaxed text-sm">${flavor.ingredients.join(', ')}</p>`;
+                }
+
+                ingredientsElement.innerHTML = ingredientsHTML;
+            } else {
+                ingredientsElement.innerHTML = '<p class="text-slate-600 text-sm">Ingredient list not available</p>';
+            }
+        }
+        
+        const pairingsElement = document.querySelector('#modal-pairings p');
+        if (pairingsElement) {
+            pairingsElement.textContent = flavor.pairing_suggestions && flavor.pairing_suggestions.length > 0 
+                ? flavor.pairing_suggestions.join(', ')
+                : 'Try with any of our delicious toppings!';
+        }
         
         modal.classList.remove('hidden');
     }
 
+    showNutritionModal(imageUrl, flavorName) {
+        let nutritionModal = document.getElementById('nutrition-modal');
+        if (!nutritionModal) {
+            nutritionModal = document.createElement('div');
+            nutritionModal.id = 'nutrition-modal';
+            nutritionModal.className = 'fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden p-2';
+            nutritionModal.innerHTML = `
+                <div class="relative w-full h-full max-w-4xl max-h-full flex items-center justify-center">
+                    <button id="close-nutrition-modal" class="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white rounded-full w-8 h-8 flex items-center justify-center z-10 shadow-xl border-2 border-white transition-all">
+                        <i class="ri-close-line text-lg font-bold"></i>
+                    </button>
+                    <img id="nutrition-modal-image" class="max-w-full max-h-full object-contain" alt="Nutrition Facts" style="background-color: white; border-radius: 8px;">
+                </div>
+            `;
+            document.body.appendChild(nutritionModal);
+            
+            document.getElementById('close-nutrition-modal').addEventListener('click', () => {
+                nutritionModal.classList.add('hidden');
+            });
+            
+            nutritionModal.addEventListener('click', (e) => {
+                if (e.target === nutritionModal) {
+                    nutritionModal.classList.add('hidden');
+                }
+            });
+        }
+        
+        document.getElementById('nutrition-modal-image').src = imageUrl;
+        document.getElementById('nutrition-modal-image').alt = `Nutrition Facts for ${flavorName}`;
+        nutritionModal.classList.remove('hidden');
+        
+        // Prevent body scroll when modal is open
+        document.body.style.overflow = 'hidden';
+        
+        // Re-enable scroll when modal closes
+        const closeModal = () => {
+            document.body.style.overflow = '';
+            nutritionModal.classList.add('hidden');
+        };
+        
+        document.getElementById('close-nutrition-modal').onclick = closeModal;
+        nutritionModal.onclick = (e) => {
+            if (e.target === nutritionModal) closeModal();
+        };
+    }
+
     showToppingModal(topping) {
-        // Check if topping is out of stock before showing modal
         if (!topping.available) {
             return;
         }
         
         const modal = document.getElementById('topping-modal');
+        if (!modal) return;
         
-        document.getElementById('topping-modal-title').textContent = topping.name;
-        document.getElementById('topping-modal-description').textContent = topping.description || 'Delicious topping for your frozen yogurt';
+        const titleElement = document.getElementById('topping-modal-title');
+        const descriptionElement = document.getElementById('topping-modal-description');
+        const imageElement = document.getElementById('topping-modal-image');
+        const categoriesElement = document.getElementById('topping-modal-categories');
+        const certificationsElement = document.getElementById('topping-modal-certifications');
+        
+        if (titleElement) titleElement.textContent = topping.name;
+        if (descriptionElement) descriptionElement.textContent = topping.description || 'Delicious topping for your frozen yogurt';
         
         const imageUrl = topping.image_path 
             ? `${this.config.IMAGE_BASE_URL}${topping.image_path}`
             : 'assets/images/toppings/placeholder.jpg';
         
-        const modalImage = document.getElementById('topping-modal-image');
-        modalImage.src = imageUrl;
-        modalImage.alt = topping.name;
-        modalImage.onerror = function() { 
-            this.src = 'assets/images/toppings/placeholder.jpg'; 
-        };
+        if (imageElement) {
+            imageElement.src = imageUrl;
+            imageElement.alt = topping.name;
+            imageElement.onerror = function() { 
+                this.src = 'assets/images/toppings/placeholder.jpg'; 
+            };
+        }
         
         const categoryBadges = topping.categories.map(cat => 
             `<span class="badge badge-${cat}">${this.formatCategoryName(cat)}</span>`
         ).join('');
-        document.getElementById('topping-modal-categories').innerHTML = categoryBadges;
+        if (categoriesElement) categoriesElement.innerHTML = categoryBadges;
         
         const certIcons = topping.certifications.map(cert => {
             const file = this.certMap[cert];
             return file ? `<img src="${this.config.CERT_BASE_URL}${file}" alt="${cert}" class="cert-icon w-12 h-12 sm:w-16 sm:h-16 object-contain" title="${cert}">` : '';
         }).filter(Boolean).join('');
-        document.getElementById('topping-modal-certifications').innerHTML = certIcons;
+        if (certificationsElement) certificationsElement.innerHTML = certIcons;
         
         const allergenElement = document.querySelector('#topping-modal-allergens p');
-        if (topping.allergens.length > 0) {
-            allergenElement.innerHTML = `<span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">Contains: ${topping.allergens.join(', ')}</span>`;
-        } else {
-            allergenElement.innerHTML = `<span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">No allergens</span>`;
+        if (allergenElement) {
+            if (topping.allergens.length > 0) {
+                allergenElement.innerHTML = `<span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">Contains: ${topping.allergens.join(', ')}</span>`;
+            } else {
+                allergenElement.innerHTML = `<span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">No allergens</span>`;
+            }
         }
         
-        document.querySelector('#topping-modal-locations p').textContent = topping.locations.length > 0 
-            ? `Available at: ${topping.locations.map(loc => this.formatLocationName(loc)).join(', ')}`
-            : 'Location information not available';
+        const locationsElement = document.querySelector('#topping-modal-locations p');
+        if (locationsElement) {
+            locationsElement.textContent = topping.locations.length > 0 
+                ? `Available at: ${topping.locations.map(loc => this.formatLocationName(loc)).join(', ')}`
+                : 'Location information not available';
+        }
         
         modal.classList.remove('hidden');
     }
 
     bindEvents() {
         document.addEventListener('click', (e) => {
+            // Location tabs
             if (e.target.closest('.location-tab')) {
                 const location = e.target.closest('.location-tab').dataset.location;
                 this.switchLocation(location);
             }
-        });
-        
-        document.addEventListener('click', (e) => {
+            
+            // Menu tabs
             if (e.target.closest('.menu-tab')) {
                 const tab = e.target.closest('.menu-tab').dataset.tab;
                 this.switchTab(tab);
             }
-        });
-        
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('#flavor-category-filters .filter-btn')) {
-                const filter = e.target.closest('.filter-btn').dataset.filter;
-                this.setFlavorCategoryFilter(filter);
+            
+            // Filter buttons - distinguish between category and allergen
+            if (e.target.closest('.filter-btn')) {
+                const btn = e.target.closest('.filter-btn');
+                const type = btn.dataset.type;
+                
+                if (type === 'category') {
+                    const filter = btn.dataset.filter;
+                    if (btn.closest('#flavor-category-filters')) {
+                        this.setFlavorCategoryFilter(filter);
+                    } else if (btn.closest('#topping-category-filters')) {
+                        this.setToppingCategoryFilter(filter);
+                    }
+                } else if (type === 'allergen') {
+                    const allergen = btn.dataset.allergen;
+                    if (btn.closest('#flavor-allergen-filters')) {
+                        this.toggleFlavorAllergenFilter(allergen);
+                    } else if (btn.closest('#topping-allergen-filters')) {
+                        this.toggleToppingAllergenFilter(allergen);
+                    }
+                }
             }
         });
         
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('#flavor-allergen-filters .filter-btn')) {
-                const allergen = e.target.closest('.filter-btn').dataset.allergen;
-                this.toggleFlavorAllergenFilter(allergen);
-            }
-        });
-
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('#topping-category-filters .filter-btn')) {
-                const filter = e.target.closest('.filter-btn').dataset.filter;
-                this.setToppingCategoryFilter(filter);
-            }
-        });
-        
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('#topping-allergen-filters .filter-btn')) {
-                const allergen = e.target.closest('.filter-btn').dataset.allergen;
-                this.toggleToppingAllergenFilter(allergen);
-            }
-        });
-        
-        document.getElementById('close-flavor-modal')?.addEventListener('click', () => {
-            document.getElementById('flavor-modal').classList.add('hidden');
-        });
-        
-        document.getElementById('close-topping-modal')?.addEventListener('click', () => {
-            document.getElementById('topping-modal').classList.add('hidden');
-        });
-        
-        document.getElementById('flavor-modal')?.addEventListener('click', (e) => {
-            if (e.target.id === 'flavor-modal') {
+        // Modal close events
+        const closeFlavorModal = document.getElementById('close-flavor-modal');
+        if (closeFlavorModal) {
+            closeFlavorModal.addEventListener('click', () => {
                 document.getElementById('flavor-modal').classList.add('hidden');
-            }
-        });
+            });
+        }
         
-        document.getElementById('topping-modal')?.addEventListener('click', (e) => {
-            if (e.target.id === 'topping-modal') {
+        const closeToppingModal = document.getElementById('close-topping-modal');
+        if (closeToppingModal) {
+            closeToppingModal.addEventListener('click', () => {
                 document.getElementById('topping-modal').classList.add('hidden');
-            }
-        });
+            });
+        }
         
+        // Click outside modal to close
+        const flavorModal = document.getElementById('flavor-modal');
+        if (flavorModal) {
+            flavorModal.addEventListener('click', (e) => {
+                if (e.target.id === 'flavor-modal') {
+                    flavorModal.classList.add('hidden');
+                }
+            });
+        }
+        
+        const toppingModal = document.getElementById('topping-modal');
+        if (toppingModal) {
+            toppingModal.addEventListener('click', (e) => {
+                if (e.target.id === 'topping-modal') {
+                    toppingModal.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Escape key to close modals
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                document.getElementById('flavor-modal').classList.add('hidden');
-                document.getElementById('topping-modal').classList.add('hidden');
+                const flavorModal = document.getElementById('flavor-modal');
+                const toppingModal = document.getElementById('topping-modal');
+                const nutritionModal = document.getElementById('nutrition-modal');
+                
+                if (flavorModal) flavorModal.classList.add('hidden');
+                if (toppingModal) toppingModal.classList.add('hidden');
+                if (nutritionModal) {
+                    nutritionModal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
             }
         });
     }
@@ -714,11 +908,17 @@ class DynamicMenuSystem {
     }
 
     toggleFlavorAllergenFilter(allergen) {
-        const isActive = this.state.filters.flavors.allergen === allergen;
-        this.state.filters.flavors.allergen = isActive ? null : allergen;
+        const allergens = this.state.filters.flavors.allergens;
+        const index = allergens.indexOf(allergen);
+        
+        if (index > -1) {
+            allergens.splice(index, 1);
+        } else {
+            allergens.push(allergen);
+        }
         
         document.querySelectorAll('#flavor-allergen-filters .filter-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.allergen === allergen && !isActive);
+            btn.classList.toggle('active', allergens.includes(btn.dataset.allergen));
         });
         
         this.renderFlavors();
@@ -735,11 +935,17 @@ class DynamicMenuSystem {
     }
 
     toggleToppingAllergenFilter(allergen) {
-        const isActive = this.state.filters.toppings.allergen === allergen;
-        this.state.filters.toppings.allergen = isActive ? null : allergen;
+        const allergens = this.state.filters.toppings.allergens;
+        const index = allergens.indexOf(allergen);
+        
+        if (index > -1) {
+            allergens.splice(index, 1);
+        } else {
+            allergens.push(allergen);
+        }
         
         document.querySelectorAll('#topping-allergen-filters .filter-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.allergen === allergen && !isActive);
+            btn.classList.toggle('active', allergens.includes(btn.dataset.allergen));
         });
         
         this.renderToppings();
@@ -747,24 +953,32 @@ class DynamicMenuSystem {
 
     resetFilters() {
         this.state.filters = {
-            flavors: { category: 'all', allergen: null },
-            toppings: { category: 'all', allergen: null }
+            flavors: { category: 'all', allergens: [] },
+            toppings: { category: 'all', allergens: [] }
         };
         
-        document.querySelectorAll('.filter-btn').forEach(btn => {
+        // Reset category filters
+        document.querySelectorAll('.filter-btn[data-type="category"]').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.filter === 'all');
+        });
+        
+        // Reset allergen filters
+        document.querySelectorAll('.filter-btn[data-type="allergen"]').forEach(btn => {
+            btn.classList.remove('active');
         });
     }
 
     showError(message) {
         const container = document.getElementById('flavors-grid');
-        container.innerHTML = `
-            <div class="col-span-full text-center py-12">
-                <div class="text-red-400 text-6xl mb-4">⚠️</div>
-                <h3 class="text-xl font-medium text-red-600 mb-2">Error</h3>
-                <p class="text-red-500">${message}</p>
-            </div>
-        `;
+        if (container) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <div class="text-red-400 text-6xl mb-4">⚠️</div>
+                    <h3 class="text-xl font-medium text-red-600 mb-2">Error</h3>
+                    <p class="text-red-500">${message}</p>
+                </div>
+            `;
+        }
     }
 }
 
