@@ -1,71 +1,43 @@
-// Forms JavaScript - Handle all form functionality
-// Contact Form, job application form, and newsletter signup
-
-// Store reCAPTCHA widget IDs globally
 window.recaptchaWidgets = {
     contact: null,
     careers: null
 };
 
-// Initialize reCAPTCHA when ready
 window.initializeRecaptcha = function() {
-    console.log('🔑 Initializing reCAPTCHA...');
-    
-    // Initialize contact form reCAPTCHA
     const contactElement = document.getElementById('contact-recaptcha');
     if (contactElement && !contactElement.hasChildNodes()) {
         try {
             window.recaptchaWidgets.contact = grecaptcha.render('contact-recaptcha', {
                 'sitekey': '6Lfqu7wrAAAAALeL2VSbkNnZ7z7tE1NfJ2ccRvIx'
             });
-            console.log('✅ Contact reCAPTCHA initialized');
         } catch (e) {
-            console.error('Contact reCAPTCHA error:', e);
+            console.error('Contact reCAPTCHA initialization error:', e);
         }
     }
     
-    // Initialize careers form reCAPTCHA
     const careersElement = document.getElementById('careers-recaptcha');
     if (careersElement && !careersElement.hasChildNodes()) {
         try {
             window.recaptchaWidgets.careers = grecaptcha.render('careers-recaptcha', {
                 'sitekey': '6Lfqu7wrAAAAALeL2VSbkNnZ7z7tE1NfJ2ccRvIx'
             });
-            console.log('✅ Careers reCAPTCHA initialized');
         } catch (e) {
-            console.error('Careers reCAPTCHA error:', e);
+            console.error('Careers reCAPTCHA initialization error:', e);
         }
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        initializeForms();
-        // Try to initialize reCAPTCHA if already loaded
-        if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
-            window.initializeRecaptcha();
-        }
-    }, 2000);
-});
-
 function initializeForms() {
-    console.log('📋 Initializing forms...');
-    
     initializeContactForm();
     initializeJobApplicationForm();
     initializeNewsletterForm();
     initializeFormValidation();
     initializeCharacterCounters();
-    
-    console.log('✅ Forms initialized');
 }
 
-// Contact Form - Updated with real API call
 function initializeContactForm() {
     const contactForm = document.getElementById('contact-form');
     if (!contactForm) return;
-    
-    console.log('📧 Contact Form found, setting up...');
     
     contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -73,19 +45,15 @@ function initializeContactForm() {
         const formData = new FormData(this);
         const submitButton = this.querySelector('button[type="submit"]');
         
-        // Validate form
-        if (!validateContactForm(formData)) {
-            return;
-        }
+        if (!validateContactForm(formData)) return;
         
-        // Check if reCAPTCHA is completed
         let recaptchaResponse = null;
         try {
             if (window.recaptchaWidgets.contact !== null) {
                 recaptchaResponse = grecaptcha.getResponse(window.recaptchaWidgets.contact);
             }
         } catch (e) {
-            console.error('reCAPTCHA check error:', e);
+            console.error('reCAPTCHA validation error:', e);
         }
         
         if (!recaptchaResponse) {
@@ -93,13 +61,11 @@ function initializeContactForm() {
             return;
         }
         
-        // Add reCAPTCHA token to form data
         formData.append('recaptcha_token', recaptchaResponse);
         
         try {
             showLoadingState(submitButton);
             
-            // Real API call to Supabase function - FIXED URL with Auth
             const response = await fetch('https://mempftwiiwfiqdmhrxwq.supabase.co/functions/v1/contact-form', {
                 method: 'POST',
                 headers: {
@@ -114,25 +80,21 @@ function initializeContactForm() {
                 throw new Error(result.error || 'Failed to submit form');
             }
             
-            // Show success message
             showSuccessMessage(this, result.message || 'Thank you for your message! We will get back to you soon.');
             
-            // Reset form
             this.reset();
             updateCharacterCounter('message', 500);
             
-            // Reset reCAPTCHA
             if (window.recaptchaWidgets.contact !== null) {
                 grecaptcha.reset(window.recaptchaWidgets.contact);
             }
             
-            // Track successful submission
             if (typeof trackEvent === 'function') {
                 trackEvent('form_submit', 'contact', 'success');
             }
             
         } catch (error) {
-            console.error('Contact Form error:', error);
+            console.error('Contact form submission error:', error);
             showErrorMessage(this, error.message || 'Something went wrong. Please try again later.');
             if (typeof trackEvent === 'function') {
                 trackEvent('form_submit', 'contact', 'error');
@@ -143,14 +105,10 @@ function initializeContactForm() {
     });
 }
 
-// Job Application Form - Updated with real API call
 function initializeJobApplicationForm() {
     const jobForm = document.getElementById('job-application-form');
     if (!jobForm) return;
     
-    console.log('💼 Job application form found, setting up...');
-    
-    // Initialize consent checkbox functionality
     setTimeout(() => initializeConsentCheckbox(), 100);
     
     jobForm.addEventListener('submit', async function(e) {
@@ -159,19 +117,15 @@ function initializeJobApplicationForm() {
         const formData = new FormData(this);
         const submitButton = this.querySelector('button[type="submit"]');
         
-        // Validate form
-        if (!validateJobApplicationForm(formData)) {
-            return;
-        }
+        if (!validateJobApplicationForm(formData)) return;
         
-        // Check if reCAPTCHA is completed
         let recaptchaResponse = null;
         try {
             if (window.recaptchaWidgets.careers !== null) {
                 recaptchaResponse = grecaptcha.getResponse(window.recaptchaWidgets.careers);
             }
         } catch (e) {
-            console.error('reCAPTCHA check error:', e);
+            console.error('reCAPTCHA validation error:', e);
         }
         
         if (!recaptchaResponse) {
@@ -179,13 +133,11 @@ function initializeJobApplicationForm() {
             return;
         }
         
-        // Add reCAPTCHA token to form data
         formData.append('recaptcha_token', recaptchaResponse);
         
         try {
             showLoadingState(submitButton);
             
-            // Real API call to Supabase function - FIXED URL with Auth
             const response = await fetch('https://mempftwiiwfiqdmhrxwq.supabase.co/functions/v1/career-form', {
                 method: 'POST',
                 headers: {
@@ -200,25 +152,21 @@ function initializeJobApplicationForm() {
                 throw new Error(result.error || 'Failed to submit application');
             }
             
-            // Show success message
             showSuccessMessage(this, result.message || 'Thank you for your application! We will review it and contact you soon.');
             
-            // Reset form
             this.reset();
             resetConsentCheckbox();
             
-            // Reset reCAPTCHA
             if (window.recaptchaWidgets.careers !== null) {
                 grecaptcha.reset(window.recaptchaWidgets.careers);
             }
             
-            // Track successful submission
             if (typeof trackEvent === 'function') {
                 trackEvent('form_submit', 'careers', 'success');
             }
             
         } catch (error) {
-            console.error('Job application error:', error);
+            console.error('Job application submission error:', error);
             showErrorMessage(this, error.message || 'Something went wrong. Please try again later.');
             if (typeof trackEvent === 'function') {
                 trackEvent('form_submit', 'careers', 'error');
@@ -229,62 +177,128 @@ function initializeJobApplicationForm() {
     });
 }
 
-// Newsletter Form
 function initializeNewsletterForm() {
     const newsletterForms = document.querySelectorAll('.newsletter-form');
     
-    newsletterForms.forEach(form => {
+    console.log(`Found ${newsletterForms.length} newsletter forms`);
+    
+    newsletterForms.forEach((form, index) => {
+        if (form.dataset.initialized === 'true') {
+            console.log(`Newsletter form ${index} already initialized, skipping`);
+            return;
+        }
+        
+        console.log(`Initializing newsletter form ${index}`);
+        form.dataset.initialized = 'true';
+        
+        const submitButton = form.querySelector('button[type="submit"]');
+        const emailInput = form.querySelector('input[type="email"]');
+        
+        if (!submitButton || !emailInput) {
+            console.error('Newsletter form elements not found');
+            return;
+        }
+        
+        submitButton.disabled = false;
+        submitButton.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-green-500');
+        submitButton.classList.add('bg-primary');
+        submitButton.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Subscribe';
+        
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
+            e.stopImmediatePropagation();
             
-            const emailInput = this.querySelector('input[type="email"]');
-            const submitButton = this.querySelector('button[type="submit"]');
             const email = emailInput.value.trim();
+            
+            console.log(`Newsletter form ${index} submitted, email: ${email}`);
             
             if (!email || !isValidEmail(email)) {
                 showNewsletterMessage(this, 'Please enter a valid email address.', 'error');
                 return;
             }
             
+            if (submitButton.disabled === true) {
+                console.warn('Submit blocked - button already disabled');
+                return false;
+            }
+            
+            const originalButtonHTML = submitButton.innerHTML;
+            const hasPrimaryClass = submitButton.classList.contains('bg-primary');
+            
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Subscribing...';
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            console.log('Sending newsletter subscription request...');
+            
             try {
-                const originalText = submitButton.innerHTML;
-                submitButton.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Subscribing...';
-                submitButton.disabled = true;
+                const response = await fetch('https://mempftwiiwfiqdmhrxwq.supabase.co/rest/v1/newsletter_subscribers', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw',
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        source: 'footer_newsletter'
+                    })
+                });
                 
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                console.log('Response status:', response.status);
                 
-                submitButton.innerHTML = '<i class="ri-check-line mr-2"></i>Subscribed!';
-                submitButton.classList.remove('bg-primary');
-                submitButton.classList.add('bg-green-500');
-                
-                showNewsletterMessage(this, 'Thank you for subscribing! You\'ll receive updates about new flavors and special offers.', 'success');
-                
-                // Reset after delay
-                setTimeout(() => {
-                    submitButton.innerHTML = originalText;
-                    submitButton.classList.remove('bg-green-500');
-                    submitButton.classList.add('bg-primary');
-                    submitButton.disabled = false;
+                if (response.status === 201 || response.ok) {
+                    submitButton.innerHTML = '<i class="ri-check-line mr-2"></i>Subscribed!';
+                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    if (hasPrimaryClass) {
+                        submitButton.classList.remove('bg-primary');
+                        submitButton.classList.add('bg-green-500');
+                    }
+                    
+                    showNewsletterMessage(this, 'Thank you for subscribing!', 'success');
                     emailInput.value = '';
-                }, 3000);
-                
-                if (typeof trackEvent === 'function') {
-                    trackEvent('newsletter_signup', 'engagement', email);
+                    
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalButtonHTML;
+                        if (hasPrimaryClass) {
+                            submitButton.classList.remove('bg-green-500');
+                            submitButton.classList.add('bg-primary');
+                        }
+                        submitButton.disabled = false;
+                        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }, 3000);
+                    
+                    if (typeof trackEvent === 'function') {
+                        trackEvent('newsletter_signup', 'engagement', email);
+                    }
+                } else {
+                    throw new Error('Subscription failed');
                 }
                 
             } catch (error) {
-                console.error('Newsletter error:', error);
-                showNewsletterMessage(this, 'Something went wrong. Please try again.', 'error');
+                console.error('Newsletter submission error:', error);
+                
+                let errorMessage = 'Something went wrong. Please try again.';
+                if (error.message && error.message.includes('duplicate')) {
+                    errorMessage = 'This email is already subscribed!';
+                }
+                
+                showNewsletterMessage(this, errorMessage, 'error');
+                
+                submitButton.innerHTML = originalButtonHTML;
+                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                if (hasPrimaryClass && submitButton.classList.contains('bg-green-500')) {
+                    submitButton.classList.remove('bg-green-500');
+                    submitButton.classList.add('bg-primary');
+                }
                 submitButton.disabled = false;
             }
         });
     });
 }
 
-// Form Validation
 function initializeFormValidation() {
-    // Real-time validation for all inputs
     const inputs = document.querySelectorAll('input, textarea, select');
     
     inputs.forEach(input => {
@@ -298,7 +312,6 @@ function initializeFormValidation() {
     });
 }
 
-// Character Counters
 function initializeCharacterCounters() {
     const messageTextarea = document.getElementById('message');
     const messageChars = document.getElementById('message-chars');
@@ -309,7 +322,6 @@ function initializeCharacterCounters() {
         });
     }
     
-    // Add character counters to other text areas if needed
     const textareas = document.querySelectorAll('textarea[maxlength]');
     textareas.forEach(textarea => {
         const maxLength = parseInt(textarea.getAttribute('maxlength'));
@@ -319,7 +331,6 @@ function initializeCharacterCounters() {
     });
 }
 
-// Consent Checkbox Functionality
 function initializeConsentCheckbox() {
     const consentCheckbox = document.getElementById('consent-checkbox');
     const consentLabel = consentCheckbox?.closest('label');
@@ -327,14 +338,12 @@ function initializeConsentCheckbox() {
     
     if (!consentCheckbox || !consentText) return;
     
-    // Click handler for text
     consentText.style.cursor = 'pointer';
     consentText.addEventListener('click', function(e) {
         e.preventDefault();
         toggleConsent();
     });
     
-    // Keyboard accessibility
     consentText.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -342,7 +351,6 @@ function initializeConsentCheckbox() {
         }
     });
     
-    // Make it focusable and accessible
     consentText.setAttribute('tabindex', '0');
     consentText.setAttribute('role', 'checkbox');
     consentText.setAttribute('aria-checked', 'false');
@@ -355,11 +363,8 @@ function toggleConsent() {
     
     if (consentCheckbox) {
         consentCheckbox.checked = !consentCheckbox.checked;
-        
-        // Update visual state
         updateConsentVisual();
         
-        // Update accessibility
         if (consentText) {
             consentText.setAttribute('aria-checked', consentCheckbox.checked);
         }
@@ -389,19 +394,16 @@ function resetConsentCheckbox() {
     }
 }
 
-// Loading and Button State Functions
 function showLoadingState(button) {
     if (!button) return;
     
     button.disabled = true;
     button.classList.add('opacity-50', 'cursor-not-allowed');
     
-    // Store original content
     if (!button.dataset.originalText) {
         button.dataset.originalText = button.innerHTML;
     }
     
-    // Show loading
     button.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Submitting...';
 }
 
@@ -412,7 +414,6 @@ function restoreButtonState(button) {
         button.disabled = false;
         button.classList.remove('opacity-50', 'cursor-not-allowed');
         
-        // Restore original text or set default based on form type
         if (button.dataset.originalText) {
             button.innerHTML = button.dataset.originalText;
         } else {
@@ -426,7 +427,6 @@ function restoreButtonState(button) {
     }, 100);
 }
 
-// Validation Functions
 function validateContactForm(formData) {
     const name = formData.get('name');
     const email = formData.get('email');
@@ -586,7 +586,6 @@ function clearFieldError(field) {
     }
 }
 
-// Character Counter Functions
 function updateCharacterCounter(textareaId, maxLength) {
     const textarea = document.getElementById(textareaId);
     const counter = document.getElementById(`${textareaId}-chars`);
@@ -618,9 +617,7 @@ function addCharacterCounter(textarea, maxLength) {
     });
 }
 
-// Message Display Functions
 function showSuccessMessage(container, message) {
-    // Remove existing messages
     const existingMessages = container.querySelectorAll('.form-message');
     existingMessages.forEach(msg => msg.remove());
     
@@ -633,10 +630,8 @@ function showSuccessMessage(container, message) {
         </div>
     `;
     
-    // Add to the end of form
     container.appendChild(successDiv);
     
-    // Auto-remove after 8 seconds
     setTimeout(() => {
         if (successDiv.parentNode) {
             successDiv.classList.add('animate-fade-out');
@@ -646,7 +641,6 @@ function showSuccessMessage(container, message) {
 }
 
 function showErrorMessage(container, message) {
-    // Remove existing messages
     const existingMessages = container.querySelectorAll('.form-message');
     existingMessages.forEach(msg => msg.remove());
     
@@ -659,10 +653,8 @@ function showErrorMessage(container, message) {
         </div>
     `;
     
-    // Add to the end of form
     container.appendChild(errorDiv);
     
-    // Auto-remove after 8 seconds
     setTimeout(() => {
         if (errorDiv.parentNode) {
             errorDiv.classList.add('animate-fade-out');
@@ -671,7 +663,6 @@ function showErrorMessage(container, message) {
     }, 8000);
 }
 
-// Newsletter Message Display
 function showNewsletterMessage(form, message, type) {
     const existingMessage = form.parentNode.querySelector('.newsletter-message');
     if (existingMessage) existingMessage.remove();
@@ -691,7 +682,6 @@ function showNewsletterMessage(form, message, type) {
     
     form.parentNode.appendChild(messageDiv);
     
-    // Auto remove after 5 seconds
     setTimeout(() => {
         if (messageDiv.parentNode) {
             messageDiv.remove();
@@ -699,19 +689,80 @@ function showNewsletterMessage(form, message, type) {
     }, 5000);
 }
 
-// Email validation
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-// Export functions for global use
 window.toggleConsent = toggleConsent;
 window.initializeForms = initializeForms;
+window.initializeNewsletterForm = initializeNewsletterForm;
 window.validateContactForm = validateContactForm;
 window.validateJobApplicationForm = validateJobApplicationForm;
 window.showSuccessMessage = showSuccessMessage;
 window.showErrorMessage = showErrorMessage;
 window.isValidEmail = isValidEmail;
 
-console.log('📋 Forms.js loaded successfully');
+let formsInitialized = false;
+let newsletterFormsInitialized = false;
+
+function safeInitializeForms() {
+    if (formsInitialized) {
+        console.log('Forms already initialized, skipping...');
+        return;
+    }
+    
+    formsInitialized = true;
+    console.log('Initializing forms...');
+    
+    initializeContactForm();
+    initializeJobApplicationForm();
+    initializeFormValidation();
+    initializeCharacterCounters();
+    
+    initializeNewsletterForm();
+}
+
+function watchForNewsletterForms() {
+    const existingForms = document.querySelectorAll('.newsletter-form');
+    if (existingForms.length > 0 && !newsletterFormsInitialized) {
+        console.log('Newsletter forms found, initializing...');
+        newsletterFormsInitialized = true;
+        initializeNewsletterForm();
+        return;
+    }
+    
+    const observer = new MutationObserver((mutations) => {
+        const newsletterForms = document.querySelectorAll('.newsletter-form');
+        if (newsletterForms.length > 0 && !newsletterFormsInitialized) {
+            console.log('Newsletter forms detected via observer, initializing...');
+            newsletterFormsInitialized = true;
+            initializeNewsletterForm();
+            observer.disconnect();
+        }
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    setTimeout(() => {
+        observer.disconnect();
+        console.log('Newsletter form observer stopped');
+    }, 10000);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        safeInitializeForms();
+        watchForNewsletterForms();
+    }, { once: true });
+} else {
+    safeInitializeForms();
+    watchForNewsletterForms();
+}
+
+window.safeInitializeForms = safeInitializeForms;
+
+console.log('Forms.js loaded successfully');
