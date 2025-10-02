@@ -661,14 +661,7 @@ class DynamicMenuSystem {
                 ingredientsElement.innerHTML = '<p class="text-slate-600 text-sm">Ingredient list not available</p>';
             }
         }
-        
-        const pairingsElement = document.querySelector('#modal-pairings p');
-        if (pairingsElement) {
-            pairingsElement.textContent = flavor.pairing_suggestions && flavor.pairing_suggestions.length > 0 
-                ? flavor.pairing_suggestions.join(', ')
-                : 'Try with any of our delicious toppings!';
-        }
-        
+              
         modal.classList.remove('hidden');
     }
 
