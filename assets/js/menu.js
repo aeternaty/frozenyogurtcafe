@@ -376,7 +376,11 @@ class DynamicMenuSystem {
         return card;
     }
 
-    formatCategoryName(category) {
+formatCategoryName(category) {
+        // Handle special case for no-sugar -> No Sugar Added
+        if (category === 'no-sugar') {
+            return 'No Sugar Added';
+        }
         return category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
 
