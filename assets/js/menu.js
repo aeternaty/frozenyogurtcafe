@@ -166,7 +166,8 @@ class DynamicMenuSystem {
                 button.dataset.type = 'category';
                 
                 const displayName = category === 'all' ? 'All Flavors' : 
-                    category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                category === 'no-sugar' ? 'No Sugar Added' :
+                category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
                 
                 button.textContent = displayName;
                 categoryContainer.appendChild(button);
