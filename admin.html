@@ -487,6 +487,7 @@
         let currentTab = 'contacts';
         let allData = { contacts: [], applications: [], newsletter: [] };
         let deleteItem = null;
+        let authToken = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('panel-selector').classList.remove('hidden');
@@ -502,13 +503,16 @@
         }
 
         function checkAuth() {
+            authToken = localStorage.getItem('admin_token');
             const savedUser = localStorage.getItem('admin_user');
-            if (savedUser) {
+
+            if (authToken && savedUser) {
                 try {
                     currentUser = JSON.parse(savedUser);
                     showMainPanel();
                 } catch (e) {
                     localStorage.removeItem('admin_user');
+                    localStorage.removeItem('admin_token');
                     showLoginModal();
                 }
             } else {
@@ -540,23 +544,47 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'Signing in...';
 
-                const response = await fetch(SUPABASE_URL + '/functions/v1/admin-login', {
+                // Supabase Auth ile login
+                const authResponse = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+                        'apikey': SUPABASE_ANON_KEY
                     },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
                 });
 
-                const result = await response.json();
+                const authData = await authResponse.json();
 
-                if (response.ok && result.success) {
-                    currentUser = result.user;
-                    localStorage.setItem('admin_user', JSON.stringify(result.user));
-                    showMainPanel();
+                if (authData.access_token) {
+                    authToken = authData.access_token;
+
+                    // Admin kontrolü yap
+                    const userCheckResponse = await fetch(
+                        SUPABASE_URL + '/rest/v1/user_profiles?id=eq.' + authData.user.id,
+                        {
+                            headers: {
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Authorization': 'Bearer ' + authToken
+                            }
+                        }
+                    );
+
+                    const userCheck = await userCheckResponse.json();
+
+                    if (userCheck[0]?.role === 'admin') {
+                        currentUser = authData.user;
+                        localStorage.setItem('admin_token', authToken);
+                        localStorage.setItem('admin_user', JSON.stringify(authData.user));
+                        showMainPanel();
+                    } else {
+                        throw new Error('Not authorized as admin');
+                    }
                 } else {
-                    throw new Error(result.error || 'Login failed');
+                    throw new Error(authData.error_description || 'Invalid credentials');
                 }
 
             } catch (error) {
@@ -570,7 +598,9 @@
 
         function logout() {
             localStorage.removeItem('admin_user');
+            localStorage.removeItem('admin_token');
             currentUser = null;
+            authToken = null;
             document.getElementById('main-panel').classList.add('hidden');
             document.getElementById('panel-selector').classList.remove('hidden');
         }
@@ -597,7 +627,7 @@
             try {
                 const headers = {
                     'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+                    'Authorization': 'Bearer ' + authToken
                 };
 
                 const [contactsResponse, applicationsResponse, newsletterResponse] = await Promise.all([
@@ -642,19 +672,19 @@
                 const row = document.createElement('tr');
                 row.className = 'table-row';
                 row.innerHTML = `
-                    <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(contact.created_at)}</td>
-                    <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(contact.name)}</td>
-                    <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(contact.email)}</td>
-                    <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell truncate max-w-xs">${escapeHtml(contact.subject)}</td>
-                    <td class="px-4 py-4 text-sm">
-                        <button onclick="showContactDetails(${index})" class="text-blue-600 hover:text-blue-700 mr-3 transform hover:scale-125 transition-all">
-                            <i class="ri-eye-line text-xl"></i>
-                        </button>
-                        <button onclick="deleteContact(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
-                            <i class="ri-delete-bin-line text-xl"></i>
-                        </button>
-                    </td>
-                `;
+            <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(contact.created_at)}</td>
+            <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(contact.name)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(contact.email)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell truncate max-w-xs">${escapeHtml(contact.subject)}</td>
+            <td class="px-4 py-4 text-sm">
+                <button onclick="showContactDetails(${index})" class="text-blue-600 hover:text-blue-700 mr-3 transform hover:scale-125 transition-all">
+                    <i class="ri-eye-line text-xl"></i>
+                </button>
+                <button onclick="deleteContact(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
+                    <i class="ri-delete-bin-line text-xl"></i>
+                </button>
+            </td>
+        `;
                 tbody.appendChild(row);
             });
         }
@@ -672,22 +702,22 @@
                 const row = document.createElement('tr');
                 row.className = 'table-row';
                 row.innerHTML = `
-                    <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(app.created_at)}</td>
-                    <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(app.applicant_name)}</td>
-                    <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(app.applicant_email)}</td>
-                    <td class="px-4 py-4 text-sm text-gray-600 hidden lg:table-cell">${escapeHtml(app.preferred_location)}</td>
-                    <td class="px-4 py-4 text-sm">
-                        <span class="px-3 py-1.5 text-xs rounded-full font-bold status-${app.status || 'pending'}">${(app.status || 'pending').toUpperCase()}</span>
-                    </td>
-                    <td class="px-4 py-4 text-sm">
-                        <button onclick="showApplicationDetails(${index})" class="text-blue-600 hover:text-blue-700 mr-3 transform hover:scale-125 transition-all">
-                            <i class="ri-eye-line text-xl"></i>
-                        </button>
-                        <button onclick="deleteApplication(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
-                            <i class="ri-delete-bin-line text-xl"></i>
-                        </button>
-                    </td>
-                `;
+            <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(app.created_at)}</td>
+            <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(app.applicant_name)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(app.applicant_email)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden lg:table-cell">${escapeHtml(app.preferred_location)}</td>
+            <td class="px-4 py-4 text-sm">
+                <span class="px-3 py-1.5 text-xs rounded-full font-bold status-${app.status || 'pending'}">${(app.status || 'pending').toUpperCase()}</span>
+            </td>
+            <td class="px-4 py-4 text-sm">
+                <button onclick="showApplicationDetails(${index})" class="text-blue-600 hover:text-blue-700 mr-3 transform hover:scale-125 transition-all">
+                    <i class="ri-eye-line text-xl"></i>
+                </button>
+                <button onclick="deleteApplication(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
+                    <i class="ri-delete-bin-line text-xl"></i>
+                </button>
+            </td>
+        `;
                 tbody.appendChild(row);
             });
         }
@@ -705,15 +735,15 @@
                 const row = document.createElement('tr');
                 row.className = 'table-row';
                 row.innerHTML = `
-                    <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(sub.subscribed_at)}</td>
-                    <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(sub.email)}</td>
-                    <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(sub.source || 'unknown')}</td>
-                    <td class="px-4 py-4 text-sm">
-                        <button onclick="deleteNewsletter(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
-                            <i class="ri-delete-bin-line text-xl"></i>
-                        </button>
-                    </td>
-                `;
+            <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(sub.subscribed_at)}</td>
+            <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(sub.email)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(sub.source || 'unknown')}</td>
+            <td class="px-4 py-4 text-sm">
+                <button onclick="deleteNewsletter(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
+                    <i class="ri-delete-bin-line text-xl"></i>
+                </button>
+            </td>
+        `;
                 tbody.appendChild(row);
             });
         }
@@ -724,43 +754,43 @@
 
             document.getElementById('detail-modal-title').textContent = 'Contact Details';
             document.getElementById('detail-content').innerHTML = `
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(contact.name)}</div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
-                                <a href="mailto:${contact.email}" class="text-blue-600 hover:text-blue-700 font-semibold">${escapeHtml(contact.email)}</a>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Subject</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(contact.subject)}</div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Date</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${formatDate(contact.created_at)}</div>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Message</label>
-                        <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-60 overflow-y-auto border border-gray-200">${escapeHtml(contact.message)}</div>
-                    </div>
-                    <div class="pt-4 border-t flex flex-col sm:flex-row gap-3">
-                        <a href="mailto:${contact.email}?subject=Re: ${encodeURIComponent(contact.subject)}" 
-                           class="btn-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center">
-                            <i class="ri-reply-line mr-2"></i> Reply via Email
-                        </a>
-                        <button onclick="deleteContact(${contactIndex})" 
-                                class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center transition-all">
-                            <i class="ri-delete-bin-line mr-2"></i> Delete
-                        </button>
+        <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(contact.name)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+                        <a href="mailto:${contact.email}" class="text-blue-600 hover:text-blue-700 font-semibold">${escapeHtml(contact.email)}</a>
                     </div>
                 </div>
-            `;
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Subject</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(contact.subject)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Date</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${formatDate(contact.created_at)}</div>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Message</label>
+                <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-60 overflow-y-auto border border-gray-200">${escapeHtml(contact.message)}</div>
+            </div>
+            <div class="pt-4 border-t flex flex-col sm:flex-row gap-3">
+                <a href="mailto:${contact.email}?subject=Re: ${encodeURIComponent(contact.subject)}" 
+                   class="btn-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center">
+                    <i class="ri-reply-line mr-2"></i> Reply via Email
+                </a>
+                <button onclick="deleteContact(${contactIndex})" 
+                        class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center transition-all">
+                    <i class="ri-delete-bin-line mr-2"></i> Delete
+                </button>
+            </div>
+        </div>
+    `;
 
             document.getElementById('detail-modal').classList.remove('hidden');
         }
@@ -771,72 +801,72 @@
 
             document.getElementById('detail-modal-title').textContent = 'Application Details';
             document.getElementById('detail-content').innerHTML = `
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.applicant_name)}</div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Age</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${app.applicant_age}</div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
-                                <a href="mailto:${app.applicant_email}" class="text-blue-600 hover:text-blue-700 font-semibold">${escapeHtml(app.applicant_email)}</a>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Phone</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.applicant_phone || '-')}</div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Location</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.preferred_location)}</div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Position</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.position_type)}</div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Availability</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.availability)}</div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Date</label>
-                            <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${formatDate(app.created_at)}</div>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Experience</label>
-                        <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-40 overflow-y-auto border border-gray-200">${escapeHtml(app.experience || 'Not specified')}</div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Why Join?</label>
-                        <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-40 overflow-y-auto border border-gray-200">${escapeHtml(app.why_join)}</div>
-                    </div>
-                    <div class="pt-4 border-t">
-                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 p-4 rounded-xl mb-4">
-                            <p class="text-sm text-blue-800 font-semibold">Status changes are for tracking only. No emails sent automatically.</p>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <button onclick="updateApplicationStatus(${appIndex}, 'reviewing')" 
-                                    class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
-                                Reviewing
-                            </button>
-                            <button onclick="updateApplicationStatus(${appIndex}, 'approved')" 
-                                    class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
-                                Approved
-                            </button>
-                            <button onclick="updateApplicationStatus(${appIndex}, 'rejected')" 
-                                    class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
-                                Rejected
-                            </button>
-                        </div>
+        <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.applicant_name)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Age</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${app.applicant_age}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+                        <a href="mailto:${app.applicant_email}" class="text-blue-600 hover:text-blue-700 font-semibold">${escapeHtml(app.applicant_email)}</a>
                     </div>
                 </div>
-            `;
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Phone</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.applicant_phone || '-')}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Location</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.preferred_location)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Position</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.position_type)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Availability</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.availability)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Date</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${formatDate(app.created_at)}</div>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Experience</label>
+                <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-40 overflow-y-auto border border-gray-200">${escapeHtml(app.experience || 'Not specified')}</div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Why Join?</label>
+                <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-40 overflow-y-auto border border-gray-200">${escapeHtml(app.why_join)}</div>
+            </div>
+            <div class="pt-4 border-t">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 p-4 rounded-xl mb-4">
+                    <p class="text-sm text-blue-800 font-semibold">Status changes are for tracking only. No emails sent automatically.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button onclick="updateApplicationStatus(${appIndex}, 'reviewing')" 
+                            class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
+                        Reviewing
+                    </button>
+                    <button onclick="updateApplicationStatus(${appIndex}, 'approved')" 
+                            class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
+                        Approved
+                    </button>
+                    <button onclick="updateApplicationStatus(${appIndex}, 'rejected')" 
+                            class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
+                        Rejected
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
 
             document.getElementById('detail-modal').classList.remove('hidden');
         }
@@ -854,7 +884,7 @@
                     method: 'PATCH',
                     headers: {
                         'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+                        'Authorization': 'Bearer ' + authToken,
                         'Content-Type': 'application/json',
                         'Prefer': 'return=minimal'
                     },
@@ -911,7 +941,7 @@
                     method: 'DELETE',
                     headers: {
                         'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+                        'Authorization': 'Bearer ' + authToken
                     }
                 });
 
