@@ -184,12 +184,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .status-approved {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            color: #065f46;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
-        }
     </style>
 </head>
 
@@ -544,7 +538,6 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'Signing in...';
 
-                // Supabase Auth ile login
                 const authResponse = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
                     method: 'POST',
                     headers: {
@@ -562,7 +555,6 @@
                 if (authData.access_token) {
                     authToken = authData.access_token;
 
-                    // Admin kontrolü yap
                     const userCheckResponse = await fetch(
                         SUPABASE_URL + '/rest/v1/user_profiles?id=eq.' + authData.user.id,
                         {
@@ -636,6 +628,12 @@
                     fetch(SUPABASE_URL + '/rest/v1/newsletter_subscribers?select=*&order=subscribed_at.desc', { headers })
                 ]);
 
+                if (contactsResponse.status === 401 || applicationsResponse.status === 401 || newsletterResponse.status === 401) {
+                    showNotification('Session expired. Please login again.', 'error');
+                    setTimeout(() => logout(), 1500);
+                    return;
+                }
+
                 if (contactsResponse.ok) allData.contacts = await contactsResponse.json();
                 if (applicationsResponse.ok) allData.applications = await applicationsResponse.json();
                 if (newsletterResponse.ok) allData.newsletter = await newsletterResponse.json();
@@ -644,6 +642,7 @@
 
             } catch (error) {
                 console.error('Error loading data:', error);
+                showNotification('Error loading data', 'error');
             }
         }
 
@@ -891,6 +890,12 @@
                     body: JSON.stringify({ status: status })
                 });
 
+                if (response.status === 401) {
+                    showNotification('Session expired. Please login again.', 'error');
+                    setTimeout(() => logout(), 1500);
+                    return;
+                }
+
                 if (!response.ok) throw new Error('Failed to update status');
 
                 app.status = status;
@@ -900,7 +905,7 @@
                 showNotification(`Status updated to ${status.toUpperCase()}`);
 
             } catch (error) {
-                alert('Error updating status: ' + error.message);
+                showNotification('Error updating status: ' + error.message, 'error');
             }
         }
 
@@ -945,6 +950,12 @@
                     }
                 });
 
+                if (response.status === 401) {
+                    showNotification('Session expired. Please login again.', 'error');
+                    setTimeout(() => logout(), 1500);
+                    return;
+                }
+
                 if (!response.ok) throw new Error('Failed to delete');
 
                 switch (deleteItem.type) {
@@ -967,14 +978,17 @@
                 showNotification('Item deleted successfully');
 
             } catch (error) {
-                alert('Error deleting: ' + error.message);
+                showNotification('Error deleting: ' + error.message, 'error');
             }
         }
 
-        function showNotification(message) {
+        function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
-            notification.className = 'fixed top-4 right-4 glass text-gray-800 px-6 py-4 rounded-2xl shadow-2xl z-50 animate-scale-in border-l-4 border-green-500';
-            notification.innerHTML = `<div class="flex items-center"><i class="ri-check-line text-green-600 mr-2 text-xl font-bold"></i><span class="font-semibold">${message}</span></div>`;
+            const bgColor = type === 'error' ? 'border-red-500' : 'border-green-500';
+            const iconClass = type === 'error' ? 'ri-error-warning-line text-red-600' : 'ri-check-line text-green-600';
+
+            notification.className = `fixed top-4 right-4 glass text-gray-800 px-6 py-4 rounded-2xl shadow-2xl z-50 animate-scale-in border-l-4 ${bgColor}`;
+            notification.innerHTML = `<div class="flex items-center"><i class="${iconClass} mr-2 text-xl font-bold"></i><span class="font-semibold">${message}</span></div>`;
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 3000);
         }
