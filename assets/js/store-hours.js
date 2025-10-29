@@ -1,7 +1,7 @@
 class StoreHoursManager {
     constructor() {
         this.config = {
-            API_BASE_URL: 'https://getyocafe.com/api/public',
+            API_BASE_URL: 'https://get-yo-web-app.vercel.app/api/public',
             CACHE_DURATION: 15 * 60 * 1000,
             UPDATE_INTERVAL: 60 * 1000
         };

@@ -2,7 +2,7 @@ class GetYoChatWidget {
     constructor() {
         this.isOpen = false;
         this.userId = this.getOrCreateUserId();
-        this.apiEndpoint = 'https://getyocafe.com/api/chat';
+        this.apiEndpoint = 'https://get-yo-web-app.vercel.app/api/chat';
         this.messageHistory = [];
         this.init();
     }
