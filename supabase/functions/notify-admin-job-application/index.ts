@@ -1,11 +1,15 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
-const ADMIN_EMAIL = 'info@getyocafe.com'
+const ADMIN_EMAIL = Deno.env.get('ADMIN_EMAIL') || 'info@getyocafe.com'
 
 serve(async (req) => {
   try {
+    console.log('Function called')
     const { record } = await req.json()
+    console.log('Record received:', JSON.stringify(record, null, 2))
+    console.log('API Key exists:', !!RESEND_API_KEY)
+    console.log('Admin email:', ADMIN_EMAIL)
 
     const emailData = {
       from: 'FrozenYogurtCafe <onboarding@resend.dev>',
@@ -132,13 +136,16 @@ serve(async (req) => {
       body: JSON.stringify(emailData)
     })
 
+    console.log('Resend response status:', resendResponse.status)
+
     const responseData = await resendResponse.json()
+    console.log('Resend response:', JSON.stringify(responseData, null, 2))
 
     if (!resendResponse.ok) {
       throw new Error(`Resend API error: ${JSON.stringify(responseData)}`)
     }
 
-    console.log('Email sent successfully:', responseData)
+    console.log('Email sent successfully')
 
     return new Response(
       JSON.stringify({
