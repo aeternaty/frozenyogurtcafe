@@ -10,9 +10,9 @@ serve(async (req) => {
     console.log('Record received:', JSON.stringify(record, null, 2))
     console.log('API Key exists:', !!RESEND_API_KEY)
     console.log('Admin email:', ADMIN_EMAIL)
-
+    
     const emailData = {
-      from: 'FrozenYogurtCafe <onboarding@resend.dev>',
+      from: 'FrozenYogurtCafe <noreply@mail.getyocafe.com>',
       to: ADMIN_EMAIL,
       subject: `New Job Application - ${record.applicant_name}`,
       html: `
@@ -110,14 +110,14 @@ serve(async (req) => {
           
           <div style="background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; border-top: 1px solid #dee2e6;">
             <p style="color: #6c757d; font-size: 12px; margin: 0;">
-              Submitted on: ${new Date(record.created_at).toLocaleString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })}
+              Submitted on: ${new Date(record.created_at).toLocaleString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
             </p>
             <p style="color: #6c757d; font-size: 11px; margin: 10px 0 0 0;">
               IP: ${record.ip_address || 'N/A'}
@@ -135,7 +135,7 @@ serve(async (req) => {
       },
       body: JSON.stringify(emailData)
     })
-
+    
     console.log('Resend response status:', resendResponse.status)
 
     const responseData = await resendResponse.json()
@@ -148,21 +148,21 @@ serve(async (req) => {
     console.log('Email sent successfully')
 
     return new Response(
-      JSON.stringify({
-        success: true,
+      JSON.stringify({ 
+        success: true, 
         message: 'Admin notified successfully',
-        emailId: responseData.id
+        emailId: responseData.id 
       }),
       { headers: { 'Content-Type': 'application/json' }, status: 200 }
     )
 
   } catch (error) {
     console.error('Error sending notification:', error)
-
+    
     return new Response(
-      JSON.stringify({
+      JSON.stringify({ 
         error: error.message,
-        success: false
+        success: false 
       }),
       { headers: { 'Content-Type': 'application/json' }, status: 500 }
     )
