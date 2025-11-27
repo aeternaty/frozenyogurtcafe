@@ -465,7 +465,7 @@ class DynamicMenuSystem {
 
         const imageUrl = topping.image_path
             ? `${this.config.IMAGE_BASE_URL}${topping.image_path}`
-            : 'assets/images/toppings/placeholder.jpg';
+            : 'assets/images/placeholder.jpg';
 
         const categoryBadges = topping.categories.map(cat =>
             `<span class="badge badge-${cat}">${this.formatCategoryName(cat)}</span>`
@@ -480,7 +480,7 @@ class DynamicMenuSystem {
                 <div class="overflow-hidden relative">
                     <img class="topping-image ${isOutOfStock ? 'grayscale' : ''}" 
                          src="${imageUrl}" alt="${topping.name}" 
-                         onerror="this.src='assets/images/toppings/placeholder.jpg'"
+                         onerror="this.src='assets/images/placeholder.jpg'"
                          style="width: 100%; height: 150px; object-fit: contain; background-color: white;">
                     ${isOutOfStock ? `
                         <div class="absolute inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center z-20">
@@ -734,13 +734,13 @@ class DynamicMenuSystem {
 
         const imageUrl = topping.image_path
             ? `${this.config.IMAGE_BASE_URL}${topping.image_path}`
-            : 'assets/images/toppings/placeholder.jpg';
+            : 'assets/images/placeholder.jpg';
 
         if (imageElement) {
             imageElement.src = imageUrl;
             imageElement.alt = topping.name;
             imageElement.onerror = function () {
-                this.src = 'assets/images/toppings/placeholder.jpg';
+                this.src = 'assets/images/placeholder.jpg';
             };
         }
 
