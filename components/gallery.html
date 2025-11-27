@@ -1,0 +1,84 @@
+<section class="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Visit Our Stores</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Experience the vibrant atmosphere of our premium frozen
+                yogurt cafes</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="openGalleryModal(0)">
+                <img src="assets/images/store/1.jpg" alt="Get Yo Store Interior" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="openGalleryModal(1)">
+                <img src="assets/images/store/2.jpg" alt="Frozen Yogurt Station" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="openGalleryModal(2)">
+                <img src="assets/images/store/3.jpeg" alt="Toppings Bar" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="openGalleryModal(3)">
+                <img src="assets/images/store/4.jpeg" alt="Store Exterior" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="openGalleryModal(4)">
+                <img src="assets/images/store/5.jpeg" alt="Fresh Toppings" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="openGalleryModal(5)">
+                <img src="assets/images/store/6.jpeg" alt="Yogurt Machines" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="openGalleryModal(6)">
+                <img src="assets/images/store/7.jpeg" alt="Store Ambiance" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                onclick="openGalleryModal(7)">
+                <img src="assets/images/store/8.jpeg" alt="Customer Service" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 hidden md:block"
+                onclick="openGalleryModal(8)">
+                <img src="assets/images/store/9.jpeg" alt="Seating Area" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 hidden md:block"
+                onclick="openGalleryModal(9)">
+                <img src="assets/images/store/10.jpeg" alt="Store Details" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 hidden md:block"
+                onclick="openGalleryModal(10)">
+                <img src="assets/images/store/11.jpeg" alt="Fresh Ingredients" class="w-full h-full object-cover">
+            </div>
+            <div class="gallery-item aspect-square rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 hidden md:block"
+                onclick="openGalleryModal(11)">
+                <img src="assets/images/store/12.jpeg" alt="Welcome Sign" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="gallery-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-4">
+    <button onclick="closeGalleryModal()" class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10">
+        <i class="ri-close-line"></i>
+    </button>
+
+    <button onclick="previousImage()"
+        class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-gray-300 z-10">
+        <i class="ri-arrow-left-s-line"></i>
+    </button>
+
+    <button onclick="nextImage()"
+        class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-gray-300 z-10">
+        <i class="ri-arrow-right-s-line"></i>
+    </button>
+
+    <div class="max-w-5xl max-h-[90vh] w-full flex items-center justify-center">
+        <img id="modal-image" src="" alt="Store Gallery" class="max-w-full max-h-[85vh] object-contain rounded-lg">
+    </div>
+
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
+        <span id="image-counter"></span>
+    </div>
+</div>

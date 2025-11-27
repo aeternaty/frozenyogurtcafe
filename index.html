@@ -5,18 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <!-- SEO Optimized Title & Description -->
     <title>Get Yo | Best Frozen Yogurt Near Me | Marlboro & New Providence NJ</title>
     <meta name="description"
         content="Best frozen yogurt near me! Get Yo serves fresh froyo with 14 flavors & endless toppings in Marlboro & New Providence NJ. Dairy-free, kosher certified, self-serve options available.">
 
-    <!-- Additional SEO Meta Tags -->
     <meta name="keywords"
         content="frozen yogurt near me, froyo near me, get yo, frozen yogurt marlboro nj, frozen yogurt new providence nj, dairy free froyo, self serve frozen yogurt, kosher frozen yogurt, healthy dessert">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="author" content="Get Yo Frozen Yogurt Cafe">
 
-    <!-- Enhanced Local Business Schema -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -186,7 +183,6 @@
     }
     </script>
 
-    <!-- Open Graph Tags -->
     <meta property="og:title" content="Get Yo | Best Frozen Yogurt Near Me | Marlboro & New Providence NJ">
     <meta property="og:description"
         content="Best frozen yogurt near me! Fresh froyo with 14 flavors, dairy-free options, endless toppings. Marlboro & New Providence NJ locations.">
@@ -195,14 +191,12 @@
     <meta property="og:type" content="business.business">
     <meta property="og:locale" content="en_US">
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Get Yo | Best Frozen Yogurt Near Me | Marlboro & New Providence NJ">
     <meta name="twitter:description"
         content="Best frozen yogurt near me! Fresh froyo with 14 flavors, dairy-free options, endless toppings.">
     <meta name="twitter:image" content="https://frozenyogurtcafe.com/assets/images/hero-background.jpg">
 
-    <!-- Local Business Markup -->
     <meta name="geo.region" content="US-NJ">
     <meta name="geo.placename" content="Marlboro, New Providence">
     <meta name="geo.position" content="40.339677;-74.305915">
@@ -210,15 +204,12 @@
 
     <meta name="theme-color" content="#FF8A3D">
 
-    <!-- Favicons -->
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="apple-touch-icon" href="assets/images/favicon.png">
     <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png">
 
-    <!-- Canonical URL -->
     <link rel="canonical" href="https://frozenyogurtcafe.com/">
 
-    <!-- External CSS -->
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <script>
         tailwind.config = {
@@ -236,20 +227,16 @@
         }
     </script>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Remix Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
 
-    <!-- reCAPTCHA v2 -->
     <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
 
-    <!-- Google Analytics 4 - Updated -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-D8M5Z9J4KL"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -302,13 +289,11 @@
         });
     </script>
 
-    <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/components.css">
 </head>
 
 <body id="home" class="bg-gray-50">
-    <!-- Header with Working Mobile Menu -->
     <header class="bg-white shadow-sm fixed w-full top-0 z-40" style="max-width: 100vw; overflow-x: hidden;">
         <div class="container mx-auto px-4 py-3" style="max-width: 100%; overflow: hidden;">
             <div class="flex items-center justify-between" style="gap: 0.5rem;">
@@ -395,8 +380,8 @@
         </nav>
     </div>
 
-    <!-- Load Components -->
     <div id="hero-container"></div>
+    <div id="gallery-container"></div>
     <div id="locations-container"></div>
     <div id="menu-container"></div>
     <div id="careers-container"></div>
@@ -404,7 +389,6 @@
     <div id="contact-container"></div>
     <div id="footer-container"></div>
 
-    <!-- SEO Hidden Content -->
     <div style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;">
         <h2>Frozen Yogurt Near Me - Marlboro NJ</h2>
         <p>Get Yo serves the best frozen yogurt near Marlboro, Morganville, Manalapan, and Freehold NJ. Our Marlboro
@@ -415,16 +399,13 @@
             dairy-free options and kosher certified treats.</p>
     </div>
 
-    <!-- Scripts -->
     <script src="config/supabase.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/gallery.js"></script>
     <script src="assets/js/store-hours.js"></script>
     <script src="assets/js/forms.js"></script>
     <script src="assets/js/menu.js"></script>
-    <!-- AI Chat Widget -->
-    <!-- <script src="assets/js/chat-widget.js"></script> -->
 
-    <!-- Styles for Mobile Menu -->
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -473,7 +454,6 @@
         }
     </style>
 
-    <!-- Mobile Menu Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const hamburger = document.getElementById('hamburger');
@@ -530,6 +510,7 @@
             try {
                 await Promise.all([
                     loadComponent('hero', 'hero-container'),
+                    loadComponent('gallery', 'gallery-container'),
                     loadComponent('locations', 'locations-container'),
                     loadComponent('menu', 'menu-container'),
                     loadComponent('careers', 'careers-container'),
