@@ -1,0 +1,189 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Get Yo Frozen Yogurt Marlboro | Best Froyo Near Morganville NJ | Kosher Certified"
+  description="Get Yo Frozen Yogurt Marlboro location in Morganville, NJ. Kosher certified frozen yogurt with 14+ flavors, dairy-free options. Open daily at 450 Union Hill Road."
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-primary/10 to-secondary/10 py-16">
+    <div class="container mx-auto px-4">
+      <div class="mx-auto max-w-4xl text-center">
+        <h1 class="mb-6 text-4xl font-bold text-gray-800 md:text-5xl">
+          Best Frozen Yogurt in <span class="text-primary">Marlboro, NJ</span>
+        </h1>
+        <p class="mb-8 text-xl text-gray-600">
+          Kosher certified frozen yogurt with 14+ flavors and endless toppings.
+          Fresh daily preparation at our Morganville location.
+        </p>
+        <div class="flex flex-col justify-center gap-4 sm:flex-row">
+          <a
+            href="https://maps.google.com/?q=450+Union+Hill+Road+Suite+15+Morganville+NJ+07751"
+            class="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 font-medium text-white transition-colors hover:bg-opacity-90"
+          >
+            <i class="ri-map-pin-line mr-2"></i>Get Directions
+          </a>
+          <a
+            href="tel:(732) 617-6332"
+            class="inline-flex items-center justify-center rounded-lg border-2 border-primary bg-white px-8 py-3 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
+          >
+            <i class="ri-phone-line mr-2"></i>(732) 617-6332
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Details -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-12 md:grid-cols-2">
+        <!-- Location Info -->
+        <div>
+          <h2 class="mb-6 text-3xl font-bold text-gray-800">
+            Visit Our Marlboro Location
+          </h2>
+          <div class="mb-8 space-y-4">
+            <div class="flex items-start">
+              <i class="ri-map-pin-line mr-3 mt-1 text-xl text-primary"></i>
+              <div>
+                <p class="font-medium text-gray-800">
+                  450 Union Hill Road, Suite 15
+                </p>
+                <p class="text-gray-600">Morganville, NJ 07751</p>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <i class="ri-phone-line mr-3 text-xl text-primary"></i>
+              <a
+                href="tel:(732) 617-6332"
+                class="font-medium text-gray-800 hover:text-primary"
+                >(732) 617-6332</a
+              >
+            </div>
+            <div class="flex items-start">
+              <i class="ri-time-line mr-3 mt-1 text-xl text-primary"></i>
+              <div>
+                <p class="font-medium text-gray-800">
+                  Hours: <span id="marlboro-hours"></span>
+                </p>
+                <div id="marlboro-location-hours" class="space-y-1">
+                  <p class="text-gray-600">Mon-Thu: 3:00 PM - 10:00 PM</p>
+                  <p class="text-gray-600">Fri-Sat: 1:00 PM - 11:00 PM</p>
+                  <p class="text-gray-600">Sunday: 1:00 PM - 10:00 PM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Special Features -->
+          <div class="mb-6 border-l-4 border-yellow-400 bg-yellow-50 p-4">
+            <div class="flex items-center">
+              <i class="ri-star-line mr-2 text-xl text-yellow-600"></i>
+              <h3 class="text-lg font-bold text-yellow-800">
+                Kosher Certified Location
+              </h3>
+            </div>
+            <p class="mt-2 text-yellow-700">
+              Our Marlboro location is kosher certified, serving the Orthodox
+              Jewish community with premium frozen yogurt that meets strict
+              dietary requirements.
+            </p>
+          </div>
+        </div>
+
+        <!-- Map Embed -->
+        <div>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d621.1166860164681!2d-74.30591519824752!3d40.339677261517934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3d3b86aedf6d5%3A0x91fc42e070393c9f!2sGet%20YO%20Frozen%20Yogurt%20Cafe!5e0!3m2!1str!2str!4v1758025861246!5m2!1str!2str"
+            width="100%"
+            height="400"
+            style="border:0; border-radius: 12px;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          >
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Marlboro Location -->
+  <section class="bg-white py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="mb-12 text-center text-3xl font-bold text-gray-800">
+        Why Choose Get Yo Marlboro?
+      </h2>
+      <div class="grid gap-8 md:grid-cols-3">
+        <div class="text-center">
+          <div
+            class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
+          >
+            <i class="ri-award-line text-2xl text-primary"></i>
+          </div>
+          <h3 class="mb-3 text-xl font-bold text-gray-800">Kosher Certified</h3>
+          <p class="text-gray-600">
+            The only kosher-certified frozen yogurt in Marlboro area, serving
+            the Orthodox community.
+          </p>
+        </div>
+
+        <div class="text-center">
+          <div
+            class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary/10"
+          >
+            <i class="ri-leaf-line text-2xl text-secondary"></i>
+          </div>
+          <h3 class="mb-3 text-xl font-bold text-gray-800">
+            Dairy-Free Options
+          </h3>
+          <p class="text-gray-600">
+            Multiple dairy-free flavors including Pink Lemonade, Mango, and
+            Watermelon.
+          </p>
+        </div>
+
+        <div class="text-center">
+          <div
+            class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
+          >
+            <i class="ri-refresh-line text-2xl text-primary"></i>
+          </div>
+          <h3 class="mb-3 text-xl font-bold text-gray-800">Fresh Daily</h3>
+          <p class="text-gray-600">
+            All flavors made fresh daily with premium ingredients and no
+            artificial additives.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-gradient-to-r from-primary to-secondary py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="mb-6 text-3xl font-bold text-white">
+        Ready for the Best Frozen Yogurt in Marlboro?
+      </h2>
+      <p class="mb-8 text-xl text-white/90">
+        Visit us today and taste the difference quality makes!
+      </p>
+      <div class="flex flex-col justify-center gap-4 sm:flex-row">
+        <a
+          href="https://maps.google.com/?q=450+Union+Hill+Road+Suite+15+Morganville+NJ+07751"
+          class="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3 font-bold text-primary transition-colors hover:bg-gray-100"
+        >
+          <i class="ri-map-pin-line mr-2"></i>Get Directions Now
+        </a>
+        <a
+          href="/"
+          class="inline-flex items-center justify-center rounded-lg border-2 border-white px-8 py-3 font-bold text-white transition-colors hover:bg-white hover:text-primary"
+        >
+          <i class="ri-home-line mr-2"></i>View Full Menu
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
