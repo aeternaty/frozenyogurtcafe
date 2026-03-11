@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Panel - Frozen Yogurt Cafe</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F37021',
+                        secondary: '#FFB366'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .glass-dark {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .table-row {
+            transition: all 0.2s ease;
+        }
+
+        .table-row:hover {
+            background: linear-gradient(90deg, rgba(255, 112, 33, 0.05) 0%, rgba(255, 179, 102, 0.05) 100%);
+            transform: scale(1.01);
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+        }
+
+        .status-reviewing {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .status-approved {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+        }
+
+        .status-rejected {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+        }
+
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #FF8A3D 0%, #FF6B35 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 112, 33, 0.4);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 112, 33, 0.6);
+        }
+
+        .icon-glow {
+            filter: drop-shadow(0 0 8px rgba(255, 112, 33, 0.6));
+        }
+
+        @media (max-width: 768px) {
+            .panel-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .glow-card {
+            box-shadow: 0 8px 32px rgba(255, 112, 33, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glow-card:hover {
+            box-shadow: 0 12px 48px rgba(255, 112, 33, 0.25);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Panel Selector -->
+    <div id="panel-selector" class="min-h-screen flex items-center justify-center p-4 md:p-8">
+        <div class="max-w-5xl w-full animate-fade-in">
+            <div class="text-center mb-12">
+                <div class="inline-block floating mb-6">
+                    <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center shadow-2xl">
+                        <i class="ri-shield-user-line text-5xl gradient-text"></i>
+                    </div>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">Admin Portal</h1>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                <!-- GetYoCafe Admin Panel -->
+                <div class="panel-card group" onclick="redirectToGetYoCafe()">
+                    <div class="text-center">
+                        <div
+                            class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
+                            <i class="ri-store-3-line text-4xl text-white"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">GetYoCafe</h2>
+                        <p class="text-gray-600 mb-6 text-sm md:text-base">Data & Store Management</p>
+                        <button
+                            class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-4 rounded-xl font-semibold hover:shadow-2xl transition-all transform hover:scale-105">
+                            <i class="ri-arrow-right-line ml-2"></i>
+                            Enter Portal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FrozenYogurtCafe Admin Panel -->
+                <div class="panel-card group" onclick="showFrozenCafePanel()">
+                    <div class="text-center">
+                        <div
+                            class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
+                            <i class="ri-file-user-line text-4xl text-white"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">FrozenYogurtCafe</h2>
+                        <p class="text-gray-600 mb-6 text-sm md:text-base">Career & Contacts</p>
+                        <button
+                            class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-4 rounded-xl font-semibold hover:shadow-2xl transition-all transform hover:scale-105">
+                            <i class="ri-arrow-right-line ml-2"></i>
+                            Enter Portal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 modal-overlay flex items-center justify-center z-50 hidden">
+        <div class="glass rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-2xl animate-scale-in">
+            <div class="text-center mb-8">
+                <img src="assets/images/logo.webp" alt="Logo" class="h-16 mx-auto mb-6">
+                <h2 class="text-3xl font-bold gradient-text mb-2">Admin Login</h2>
+            </div>
+            <form id="login-form">
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-semibold mb-2">Email Address</label>
+                    <input type="email" id="admin-email" required
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:outline-none transition-all">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Password</label>
+                    <input type="password" id="admin-password" required
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:outline-none transition-all">
+                </div>
+                <button type="submit" class="w-full btn-gradient text-white py-4 rounded-xl font-bold text-lg">
+                    Sign In
+                </button>
+                <div id="login-error" class="mt-4 text-red-600 text-sm hidden bg-red-50 p-3 rounded-xl"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Admin Panel -->
+    <div id="main-panel" class="hidden min-h-screen p-4 md:p-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header Card -->
+            <div class="glass rounded-3xl p-4 md:p-6 mb-6 shadow-xl glow-card">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <img src="assets/images/logo.webp" alt="Logo" class="h-10 md:h-12">
+                        <div>
+                            <h1 class="text-xl md:text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+                            <p class="text-sm text-gray-600 hidden md:block">Manage your business</p>
+                        </div>
+                    </div>
+                    <button onclick="logout()"
+                        class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center font-semibold hover:shadow-xl transition-all transform hover:scale-105">
+                        <i class="ri-logout-circle-line mr-2"></i>
+                        <span class="hidden md:inline">Logout</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="glass rounded-3xl mb-6 shadow-xl overflow-hidden">
+                <div class="flex overflow-x-auto">
+                    <button onclick="switchTab('contacts')" id="tab-contacts"
+                        class="flex-1 py-4 px-6 font-semibold border-b-4 border-primary text-primary bg-gradient-to-t from-primary/5 to-transparent whitespace-nowrap transition-all">
+                        <i class="ri-mail-line mr-2 text-lg"></i>Contacts
+                    </button>
+                    <button onclick="switchTab('applications')" id="tab-applications"
+                        class="flex-1 py-4 px-6 font-semibold border-b-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 whitespace-nowrap transition-all">
+                        <i class="ri-user-add-line mr-2 text-lg"></i>Applications
+                    </button>
+                    <button onclick="switchTab('newsletter')" id="tab-newsletter"
+                        class="flex-1 py-4 px-6 font-semibold border-b-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 whitespace-nowrap transition-all">
+                        <i class="ri-notification-line mr-2 text-lg"></i>Newsletter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="glass rounded-3xl shadow-xl overflow-hidden">
+                <!-- Contact Forms Tab -->
+                <div id="content-contacts" class="animate-fade-in">
+                    <div class="p-4 md:p-6 border-b bg-gradient-to-r from-blue-50 to-purple-50">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-1">Contact Submissions</h3>
+                                <p class="text-sm text-gray-600">Customer inquiries and messages</p>
+                            </div>
+                            <button onclick="refreshData()"
+                                class="bg-white hover:bg-gray-50 p-3 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:scale-110">
+                                <i class="ri-refresh-line text-xl text-primary"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                                <tr>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Date</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Name</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden md:table-cell">
+                                        Email</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden md:table-cell">
+                                        Subject</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contacts-table" class="divide-y divide-gray-100">
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center text-gray-500">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Job Applications Tab -->
+                <div id="content-applications" class="hidden animate-fade-in">
+                    <div class="p-4 md:p-6 border-b bg-gradient-to-r from-green-50 to-blue-50">
+                        <div class="mb-4">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-1">Job Applications</h3>
+                            <p class="text-sm text-gray-600">Review and manage candidates</p>
+                        </div>
+                        <div class="bg-blue-100 border-l-4 border-blue-500 p-3 rounded-lg text-sm">
+                            <div class="flex items-center">
+                                <i class="ri-information-line text-blue-600 mr-2 text-lg"></i>
+                                <p class="text-blue-800">Status updates are for internal tracking only</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                                <tr>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Date</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Name</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden md:table-cell">
+                                        Email</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden lg:table-cell">
+                                        Location</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Status</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applications-table" class="divide-y divide-gray-100">
+                                <tr>
+                                    <td colspan="6" class="px-4 py-8 text-center text-gray-500">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Newsletter Tab -->
+                <div id="content-newsletter" class="hidden animate-fade-in">
+                    <div class="p-4 md:p-6 border-b bg-gradient-to-r from-purple-50 to-pink-50">
+                        <div>
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-1">Newsletter Subscribers</h3>
+                            <p class="text-sm text-gray-600">Your mailing list</p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                                <tr>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Date</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Email</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden md:table-cell">
+                                        Source</th>
+                                    <th
+                                        class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="newsletter-table" class="divide-y divide-gray-100">
+                                <tr>
+                                    <td colspan="4" class="px-4 py-8 text-center text-gray-500">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detail-modal" class="fixed inset-0 modal-overlay flex items-center justify-center z-50 hidden p-4">
+        <div
+            class="glass rounded-3xl p-4 md:p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl animate-scale-in">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b">
+                <h2 class="text-2xl md:text-3xl font-bold gradient-text" id="detail-modal-title">Details</h2>
+                <button onclick="closeDetailModal()"
+                    class="bg-gray-100 hover:bg-gray-200 rounded-xl p-2 transition-all transform hover:scale-110">
+                    <i class="ri-close-line text-2xl text-gray-600"></i>
+                </button>
+            </div>
+            <div id="detail-content"></div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 modal-overlay flex items-center justify-center z-50 hidden p-4">
+        <div class="glass rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl animate-scale-in">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Confirm Delete</h2>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-xl mb-6">
+                <p class="text-red-800 text-sm" id="delete-message">Are you sure you want to delete this item?</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="confirmDelete()"
+                    class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all">
+                    Delete
+                </button>
+                <button onclick="closeDeleteModal()"
+                    class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-xl font-bold transition-all">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://mempftwiiwfiqdmhrxwq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw';
+
+        let currentUser = null;
+        let currentTab = 'contacts';
+        let allData = { contacts: [], applications: [], newsletter: [] };
+        let deleteItem = null;
+        let authToken = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('panel-selector').classList.remove('hidden');
+        });
+
+        function redirectToGetYoCafe() {
+            window.location.href = 'https://get-yo-web-app.vercel.app/admin';
+        }
+
+        function showFrozenCafePanel() {
+            document.getElementById('panel-selector').classList.add('hidden');
+            checkAuth();
+        }
+
+        function checkAuth() {
+            authToken = localStorage.getItem('admin_token');
+            const savedUser = localStorage.getItem('admin_user');
+
+            if (authToken && savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    showMainPanel();
+                } catch (e) {
+                    localStorage.removeItem('admin_user');
+                    localStorage.removeItem('admin_token');
+                    showLoginModal();
+                }
+            } else {
+                showLoginModal();
+            }
+        }
+
+        function showLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('main-panel').classList.add('hidden');
+        }
+
+        function showMainPanel() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('main-panel').classList.remove('hidden');
+            loadAllData();
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            const errorDiv = document.getElementById('login-error');
+            const submitButton = e.target.querySelector('button[type="submit"]');
+
+            errorDiv.classList.add('hidden');
+
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Signing in...';
+
+                const authResponse = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const authData = await authResponse.json();
+
+                if (authData.access_token) {
+                    authToken = authData.access_token;
+
+                    const userCheckResponse = await fetch(
+                        SUPABASE_URL + '/rest/v1/user_profiles?id=eq.' + authData.user.id,
+                        {
+                            headers: {
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Authorization': 'Bearer ' + authToken
+                            }
+                        }
+                    );
+
+                    const userCheck = await userCheckResponse.json();
+
+                    if (userCheck[0]?.role === 'admin') {
+                        currentUser = authData.user;
+                        localStorage.setItem('admin_token', authToken);
+                        localStorage.setItem('admin_user', JSON.stringify(authData.user));
+                        showMainPanel();
+                    } else {
+                        throw new Error('Not authorized as admin');
+                    }
+                } else {
+                    throw new Error(authData.error_description || 'Invalid credentials');
+                }
+
+            } catch (error) {
+                errorDiv.textContent = error.message || 'Login failed. Please check your credentials.';
+                errorDiv.classList.remove('hidden');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Sign In';
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('admin_user');
+            localStorage.removeItem('admin_token');
+            currentUser = null;
+            authToken = null;
+            document.getElementById('main-panel').classList.add('hidden');
+            document.getElementById('panel-selector').classList.remove('hidden');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('[id^="tab-"]').forEach(tab => {
+                tab.classList.remove('border-primary', 'text-primary', 'bg-gradient-to-t', 'from-primary/5', 'to-transparent');
+                tab.classList.add('border-transparent', 'text-gray-600');
+            });
+            const activeTab = document.getElementById('tab-' + tabName);
+            activeTab.classList.add('border-primary', 'text-primary', 'bg-gradient-to-t', 'from-primary/5', 'to-transparent');
+            activeTab.classList.remove('border-transparent', 'text-gray-600');
+
+            document.querySelectorAll('[id^="content-"]').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+
+            currentTab = tabName;
+            renderCurrentTab();
+        }
+
+        async function loadAllData() {
+            try {
+                const headers = {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': 'Bearer ' + authToken
+                };
+
+                const [contactsResponse, applicationsResponse, newsletterResponse] = await Promise.all([
+                    fetch(SUPABASE_URL + '/rest/v1/contact_submissions?select=*&order=created_at.desc', { headers }),
+                    fetch(SUPABASE_URL + '/rest/v1/job_applications?select=*&order=created_at.desc', { headers }),
+                    fetch(SUPABASE_URL + '/rest/v1/newsletter_subscribers?select=*&order=subscribed_at.desc', { headers })
+                ]);
+
+                if (contactsResponse.status === 401 || applicationsResponse.status === 401 || newsletterResponse.status === 401) {
+                    showNotification('Session expired. Please login again.', 'error');
+                    setTimeout(() => logout(), 1500);
+                    return;
+                }
+
+                if (contactsResponse.ok) allData.contacts = await contactsResponse.json();
+                if (applicationsResponse.ok) allData.applications = await applicationsResponse.json();
+                if (newsletterResponse.ok) allData.newsletter = await newsletterResponse.json();
+
+                renderCurrentTab();
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showNotification('Error loading data', 'error');
+            }
+        }
+
+        function refreshData() {
+            loadAllData();
+        }
+
+        function renderCurrentTab() {
+            switch (currentTab) {
+                case 'contacts': renderContacts(); break;
+                case 'applications': renderApplications(); break;
+                case 'newsletter': renderNewsletter(); break;
+            }
+        }
+
+        function renderContacts() {
+            const tbody = document.getElementById('contacts-table');
+            tbody.innerHTML = '';
+
+            if (allData.contacts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">No contacts found</td></tr>';
+                return;
+            }
+
+            allData.contacts.forEach((contact, index) => {
+                const row = document.createElement('tr');
+                row.className = 'table-row';
+                row.innerHTML = `
+            <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(contact.created_at)}</td>
+            <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(contact.name)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(contact.email)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell truncate max-w-xs">${escapeHtml(contact.subject)}</td>
+            <td class="px-4 py-4 text-sm">
+                <button onclick="showContactDetails(${index})" class="text-blue-600 hover:text-blue-700 mr-3 transform hover:scale-125 transition-all">
+                    <i class="ri-eye-line text-xl"></i>
+                </button>
+                <button onclick="deleteContact(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
+                    <i class="ri-delete-bin-line text-xl"></i>
+                </button>
+            </td>
+        `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderApplications() {
+            const tbody = document.getElementById('applications-table');
+            tbody.innerHTML = '';
+
+            if (allData.applications.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No applications found</td></tr>';
+                return;
+            }
+
+            allData.applications.forEach((app, index) => {
+                const row = document.createElement('tr');
+                row.className = 'table-row';
+                row.innerHTML = `
+            <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(app.created_at)}</td>
+            <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(app.applicant_name)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(app.applicant_email)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden lg:table-cell">${escapeHtml(app.preferred_location)}</td>
+            <td class="px-4 py-4 text-sm">
+                <span class="px-3 py-1.5 text-xs rounded-full font-bold status-${app.status || 'pending'}">${(app.status || 'pending').toUpperCase()}</span>
+            </td>
+            <td class="px-4 py-4 text-sm">
+                <button onclick="showApplicationDetails(${index})" class="text-blue-600 hover:text-blue-700 mr-3 transform hover:scale-125 transition-all">
+                    <i class="ri-eye-line text-xl"></i>
+                </button>
+                <button onclick="deleteApplication(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
+                    <i class="ri-delete-bin-line text-xl"></i>
+                </button>
+            </td>
+        `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderNewsletter() {
+            const tbody = document.getElementById('newsletter-table');
+            tbody.innerHTML = '';
+
+            if (allData.newsletter.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-8 text-center text-gray-500">No subscribers found</td></tr>';
+                return;
+            }
+
+            allData.newsletter.forEach((sub, index) => {
+                const row = document.createElement('tr');
+                row.className = 'table-row';
+                row.innerHTML = `
+            <td class="px-4 py-4 text-sm font-medium text-gray-900">${formatDate(sub.subscribed_at)}</td>
+            <td class="px-4 py-4 text-sm font-bold text-gray-900">${escapeHtml(sub.email)}</td>
+            <td class="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">${escapeHtml(sub.source || 'unknown')}</td>
+            <td class="px-4 py-4 text-sm">
+                <button onclick="deleteNewsletter(${index})" class="text-red-600 hover:text-red-700 transform hover:scale-125 transition-all">
+                    <i class="ri-delete-bin-line text-xl"></i>
+                </button>
+            </td>
+        `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function showContactDetails(contactIndex) {
+            const contact = allData.contacts[contactIndex];
+            if (!contact) return;
+
+            document.getElementById('detail-modal-title').textContent = 'Contact Details';
+            document.getElementById('detail-content').innerHTML = `
+        <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(contact.name)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+                        <a href="mailto:${contact.email}" class="text-blue-600 hover:text-blue-700 font-semibold">${escapeHtml(contact.email)}</a>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Subject</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(contact.subject)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Date</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${formatDate(contact.created_at)}</div>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Message</label>
+                <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-60 overflow-y-auto border border-gray-200">${escapeHtml(contact.message)}</div>
+            </div>
+            <div class="pt-4 border-t flex flex-col sm:flex-row gap-3">
+                <a href="mailto:${contact.email}?subject=Re: ${encodeURIComponent(contact.subject)}" 
+                   class="btn-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center">
+                    <i class="ri-reply-line mr-2"></i> Reply via Email
+                </a>
+                <button onclick="deleteContact(${contactIndex})" 
+                        class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center transition-all">
+                    <i class="ri-delete-bin-line mr-2"></i> Delete
+                </button>
+            </div>
+        </div>
+    `;
+
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+
+        function showApplicationDetails(appIndex) {
+            const app = allData.applications[appIndex];
+            if (!app) return;
+
+            document.getElementById('detail-modal-title').textContent = 'Application Details';
+            document.getElementById('detail-content').innerHTML = `
+        <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.applicant_name)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Age</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${app.applicant_age}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+                        <a href="mailto:${app.applicant_email}" class="text-blue-600 hover:text-blue-700 font-semibold">${escapeHtml(app.applicant_email)}</a>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Phone</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.applicant_phone || '-')}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Location</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.preferred_location)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Position</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.position_type)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Availability</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${escapeHtml(app.availability)}</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Date</label>
+                    <div class="text-sm text-gray-900 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">${formatDate(app.created_at)}</div>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Experience</label>
+                <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-40 overflow-y-auto border border-gray-200">${escapeHtml(app.experience || 'Not specified')}</div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Why Join?</label>
+                <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-sm text-gray-900 max-h-40 overflow-y-auto border border-gray-200">${escapeHtml(app.why_join)}</div>
+            </div>
+            <div class="pt-4 border-t">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 p-4 rounded-xl mb-4">
+                    <p class="text-sm text-blue-800 font-semibold">Status changes are for tracking only. No emails sent automatically.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button onclick="updateApplicationStatus(${appIndex}, 'reviewing')" 
+                            class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
+                        Reviewing
+                    </button>
+                    <button onclick="updateApplicationStatus(${appIndex}, 'approved')" 
+                            class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
+                        Approved
+                    </button>
+                    <button onclick="updateApplicationStatus(${appIndex}, 'rejected')" 
+                            class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
+                        Rejected
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+        }
+
+        async function updateApplicationStatus(appIndex, status) {
+            const app = allData.applications[appIndex];
+            if (!app) return;
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/job_applications?id=eq.${app.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({ status: status })
+                });
+
+                if (response.status === 401) {
+                    showNotification('Session expired. Please login again.', 'error');
+                    setTimeout(() => logout(), 1500);
+                    return;
+                }
+
+                if (!response.ok) throw new Error('Failed to update status');
+
+                app.status = status;
+                renderApplications();
+                closeDetailModal();
+
+                showNotification(`Status updated to ${status.toUpperCase()}`);
+
+            } catch (error) {
+                showNotification('Error updating status: ' + error.message, 'error');
+            }
+        }
+
+        function deleteContact(index) {
+            deleteItem = { type: 'contact', index: index, id: allData.contacts[index].id };
+            document.getElementById('delete-message').textContent = 'Are you sure you want to delete this contact submission?';
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+
+        function deleteApplication(index) {
+            deleteItem = { type: 'application', index: index, id: allData.applications[index].id };
+            document.getElementById('delete-message').textContent = 'Are you sure you want to delete this job application?';
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+
+        function deleteNewsletter(index) {
+            deleteItem = { type: 'newsletter', index: index, id: allData.newsletter[index].id };
+            document.getElementById('delete-message').textContent = 'Are you sure you want to delete this subscriber?';
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.add('hidden');
+            deleteItem = null;
+        }
+
+        async function confirmDelete() {
+            if (!deleteItem) return;
+
+            try {
+                const tableNames = {
+                    contact: 'contact_submissions',
+                    application: 'job_applications',
+                    newsletter: 'newsletter_subscribers'
+                };
+
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableNames[deleteItem.type]}?id=eq.${deleteItem.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': 'Bearer ' + authToken
+                    }
+                });
+
+                if (response.status === 401) {
+                    showNotification('Session expired. Please login again.', 'error');
+                    setTimeout(() => logout(), 1500);
+                    return;
+                }
+
+                if (!response.ok) throw new Error('Failed to delete');
+
+                switch (deleteItem.type) {
+                    case 'contact':
+                        allData.contacts.splice(deleteItem.index, 1);
+                        renderContacts();
+                        break;
+                    case 'application':
+                        allData.applications.splice(deleteItem.index, 1);
+                        renderApplications();
+                        break;
+                    case 'newsletter':
+                        allData.newsletter.splice(deleteItem.index, 1);
+                        renderNewsletter();
+                        break;
+                }
+
+                closeDeleteModal();
+                closeDetailModal();
+                showNotification('Item deleted successfully');
+
+            } catch (error) {
+                showNotification('Error deleting: ' + error.message, 'error');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            const bgColor = type === 'error' ? 'border-red-500' : 'border-green-500';
+            const iconClass = type === 'error' ? 'ri-error-warning-line text-red-600' : 'ri-check-line text-green-600';
+
+            notification.className = `fixed top-4 right-4 glass text-gray-800 px-6 py-4 rounded-2xl shadow-2xl z-50 animate-scale-in border-l-4 ${bgColor}`;
+            notification.innerHTML = `<div class="flex items-center"><i class="${iconClass} mr-2 text-xl font-bold"></i><span class="font-semibold">${message}</span></div>`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+            if (days === 0) return 'Today';
+            if (days === 1) return 'Yesterday';
+            if (days < 7) return days + 'd ago';
+
+            return date.toLocaleDateString();
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+
+</html>

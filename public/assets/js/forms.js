@@ -1,0 +1,807 @@
+// Forms JavaScript - Handle all form functionality
+// Contact Form, job application form, and newsletter signup
+
+// Localhost detection - bypass captcha on local development
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+if (isLocalhost) {
+    // log removed
+    // Hide reCAPTCHA widgets on localhost since the site key doesn't support it
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.recaptcha-wrapper').forEach(el => {
+            el.style.display = 'none';
+        });
+    });
+}
+
+// Store reCAPTCHA widget IDs globally
+window.recaptchaWidgets = {
+    contact: null,
+    careers: null
+};
+
+// Initialize reCAPTCHA when ready
+window.initializeRecaptcha = function() {
+    // log removed
+    
+    // Initialize contact form reCAPTCHA
+    const contactElement = document.getElementById('contact-recaptcha');
+    if (contactElement && !contactElement.hasChildNodes()) {
+        try {
+            window.recaptchaWidgets.contact = grecaptcha.render('contact-recaptcha', {
+                'sitekey': '6Lfqu7wrAAAAALeL2VSbkNnZ7z7tE1NfJ2ccRvIx'
+            });
+            // log removed
+        } catch (e) {
+            console.error('Contact reCAPTCHA error:', e);
+        }
+    }
+    
+    // Initialize careers form reCAPTCHA
+    const careersElement = document.getElementById('careers-recaptcha');
+    if (careersElement && !careersElement.hasChildNodes()) {
+        try {
+            window.recaptchaWidgets.careers = grecaptcha.render('careers-recaptcha', {
+                'sitekey': '6Lfqu7wrAAAAALeL2VSbkNnZ7z7tE1NfJ2ccRvIx'
+            });
+            // log removed
+        } catch (e) {
+            console.error('Careers reCAPTCHA error:', e);
+        }
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        initializeForms();
+        // Try to initialize reCAPTCHA if already loaded
+        if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+            window.initializeRecaptcha();
+        }
+    }, 2000);
+});
+
+function initializeForms() {
+    // log removed
+    
+    initializeContactForm();
+    initializeJobApplicationForm();
+    initializeNewsletterForm();
+    initializeFormValidation();
+    initializeCharacterCounters();
+    
+    // log removed
+}
+
+// Contact Form - Updated with real API call
+function initializeContactForm() {
+    const contactForm = document.getElementById('contact-form');
+    if (!contactForm) return;
+    
+    // log removed
+    
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitButton = this.querySelector('button[type="submit"]');
+        
+        // Validate form
+        if (!validateContactForm(formData)) {
+            return;
+        }
+        
+        // Check if reCAPTCHA is completed (bypass on localhost)
+        let recaptchaResponse = null;
+        if (isLocalhost) {
+            recaptchaResponse = 'localhost-test-token';
+            // log removed
+        } else {
+            try {
+                if (window.recaptchaWidgets.contact !== null) {
+                    recaptchaResponse = grecaptcha.getResponse(window.recaptchaWidgets.contact);
+                }
+            } catch (e) {
+                console.error('reCAPTCHA check error:', e);
+            }
+        }
+        
+        if (!recaptchaResponse) {
+            showErrorMessage(this, 'Please complete the reCAPTCHA verification.');
+            return;
+        }
+        
+        try {
+            showLoadingState(submitButton);
+            
+            let result;
+            if (isLocalhost) {
+                // Mock success on localhost (skip server-side reCAPTCHA validation)
+                await new Promise(r => setTimeout(r, 800));
+                result = { message: '[LOCALHOST] Contact form submitted successfully (test mode)' };
+            } else {
+                // Add reCAPTCHA token to form data
+                formData.append('recaptcha_token', recaptchaResponse);
+                
+                // Real API call to Supabase function
+                const response = await fetch('https://mempftwiiwfiqdmhrxwq.supabase.co/functions/v1/contact-form', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw'
+                    },
+                    body: formData
+                });
+                
+                result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Failed to submit form');
+                }
+            }
+            
+            // Show success message
+            showSuccessMessage(this, result.message || 'Thank you for your message! We will get back to you soon.');
+            
+            // Reset form
+            this.reset();
+            updateCharacterCounter('message', 500);
+            
+            // Reset reCAPTCHA
+            if (!isLocalhost && window.recaptchaWidgets.contact !== null) {
+                grecaptcha.reset(window.recaptchaWidgets.contact);
+            }
+            
+        } catch (error) {
+            console.error('Contact Form error:', error);
+            showErrorMessage(this, error.message || 'Something went wrong. Please try again later.');
+        } finally {
+            restoreButtonState(submitButton);
+        }
+    });
+}
+
+// Job Application Form - Updated with real API call
+function initializeJobApplicationForm() {
+    const jobForm = document.getElementById('job-application-form');
+    if (!jobForm) return;
+    
+    // log removed
+    
+    // Initialize consent checkbox functionality
+    setTimeout(() => initializeConsentCheckbox(), 100);
+    
+    jobForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitButton = this.querySelector('button[type="submit"]');
+        
+        // Validate form
+        if (!validateJobApplicationForm(formData)) {
+            return;
+        }
+        
+        // Check if reCAPTCHA is completed (bypass on localhost)
+        let recaptchaResponse = null;
+        if (isLocalhost) {
+            recaptchaResponse = 'localhost-test-token';
+            // log removed
+        } else {
+            try {
+                if (window.recaptchaWidgets.careers !== null) {
+                    recaptchaResponse = grecaptcha.getResponse(window.recaptchaWidgets.careers);
+                }
+            } catch (e) {
+                console.error('reCAPTCHA check error:', e);
+            }
+        }
+        
+        if (!recaptchaResponse) {
+            showErrorMessage(this, 'Please complete the reCAPTCHA verification.');
+            return;
+        }
+        
+        try {
+            showLoadingState(submitButton);
+            
+            let result;
+            if (isLocalhost) {
+                // Mock success on localhost (skip server-side reCAPTCHA validation)
+                await new Promise(r => setTimeout(r, 800));
+                result = { message: '[LOCALHOST] Job application submitted successfully (test mode)' };
+            } else {
+                // Add reCAPTCHA token to form data
+                formData.append('recaptcha_token', recaptchaResponse);
+                
+                // Real API call to Supabase function
+                const response = await fetch('https://mempftwiiwfiqdmhrxwq.supabase.co/functions/v1/career-form', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw'
+                    },
+                    body: formData
+                });
+                
+                result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Failed to submit application');
+                }
+            }
+            
+            // Show success message
+            showSuccessMessage(this, result.message || 'Thank you for your application! We will review it and contact you soon.');
+            
+            // Reset form
+            this.reset();
+            resetConsentCheckbox();
+            
+            // Reset reCAPTCHA
+            if (!isLocalhost && window.recaptchaWidgets.careers !== null) {
+                grecaptcha.reset(window.recaptchaWidgets.careers);
+            }
+            
+        } catch (error) {
+            console.error('Job application error:', error);
+            showErrorMessage(this, error.message || 'Something went wrong. Please try again later.');
+        } finally {
+            restoreButtonState(submitButton);
+        }
+    });
+}
+
+// Newsletter Form - initializeNewsletterForm fonksiyonunu değiştirin
+function initializeNewsletterForm() {
+    const newsletterForms = document.querySelectorAll('.newsletter-form');
+    
+    // log removed
+    
+    newsletterForms.forEach((form, index) => {
+        if (form.dataset.initialized === 'true') {
+            // log removed
+            return;
+        }
+        
+        // log removed
+        form.dataset.initialized = 'true';
+        
+        const submitButton = form.querySelector('button[type="submit"]');
+        const emailInput = form.querySelector('input[type="email"]');
+        
+        if (!submitButton || !emailInput) {
+            console.error('Newsletter form elements not found');
+            return;
+        }
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            
+            if (!email || !isValidEmail(email)) {
+                showNewsletterMessage(this, 'Please enter a valid email address.', 'error');
+                return;
+            }
+            
+            if (submitButton.disabled) {
+                return;
+            }
+            
+            const originalText = submitButton.innerHTML; // BURAYA TAŞINDI
+            
+            try {
+                submitButton.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Subscribing...';
+                submitButton.disabled = true;
+                
+                const response = await fetch('https://mempftwiiwfiqdmhrxwq.supabase.co/rest/v1/newsletter_subscribers', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbXBmdHdpaXdmaXFkbWhyeHdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQyNzQ1MTcsImV4cCI6MjA2OTg1MDUxN30.f7xuSIxHwkdEGU2lwEc9bLl-1QHGzkUn6LR48Z_LsHw',
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        source: 'footer_newsletter'
+                    })
+                });
+                
+                // log removed
+                
+                if (response.status === 201 || response.ok) {
+                    submitButton.innerHTML = '<i class="ri-check-line mr-2"></i>Subscribed!';
+                    submitButton.classList.remove('bg-primary');
+                    submitButton.classList.add('bg-green-500');
+                    
+                    showNewsletterMessage(this, 'Thank you for subscribing!', 'success');
+                    emailInput.value = '';
+                    
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalText;
+                        submitButton.classList.remove('bg-green-500');
+                        submitButton.classList.add('bg-primary');
+                        submitButton.disabled = false;
+                    }, 3000);
+                    
+                    if (typeof trackEvent === 'function') {
+                        trackEvent('newsletter_signup', 'engagement', email);
+                    }
+                } else if (response.status === 409) {
+                    throw new Error('duplicate');
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || 'Subscription failed');
+                }
+                
+            } catch (error) {
+                console.error('Newsletter error:', error);
+                
+                let errorMessage = 'Something went wrong. Please try again.';
+                
+                if (error.message === 'duplicate' || error.message.includes('duplicate') || error.message.includes('unique')) {
+                    errorMessage = 'This email is already subscribed!';
+                }
+                
+                showNewsletterMessage(this, errorMessage, 'error');
+                
+                // Reset button state
+                submitButton.innerHTML = originalText;
+                submitButton.classList.remove('bg-green-500');
+                submitButton.classList.add('bg-primary');
+                submitButton.disabled = false;
+            }
+        });
+    });
+}
+
+// Newsletter form için DOM observer - en alta ekleyin
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        // Newsletter formları için observer
+        const observer = new MutationObserver(() => {
+            const forms = document.querySelectorAll('.newsletter-form:not([data-initialized])');
+            if (forms.length > 0) {
+                // log removed
+                initializeNewsletterForm();
+            }
+        });
+        
+        observer.observe(document.body, { childList: true, subtree: true });
+        
+        setTimeout(() => observer.disconnect(), 10000);
+    });
+}
+
+// Form Validation
+function initializeFormValidation() {
+    // Real-time validation for all inputs
+    const inputs = document.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+        
+        input.addEventListener('input', function() {
+            clearFieldError(this);
+        });
+    });
+}
+
+// Character Counters
+function initializeCharacterCounters() {
+    const messageTextarea = document.getElementById('message');
+    const messageChars = document.getElementById('message-chars');
+    
+    if (messageTextarea && messageChars) {
+        messageTextarea.addEventListener('input', function() {
+            updateCharacterCounter('message', 500);
+        });
+    }
+    
+    // Add character counters to other text areas if needed
+    const textareas = document.querySelectorAll('textarea[maxlength]');
+    textareas.forEach(textarea => {
+        const maxLength = parseInt(textarea.getAttribute('maxlength'));
+        if (maxLength && textarea.id !== 'message') {
+            addCharacterCounter(textarea, maxLength);
+        }
+    });
+}
+
+// Consent Checkbox Functionality
+function initializeConsentCheckbox() {
+    const consentCheckbox = document.getElementById('consent-checkbox');
+    const consentLabel = consentCheckbox?.closest('label');
+    const consentText = consentLabel?.querySelector('span.ml-6');
+    
+    if (!consentCheckbox || !consentText) return;
+    
+    // Click handler for text
+    consentText.style.cursor = 'pointer';
+    consentText.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleConsent();
+    });
+    
+    // Keyboard accessibility
+    consentText.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleConsent();
+        }
+    });
+    
+    // Make it focusable and accessible
+    consentText.setAttribute('tabindex', '0');
+    consentText.setAttribute('role', 'checkbox');
+    consentText.setAttribute('aria-checked', 'false');
+}
+
+function toggleConsent() {
+    const consentCheckbox = document.getElementById('consent-checkbox');
+    const consentText = document.querySelector('label[for="consent-checkbox"] span.ml-6') || 
+                      consentCheckbox?.closest('label')?.querySelector('span.ml-6');
+    
+    if (consentCheckbox) {
+        consentCheckbox.checked = !consentCheckbox.checked;
+        
+        // Update visual state
+        updateConsentVisual();
+        
+        // Update accessibility
+        if (consentText) {
+            consentText.setAttribute('aria-checked', consentCheckbox.checked);
+        }
+    }
+}
+
+function updateConsentVisual() {
+    const consentCheckbox = document.getElementById('consent-checkbox');
+    const checkmark = consentCheckbox?.parentElement.querySelector('.checkmark');
+    
+    if (checkmark && consentCheckbox) {
+        if (consentCheckbox.checked) {
+            checkmark.style.backgroundColor = '#F58220';
+            checkmark.style.borderColor = '#F58220';
+        } else {
+            checkmark.style.backgroundColor = '#fff';
+            checkmark.style.borderColor = '#ddd';
+        }
+    }
+}
+
+function resetConsentCheckbox() {
+    const consentCheckbox = document.getElementById('consent-checkbox');
+    if (consentCheckbox) {
+        consentCheckbox.checked = false;
+        updateConsentVisual();
+    }
+}
+
+// Loading and Button State Functions
+function showLoadingState(button) {
+    if (!button) return;
+    
+    button.disabled = true;
+    button.classList.add('opacity-50', 'cursor-not-allowed');
+    
+    // Store original content
+    if (!button.dataset.originalText) {
+        button.dataset.originalText = button.innerHTML;
+    }
+    
+    // Show loading
+    button.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Submitting...';
+}
+
+function restoreButtonState(button) {
+    if (!button) return;
+    
+    setTimeout(() => {
+        button.disabled = false;
+        button.classList.remove('opacity-50', 'cursor-not-allowed');
+        
+        // Restore original text or set default based on form type
+        if (button.dataset.originalText) {
+            button.innerHTML = button.dataset.originalText;
+        } else {
+            const form = button.closest('form');
+            if (form?.id === 'contact-form') {
+                button.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Send Message';
+            } else if (form?.id === 'job-application-form') {
+                button.innerHTML = '<i class="ri-send-plane-line mr-2"></i>Submit Application';
+            }
+        }
+    }, 100);
+}
+
+// Validation Functions
+function validateContactForm(formData) {
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const subject = formData.get('subject');
+    const message = formData.get('message');
+    
+    const errors = [];
+    
+    if (!name || name.trim().length < 2) {
+        errors.push('Please enter a valid name');
+    }
+    
+    if (!email || !isValidEmail(email)) {
+        errors.push('Please enter a valid email address');
+    }
+    
+    if (!subject || subject.trim().length < 3) {
+        errors.push('Please enter a subject');
+    }
+    
+    if (!message || message.trim().length < 10) {
+        errors.push('Please enter a message (at least 10 characters)');
+    }
+    
+    if (message && message.length > 500) {
+        errors.push('Message cannot exceed 500 characters');
+    }
+    
+    if (errors.length > 0) {
+        const form = document.getElementById('contact-form');
+        showErrorMessage(form, errors.join('. '));
+        return false;
+    }
+    
+    return true;
+}
+
+function validateJobApplicationForm(formData) {
+    const name = formData.get('applicant-name');
+    const age = formData.get('applicant-age');
+    const email = formData.get('applicant-email');
+    const phone = formData.get('applicant-phone');
+    const location = formData.get('preferred-location');
+    const position = formData.get('position-type');
+    const availability = formData.get('availability');
+    const whyJoin = formData.get('why-join');
+    const terms = formData.get('terms');
+    
+    const errors = [];
+    
+    if (!name || name.trim().length < 2) {
+        errors.push('Please enter a valid name');
+    }
+    
+    if (!age || age < 16 || age > 99) {
+        errors.push('Please enter a valid age (16-99)');
+    }
+    
+    if (!email || !isValidEmail(email)) {
+        errors.push('Please enter a valid email address');
+    }
+    
+    if (!phone || phone.trim().length < 10) {
+        errors.push('Please enter a valid phone number');
+    }
+    
+    if (!location) {
+        errors.push('Please select a preferred location');
+    }
+    
+    if (!position) {
+        errors.push('Please select a position type');
+    }
+    
+    if (!availability) {
+        errors.push('Please select your availability');
+    }
+    
+    if (!whyJoin || whyJoin.trim().length < 20) {
+        errors.push('Please tell us why you want to join (at least 20 characters)');
+    }
+    
+    if (!terms) {
+        errors.push('Please accept the terms and conditions');
+    }
+    
+    if (errors.length > 0) {
+        const form = document.getElementById('job-application-form');
+        showErrorMessage(form, errors.join('. '));
+        return false;
+    }
+    
+    return true;
+}
+
+function validateField(field) {
+    const value = field.value.trim();
+    const type = field.type;
+    const required = field.required;
+    
+    clearFieldError(field);
+    
+    if (required && !value) {
+        showFieldError(field, 'This field is required');
+        return false;
+    }
+    
+    if (type === 'email' && value && !isValidEmail(value)) {
+        showFieldError(field, 'Please enter a valid email address');
+        return false;
+    }
+    
+    if (type === 'tel' && value && value.length < 10) {
+        showFieldError(field, 'Please enter a valid phone number');
+        return false;
+    }
+    
+    if (field.hasAttribute('pattern') && value) {
+        const pattern = new RegExp(field.getAttribute('pattern'));
+        if (!pattern.test(value)) {
+            showFieldError(field, 'Please enter a valid value');
+            return false;
+        }
+    }
+    
+    if (field.hasAttribute('maxlength')) {
+        const maxLength = parseInt(field.getAttribute('maxlength'));
+        if (value.length > maxLength) {
+            showFieldError(field, `Maximum ${maxLength} characters allowed`);
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+function showFieldError(field, message) {
+    clearFieldError(field);
+    
+    field.style.borderColor = '#ef4444';
+    field.style.backgroundColor = '#fef2f2';
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error text-red-600 text-sm mt-1';
+    errorDiv.textContent = message;
+    
+    field.parentNode.appendChild(errorDiv);
+}
+
+function clearFieldError(field) {
+    field.style.borderColor = '';
+    field.style.backgroundColor = '';
+    
+    const errorDiv = field.parentNode.querySelector('.field-error');
+    if (errorDiv) {
+        errorDiv.remove();
+    }
+}
+
+// Character Counter Functions
+function updateCharacterCounter(textareaId, maxLength) {
+    const textarea = document.getElementById(textareaId);
+    const counter = document.getElementById(`${textareaId}-chars`);
+    
+    if (textarea && counter) {
+        const remaining = maxLength - textarea.value.length;
+        counter.textContent = remaining;
+        
+        if (remaining < 50) {
+            counter.style.color = '#ef4444';
+        } else if (remaining < 100) {
+            counter.style.color = '#f59e0b';
+        } else {
+            counter.style.color = '#6b7280';
+        }
+    }
+}
+
+function addCharacterCounter(textarea, maxLength) {
+    const counter = document.createElement('div');
+    counter.className = 'text-sm text-gray-500 mt-1';
+    counter.id = `${textarea.id}-chars-counter`;
+    counter.innerHTML = `Characters remaining: <span id="${textarea.id}-chars">${maxLength}</span>`;
+    
+    textarea.parentNode.appendChild(counter);
+    
+    textarea.addEventListener('input', function() {
+        updateCharacterCounter(textarea.id, maxLength);
+    });
+}
+
+// Message Display Functions
+function showSuccessMessage(container, message) {
+    // Remove existing messages
+    const existingMessages = container.querySelectorAll('.form-message');
+    existingMessages.forEach(msg => msg.remove());
+    
+    const successDiv = document.createElement('div');
+    successDiv.className = 'form-message bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mt-4 animate-fade-in';
+    successDiv.innerHTML = `
+        <div class="flex items-center">
+            <i class="ri-check-circle-line mr-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add to the end of form
+    container.appendChild(successDiv);
+    
+    // Auto-remove after 8 seconds
+    setTimeout(() => {
+        if (successDiv.parentNode) {
+            successDiv.classList.add('animate-fade-out');
+            setTimeout(() => successDiv.remove(), 300);
+        }
+    }, 8000);
+}
+
+function showErrorMessage(container, message) {
+    // Remove existing messages
+    const existingMessages = container.querySelectorAll('.form-message');
+    existingMessages.forEach(msg => msg.remove());
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'form-message bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mt-4 animate-fade-in';
+    errorDiv.innerHTML = `
+        <div class="flex items-center">
+            <i class="ri-error-warning-line mr-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add to the end of form
+    container.appendChild(errorDiv);
+    
+    // Auto-remove after 8 seconds
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.classList.add('animate-fade-out');
+            setTimeout(() => errorDiv.remove(), 300);
+        }
+    }, 8000);
+}
+
+// Newsletter Message Display
+function showNewsletterMessage(form, message, type) {
+    const existingMessage = form.parentNode.querySelector('.newsletter-message');
+    if (existingMessage) existingMessage.remove();
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `newsletter-message mt-3 p-3 rounded-lg text-sm ${
+        type === 'error' 
+            ? 'bg-red-100 text-red-700 border border-red-200' 
+            : 'bg-green-100 text-green-700 border border-green-200'
+    }`;
+    messageDiv.innerHTML = `
+        <div class="flex items-center">
+            <i class="ri-${type === 'error' ? 'error-warning' : 'check-circle'}-line mr-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    form.parentNode.appendChild(messageDiv);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.remove();
+        }
+    }, 5000);
+}
+
+// Email validation
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Export functions for global use
+window.toggleConsent = toggleConsent;
+window.initializeForms = initializeForms;
+window.validateContactForm = validateContactForm;
+window.validateJobApplicationForm = validateJobApplicationForm;
+window.showSuccessMessage = showSuccessMessage;
+window.showErrorMessage = showErrorMessage;
+window.isValidEmail = isValidEmail;
+
+// log removed
