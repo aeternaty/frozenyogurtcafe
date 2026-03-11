@@ -1,123 +1,103 @@
-# Get Yo Frozen Yogurt Cafe
+# Get Yo Frozen Yogurt
 
-Premium frozen yogurt cafe website with 14 delicious flavors, dairy-free options, and fresh toppings. Serving Marlboro and New Providence, New Jersey.
+This is the official codebase for the Get Yo Frozen Yogurt website, built with modern web technologies to ensure maximum performance, accessibility, and SEO.
 
-## Features
+## Architecture
 
-- **14 Flavors**: Dairy-free, no sugar added, non-fat, and low-fat options
-- **Fresh Toppings**: Wide variety of fresh fruits, nuts, and sweet treats  
-- **Two Locations**: Marlboro (Kosher Certified) and New Providence
-- **Rewards Program**: Ounce&Bounce points-based loyalty program
-- **Online Forms**: Contact Form and job applications
-- **Mobile Responsive**: Optimized for all devices
+The project is built using the Astro framework and styled with Tailwind CSS, utilizing a component-driven architecture for high maintainability.
 
-## Tech Stack
+### Core Technologies
+- **Framework:** Astro
+- **Styling:** Tailwind CSS
+- **Analytics:** Vercel Analytics
+- **Deployment:** Vercel (Edge Network)
 
-- **Frontend**: Vanilla HTML, CSS, JavaScript with Tailwind CSS
-- **Backend**: Supabase (Database & Edge Functions)
-- **Deployment**: Vercel
-- **Forms**: reCAPTCHA protected with Supabase integration
-- **Analytics**: Google Analytics 4
+## Project Structure
 
-## Local Development
+The repository is organized to separate concerns and facilitate easy content updates:
+
+```text
+/
+├── public/                 # Static assets (images, fonts, certs) served directly
+├── src/
+│   ├── components/         # Reusable Astro UI components (Header, Footer, Gallery, etc.)
+│   ├── layouts/            # Global page layouts and root HTML structures
+│   ├── pages/              # Application routes and endpoints
+│   ├── scripts/            # Client-side JavaScript logic
+│   └── styles/             # Global CSS and Tailwind configurations
+├── astro.config.mjs        # Astro project configuration
+├── package.json            # Project dependencies and npm scripts
+└── tailwind.config.mjs     # Tailwind CSS theme and utility definitions
+```
+
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+
-- Supabase CLI
+- Node.js (version 22.12.0 or higher recommended)
+- npm (Node Package Manager)
 
 ### Installation
 
-1. Clone the repository
-```bash
-git clone https://github.com/aeternaty/frozenyogurtcafe
-cd web
-```
+1. Clone the repository and navigate to the project root.
+2. Install the necessary dependencies:
 
-2. Install dependencies
 ```bash
 npm install
 ```
 
-3. Set up environment variables
-```bash
-cp .env.example .env
-# Edit .env with your actual values
-```
+### Development Server
 
-4. Start Supabase local development
-```bash
-npm run supabase:start
-```
+To start the local development server:
 
-5. Serve the website locally
 ```bash
 npm run dev
 ```
+The application will be accessible at `http://localhost:4321`.
 
-### Supabase Setup
+## Production Build
 
-1. Create a new Supabase project at https://supabase.com
-2. Run migrations:
+To build the project for production deployment:
+
 ```bash
-supabase db push
+npm run build
 ```
+The optimized production files will be generated in the `dist/` directory. You can preview the production build locally using:
 
-3. Deploy edge functions:
 ```bash
-npm run deploy
+npm run preview
 ```
 
-## Deployment to Vercel
+## Code Quality and Auditing
 
-### Method 1: Vercel CLI
+The project includes several built-in scripts to maintain code quality and performance standards.
+
+### Formatting and Linting
+
+To check the codebase for formatting and type errors:
 ```bash
-npm install -g vercel
-vercel login
-vercel
+npm run check
 ```
 
-### Method 2: GitHub Integration
-1. Push code to GitHub repository
-2. Connect repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy automatically on git push
-
-### Environment Variables (Vercel)
-Add these in your Vercel dashboard:
-- `SUPABASE_URL`
-- `SUPABASE_ANON_KEY` 
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `RECAPTCHA_SITE_KEY`
-- `RECAPTCHA_SECRET_KEY`
-- `GA_TRACKING_ID`
-
-## Project Structure
-
-```
-├── assets/
-│   ├── css/           # Stylesheets
-│   ├── js/            # JavaScript files
-│   └── images/        # Images and assets
-├── components/        # HTML components
-├── config/           # Configuration files
-├── supabase/         # Supabase configuration
-│   ├── functions/    # Edge functions
-│   └── migrations/   # Database migrations
-├── index.html        # Main page
-└── vercel.json       # Vercel configuration
+To automatically format the code and fix issues:
+```bash
+npm run fix
 ```
 
-## Contact Information
+### Lighthouse Auditing
 
-**Marlboro Location**
-- Address: 450 Union Hill Road, Morganville, NJ 07751
-- Phone: (732) 617-6332
-- Kosher Certified
+The project aims for a perfect 100/100 Lighthouse score across Performance, Accessibility, Best Practices, and SEO.
 
-**New Providence Location**  
-- Address: 12 South Street, New Providence, NJ 07974
-- Phone: (908) 219-4338
+To run a local Lighthouse audit:
+```bash
+npm run lighthouse
+```
 
-## License
+To run a CI/CD targeted Lighthouse audit:
+```bash
+npm run lighthouse:ci
+```
 
-All rights reserved - Get Yo Frozen Yogurt Cafe
+To run an audit against the live production site:
+```bash
+npm run lighthouse:live
+```
