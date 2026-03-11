@@ -42,10 +42,12 @@ header {
 #chat-button {
   width: 56px !important;
   height: 56px !important;
-  background-color: #FF8A3D !important;
+  background-color: #ff8a3d !important;
   color: white !important;
   border-radius: 50% !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -117,7 +119,7 @@ body {
 
 #mobile-menu a:hover {
   background-color: #f9fafb !important;
-  color: #FF8A3D !important;
+  color: #ff8a3d !important;
 }
 
 #mobile-menu a:last-child {

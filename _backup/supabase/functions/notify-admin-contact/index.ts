@@ -1,21 +1,21 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
-const ADMIN_EMAIL = Deno.env.get('ADMIN_EMAIL') || 'info@getyocafe.com'
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const ADMIN_EMAIL = Deno.env.get("ADMIN_EMAIL") || "info@getyocafe.com";
 
 serve(async (req) => {
-    try {
-        console.log('Function called')
-        const { record } = await req.json()
-        console.log('Record received:', JSON.stringify(record, null, 2))
-        console.log('API Key exists:', !!RESEND_API_KEY)
-        console.log('Admin email:', ADMIN_EMAIL)
+  try {
+    console.log("Function called");
+    const { record } = await req.json();
+    console.log("Record received:", JSON.stringify(record, null, 2));
+    console.log("API Key exists:", !!RESEND_API_KEY);
+    console.log("Admin email:", ADMIN_EMAIL);
 
-        const emailData = {
-            from: 'FrozenYogurtCafe <noreply@mail.getyocafe.com>',
-            to: ADMIN_EMAIL,
-            subject: `New Contact Message - ${record.subject}`,
-            html: `
+    const emailData = {
+      from: "FrozenYogurtCafe <noreply@mail.getyocafe.com>",
+      to: ADMIN_EMAIL,
+      subject: `New Contact Message - ${record.subject}`,
+      html: `
         <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
           <div style="background: linear-gradient(135deg, #FF8A3D 0%, #FF6B35 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="color: white; margin: 0; font-size: 28px;">FrozenYogurtCafe</h1>
@@ -59,14 +59,18 @@ serve(async (req) => {
               <p style="color: #0c5460; margin: 0; line-height: 1.6; white-space: pre-wrap;">${record.message}</p>
             </div>
             
-            ${record.newsletter_subscribed ? `
+            ${
+              record.newsletter_subscribed
+                ? `
             <div style="background: #d4edda; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #28a745;">
               <p style="color: #155724; margin: 0; display: flex; align-items: center;">
                 <span style="font-size: 20px; margin-right: 10px;">✓</span>
                 <strong>Newsletter subscription requested</strong>
               </p>
             </div>
-            ` : ''}
+            `
+                : ""
+            }
             
             <div style="text-align: center; margin-top: 30px;">
               <a href="https://frozenyogurtcafe.com/admin.html" 
@@ -80,61 +84,63 @@ serve(async (req) => {
           
           <div style="background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; border-top: 1px solid #dee2e6;">
             <p style="color: #6c757d; font-size: 12px; margin: 0;">
-              Submitted on: ${new Date(record.created_at).toLocaleString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            })}
+              Submitted on: ${new Date(record.created_at).toLocaleString(
+                "en-US",
+                {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                },
+              )}
             </p>
             <p style="color: #6c757d; font-size: 11px; margin: 10px 0 0 0;">
-              IP: ${record.ip_address || 'N/A'}
+              IP: ${record.ip_address || "N/A"}
             </p>
           </div>
         </div>
-      `
-        }
+      `,
+    };
 
-        const resendResponse = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${RESEND_API_KEY}`
-            },
-            body: JSON.stringify(emailData)
-        })
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify(emailData),
+    });
 
-        console.log('Resend response status:', resendResponse.status)
+    console.log("Resend response status:", resendResponse.status);
 
-        const responseData = await resendResponse.json()
-        console.log('Resend response:', JSON.stringify(responseData, null, 2))
+    const responseData = await resendResponse.json();
+    console.log("Resend response:", JSON.stringify(responseData, null, 2));
 
-        if (!resendResponse.ok) {
-            throw new Error(`Resend API error: ${JSON.stringify(responseData)}`)
-        }
-
-        console.log('Email sent successfully')
-
-        return new Response(
-            JSON.stringify({
-                success: true,
-                message: 'Admin notified successfully',
-                emailId: responseData.id
-            }),
-            { headers: { 'Content-Type': 'application/json' }, status: 200 }
-        )
-
-    } catch (error) {
-        console.error('Error sending notification:', error)
-
-        return new Response(
-            JSON.stringify({
-                error: error.message,
-                success: false
-            }),
-            { headers: { 'Content-Type': 'application/json' }, status: 500 }
-        )
+    if (!resendResponse.ok) {
+      throw new Error(`Resend API error: ${JSON.stringify(responseData)}`);
     }
-})
+
+    console.log("Email sent successfully");
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "Admin notified successfully",
+        emailId: responseData.id,
+      }),
+      { headers: { "Content-Type": "application/json" }, status: 200 },
+    );
+  } catch (error) {
+    console.error("Error sending notification:", error);
+
+    return new Response(
+      JSON.stringify({
+        error: error.message,
+        success: false,
+      }),
+      { headers: { "Content-Type": "application/json" }, status: 500 },
+    );
+  }
+});

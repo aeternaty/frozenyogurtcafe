@@ -1,18 +1,18 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
-const ADMIN_EMAIL = Deno.env.get('ADMIN_EMAIL') || 'info@getyocafe.com'
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const ADMIN_EMAIL = Deno.env.get("ADMIN_EMAIL") || "info@getyocafe.com";
 
 serve(async (req) => {
   try {
-    console.log('Function called')
-    const { record } = await req.json()
-    console.log('Record received:', JSON.stringify(record, null, 2))
-    console.log('API Key exists:', !!RESEND_API_KEY)
-    console.log('Admin email:', ADMIN_EMAIL)
-    
+    console.log("Function called");
+    const { record } = await req.json();
+    console.log("Record received:", JSON.stringify(record, null, 2));
+    console.log("API Key exists:", !!RESEND_API_KEY);
+    console.log("Admin email:", ADMIN_EMAIL);
+
     const emailData = {
-      from: 'FrozenYogurtCafe <noreply@mail.getyocafe.com>',
+      from: "FrozenYogurtCafe <noreply@mail.getyocafe.com>",
       to: ADMIN_EMAIL,
       subject: `New Job Application - ${record.applicant_name}`,
       html: `
@@ -64,7 +64,7 @@ serve(async (req) => {
                     <strong style="color: #495057;">Location:</strong>
                   </td>
                   <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6; text-align: right;">
-                    <span style="color: #212529; text-transform: capitalize;">${record.preferred_location.replace('-', ' ')}</span>
+                    <span style="color: #212529; text-transform: capitalize;">${record.preferred_location.replace("-", " ")}</span>
                   </td>
                 </tr>
                 <tr>
@@ -72,7 +72,7 @@ serve(async (req) => {
                     <strong style="color: #495057;">Position:</strong>
                   </td>
                   <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6; text-align: right;">
-                    <span style="color: #212529; text-transform: capitalize;">${record.position_type.replace('-', ' ')}</span>
+                    <span style="color: #212529; text-transform: capitalize;">${record.position_type.replace("-", " ")}</span>
                   </td>
                 </tr>
                 <tr>
@@ -86,12 +86,16 @@ serve(async (req) => {
               </table>
             </div>
             
-            ${record.experience ? `
+            ${
+              record.experience
+                ? `
             <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
               <h3 style="color: #856404; margin: 0 0 10px 0; font-size: 16px;">Experience</h3>
               <p style="color: #856404; margin: 0; line-height: 1.6;">${record.experience}</p>
             </div>
-            ` : ''}
+            `
+                : ""
+            }
             
             <div style="background: #d1ecf1; padding: 20px; border-radius: 10px; margin-bottom: 30px; border-left: 4px solid #17a2b8;">
               <h3 style="color: #0c5460; margin: 0 0 10px 0; font-size: 16px;">Why Join Us?</h3>
@@ -110,61 +114,63 @@ serve(async (req) => {
           
           <div style="background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; border-top: 1px solid #dee2e6;">
             <p style="color: #6c757d; font-size: 12px; margin: 0;">
-              Submitted on: ${new Date(record.created_at).toLocaleString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
+              Submitted on: ${new Date(record.created_at).toLocaleString(
+                "en-US",
+                {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                },
+              )}
             </p>
             <p style="color: #6c757d; font-size: 11px; margin: 10px 0 0 0;">
-              IP: ${record.ip_address || 'N/A'}
+              IP: ${record.ip_address || "N/A"}
             </p>
           </div>
         </div>
-      `
-    }
+      `,
+    };
 
-    const resendResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${RESEND_API_KEY}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
       },
-      body: JSON.stringify(emailData)
-    })
-    
-    console.log('Resend response status:', resendResponse.status)
+      body: JSON.stringify(emailData),
+    });
 
-    const responseData = await resendResponse.json()
-    console.log('Resend response:', JSON.stringify(responseData, null, 2))
+    console.log("Resend response status:", resendResponse.status);
+
+    const responseData = await resendResponse.json();
+    console.log("Resend response:", JSON.stringify(responseData, null, 2));
 
     if (!resendResponse.ok) {
-      throw new Error(`Resend API error: ${JSON.stringify(responseData)}`)
+      throw new Error(`Resend API error: ${JSON.stringify(responseData)}`);
     }
 
-    console.log('Email sent successfully')
+    console.log("Email sent successfully");
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: 'Admin notified successfully',
-        emailId: responseData.id 
+      JSON.stringify({
+        success: true,
+        message: "Admin notified successfully",
+        emailId: responseData.id,
       }),
-      { headers: { 'Content-Type': 'application/json' }, status: 200 }
-    )
-
+      { headers: { "Content-Type": "application/json" }, status: 200 },
+    );
   } catch (error) {
-    console.error('Error sending notification:', error)
-    
+    console.error("Error sending notification:", error);
+
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         error: error.message,
-        success: false 
+        success: false,
       }),
-      { headers: { 'Content-Type': 'application/json' }, status: 500 }
-    )
+      { headers: { "Content-Type": "application/json" }, status: 500 },
+    );
   }
-})
+});
