@@ -1,0 +1,340 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Get Yo serves fresh froyo with 14 flavors & endless toppings in Marlboro & New Providence NJ.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+    />
+    <link rel="icon" type="image/webp" href="/assets/images/favicon.webp" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="frozen yogurt near me, froyo near me, ice cream near me, froyo, frozen yogurt, fro yo, dessert near me, get yo frozen yogurt cafe, froyo cafe, froyo manalapan, froyo places near me, fro yo near me, frozen yogurt places near me, frozen yogurt shop, yogurt near me, self serve frozen yogurt, kosher frozen yogurt, dairy free froyo, frozen yogurt marlboro nj, frozen yogurt new providence nj, frozen yogurt manalapan nj, froyo manalapan nj, froyo nj, frozen yogurt nj, ice cream manalapan nj, ice cream marlboro nj, dessert marlboro nj, froyo morganville, get yo, lets yo, yo yogurt, frozen yogurt open now, froyo near me open now, best froyo places near me, healthy dessert, sugar free frozen yogurt, non fat frozen yogurt, dairy free ice cream near me, boba near me, dessert shop, sweet treats near me"
+    />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="author" content="Get Yo Frozen Yogurt Cafe" />
+
+    <!-- Custom SEO JSON-LD -->
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://frozenyogurtcafe.com/#organization",
+            "name": "Get Yo Frozen Yogurt Cafe",
+            "url": "https://frozenyogurtcafe.com",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://frozenyogurtcafe.com/assets/images/logo.webp"
+            },
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "telephone": "(732) 617-6332",
+                "contactType": "customer service",
+                "areaServed": "US-NJ"
+              }
+            ],
+            "sameAs": [
+              "https://www.facebook.com/getyofrozenyogurt",
+              "https://www.instagram.com/getyo_marlboro/",
+              "https://www.tiktok.com/@getyofrozenyogurtcafe"
+            ]
+          },
+          {
+            "@type": "LocalBusiness",
+            "@id": "https://frozenyogurtcafe.com/#marlboro-location",
+            "name": "Get Yo Frozen Yogurt Cafe - Marlboro",
+            "description": "Premium frozen yogurt cafe serving 14+ flavors with fresh toppings, dairy-free options. Kosher certified location in Marlboro, NJ.",
+            "url": "https://frozenyogurtcafe.com",
+            "telephone": "(732) 617-6332",
+            "email": "info@getyocafe.com",
+            "priceRange": "$",
+            "servesCuisine": "Frozen Yogurt",
+            "paymentAccepted": "Cash, Credit Card",
+            "currenciesAccepted": "USD",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "450 Union Hill Road, Suite 15",
+              "addressLocality": "Morganville",
+              "addressRegion": "NJ",
+              "postalCode": "07751",
+              "addressCountry": "US"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 40.339677,
+              "longitude": -74.305915
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+                "opens": "15:00",
+                "closes": "22:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Friday", "Saturday"],
+                "opens": "13:00",
+                "closes": "23:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": "Sunday",
+                "opens": "13:00",
+                "closes": "22:00"
+              }
+            ],
+            "amenityFeature": [
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Kosher Certified",
+                "value": true
+              },
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Dairy Free Options",
+                "value": true
+              },
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Self Serve",
+                "value": true
+              },
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Wheelchair Accessible",
+                "value": true
+              }
+            ],
+            "hasMenu": "https://frozenyogurtcafe.com/#menu",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "reviewCount": "150"
+            },
+            "keywords": "frozen yogurt near me, froyo marlboro nj, kosher frozen yogurt, dairy free dessert, healthy ice cream alternative"
+          },
+          {
+            "@type": "LocalBusiness",
+            "@id": "https://frozenyogurtcafe.com/#newprovidence-location",
+            "name": "Get Yo Frozen Yogurt Cafe - New Providence",
+            "description": "Premium frozen yogurt cafe serving 14+ flavors with fresh toppings, dairy-free options in New Providence, NJ.",
+            "url": "https://frozenyogurtcafe.com",
+            "telephone": "(908) 219-4338",
+            "email": "info@getyocafe.com",
+            "priceRange": "$",
+            "servesCuisine": "Frozen Yogurt",
+            "paymentAccepted": "Cash, Credit Card",
+            "currenciesAccepted": "USD",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "12 South Street",
+              "addressLocality": "New Providence",
+              "addressRegion": "NJ",
+              "postalCode": "07974",
+              "addressCountry": "US"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 40.705675,
+              "longitude": -74.406201
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+                "opens": "12:00",
+                "closes": "22:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Friday", "Saturday", "Sunday"],
+                "opens": "12:00",
+                "closes": "23:00"
+              }
+            ],
+            "amenityFeature": [
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Dairy Free Options",
+                "value": true
+              },
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Self Serve",
+                "value": true
+              },
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Wheelchair Accessible",
+                "value": true
+              }
+            ],
+            "hasMenu": "https://frozenyogurtcafe.com/#menu",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.7",
+              "reviewCount": "98"
+            },
+            "keywords": "frozen yogurt new providence nj, froyo near me, healthy dessert, dairy free ice cream"
+          }
+        ]
+      }
+    </script>
+
+    <!-- OpenGraph Meta Tags -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta
+      property="og:image"
+      content="https://frozenyogurtcafe.com/assets/images/hero-background.webp"
+    />
+    <meta property="og:url" content="https://frozenyogurtcafe.com" />
+    <meta property="og:type" content="business.business" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content="https://frozenyogurtcafe.com/assets/images/hero-background.webp"
+    />
+
+    <!-- Geo Meta Tags -->
+    <meta name="geo.region" content="US-NJ" />
+    <meta name="geo.placename" content="Marlboro, New Providence" />
+    <meta name="geo.position" content="40.339677;-74.305915" />
+    <meta name="ICBM" content="40.339677, -74.305915" />
+
+    <meta name="theme-color" content="#F58220" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/webp" href="/assets/images/favicon.webp" />
+    <link rel="apple-touch-icon" href="/assets/images/favicon.webp" />
+    <link rel="canonical" href="https://frozenyogurtcafe.com/" />
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+
+    <!-- Google Analytics -->
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-D8M5Z9J4KL"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-D8M5Z9J4KL", {
+        enhanced_conversions: true,
+        custom_map: {
+          custom_parameter_1: "gmb_source",
+          custom_parameter_2: "location_id",
+        },
+      });
+
+      function trackGMBClick(location) {
+        gtag("event", "gmb_website_click", {
+          event_category: "GMB",
+          event_label: location,
+          custom_parameter_1: "gmb",
+          custom_parameter_2: location,
+          value: 1,
+        });
+      }
+
+      window.trackPhoneClick = function (location) {
+        gtag("event", "phone_click", {
+          event_category: "Contact",
+          event_label: "Phone from GMB - " + location,
+          value: 1,
+        });
+      };
+
+      window.trackDirections = function (location) {
+        gtag("event", "get_directions", {
+          event_category: "GMB",
+          event_label: "Directions - " + location,
+          value: 1,
+        });
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const utmSource = urlParams.get("utm_source");
+        const utmCampaign = urlParams.get("utm_campaign");
+
+        if (utmSource === "gmb") {
+          const location = utmCampaign || "unknown";
+          trackGMBClick(location);
+        }
+      });
+    </script>
+  </head>
+  <body id="home" class="bg-gray-50 font-sans text-gray-700 antialiased">
+    <Header />
+    <slot />
+    <Footer />
+    <!-- Global Scripts -->
+    <script
+      is:inline
+      src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit"
+      async
+      defer></script>
+    <script src="/assets/js/main.js" is:inline></script>
+    <script src="/assets/js/forms.js" is:inline></script>
+    <script src="/assets/js/store-hours.js" is:inline></script>
+    <script src="/assets/js/gmb-tracking.js" is:inline></script>
+    <script>
+      import { inject } from "@vercel/analytics";
+      inject();
+    </script>
+    <script is:inline>
+      window.onRecaptchaLoad = function () {
+        setTimeout(() => {
+          if (typeof window.initializeRecaptcha === "function") {
+            window.initializeRecaptcha();
+          }
+        }, 500);
+      };
+    </script>
+  </body>
+</html>
