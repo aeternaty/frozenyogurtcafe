@@ -1,0 +1,6 @@
+.vercel
+.astro
+dist
+node_modules
+_backup
+supabase
