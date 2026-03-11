@@ -7,6 +7,7 @@ This is the official codebase for the Get Yo Frozen Yogurt website, built with m
 The project is built using the Astro framework and styled with Tailwind CSS, utilizing a component-driven architecture for high maintainability.
 
 ### Core Technologies
+
 - **Framework:** Astro
 - **Styling:** Tailwind CSS
 - **Analytics:** Vercel Analytics
@@ -33,6 +34,7 @@ The repository is organized to separate concerns and facilitate easy content upd
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (version 22.12.0 or higher recommended)
 - npm (Node Package Manager)
 
@@ -52,6 +54,7 @@ To start the local development server:
 ```bash
 npm run dev
 ```
+
 The application will be accessible at `http://localhost:4321`.
 
 ## Production Build
@@ -61,6 +64,7 @@ To build the project for production deployment:
 ```bash
 npm run build
 ```
+
 The optimized production files will be generated in the `dist/` directory. You can preview the production build locally using:
 
 ```bash
@@ -74,11 +78,13 @@ The project includes several built-in scripts to maintain code quality and perfo
 ### Formatting and Linting
 
 To check the codebase for formatting and type errors:
+
 ```bash
 npm run check
 ```
 
 To automatically format the code and fix issues:
+
 ```bash
 npm run fix
 ```
@@ -88,16 +94,19 @@ npm run fix
 The project aims for a perfect 100/100 Lighthouse score across Performance, Accessibility, Best Practices, and SEO.
 
 To run a local Lighthouse audit:
+
 ```bash
 npm run lighthouse
 ```
 
 To run a CI/CD targeted Lighthouse audit:
+
 ```bash
 npm run lighthouse:ci
 ```
 
 To run an audit against the live production site:
+
 ```bash
 npm run lighthouse:live
 ```
