@@ -1,0 +1,234 @@
+<!-- Careers Section -->
+<section id="careers" class="bg-white py-16">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
+        Join Our Team
+      </h2>
+      <p class="mx-auto max-w-3xl text-lg text-gray-600">
+        We're always looking for energetic, friendly people to join our team. If
+        you're passionate about customer service and love creating smiles, we'd
+        love to hear from you!
+      </p>
+    </div>
+
+    <div class="mx-auto max-w-3xl rounded-lg bg-white p-8 shadow-sm">
+      <form id="job-application-form" class="careers-form">
+        <!-- Honeypot fields for spam protection -->
+        <div style="display:none">
+          <input type="text" name="website" autocomplete="off" tabindex="-1" />
+          <input
+            type="text"
+            name="email_confirm"
+            autocomplete="off"
+            tabindex="-1"
+          />
+        </div>
+
+        <div class="mb-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div>
+            <label
+              for="applicant-name"
+              class="mb-2 block font-medium text-gray-700">Full Name *</label
+            >
+            <input
+              type="text"
+              id="applicant-name"
+              name="applicant-name"
+              required
+              pattern="^[a-zA-ZğüşıöçĞÜŞİÖÇàáâãäåèéêëìíîïòóôõöùúûüýÿñ\s'-]{2,50}$"
+              class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              placeholder="Enter your full name"
+            />
+          </div>
+          <div>
+            <label
+              for="applicant-age"
+              class="mb-2 block font-medium text-gray-700">Age *</label
+            >
+            <input
+              type="number"
+              id="applicant-age"
+              name="applicant-age"
+              required
+              min="16"
+              max="99"
+              class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              placeholder="Enter your age"
+            />
+          </div>
+          <div>
+            <label
+              for="applicant-email"
+              class="mb-2 block font-medium text-gray-700"
+              >Email Address *</label
+            >
+            <input
+              type="email"
+              id="applicant-email"
+              name="applicant-email"
+              required
+              class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              placeholder="Enter your email"
+            />
+          </div>
+        </div>
+
+        <div class="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div>
+            <label
+              for="applicant-phone"
+              class="mb-2 block font-medium text-gray-700">Phone Number *</label
+            >
+            <input
+              type="tel"
+              id="applicant-phone"
+              name="applicant-phone"
+              required
+              class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              placeholder="Enter your phone number"
+            />
+          </div>
+          <div>
+            <label
+              for="preferred-location"
+              class="mb-2 block font-medium text-gray-700"
+              >Preferred Location *</label
+            >
+            <div class="relative">
+              <select
+                id="preferred-location"
+                name="preferred-location"
+                required
+                class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-2 pr-8 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              >
+                <option value="">Select location</option>
+                <option value="marlboro">Marlboro</option>
+                <option value="new-providence">New Providence</option>
+                <option value="any">Any Location</option>
+              </select>
+              <div
+                class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 transform"
+              >
+                <i class="ri-arrow-down-s-line text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div>
+            <label
+              for="position-type"
+              class="mb-2 block font-medium text-gray-700"
+              >Position Type *</label
+            >
+            <div class="relative">
+              <select
+                id="position-type"
+                name="position-type"
+                required
+                class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-2 pr-8 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              >
+                <option value="">Select position type</option>
+                <option value="full-time">Full Time</option>
+                <option value="part-time">Part Time</option>
+              </select>
+              <div
+                class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 transform"
+              >
+                <i class="ri-arrow-down-s-line text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label
+              for="availability"
+              class="mb-2 block font-medium text-gray-700">Availability *</label
+            >
+            <div class="relative">
+              <select
+                id="availability"
+                name="availability"
+                required
+                class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-2 pr-8 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              >
+                <option value="">Select availability</option>
+                <option value="weekdays">Weekdays</option>
+                <option value="weekends">Weekends</option>
+                <option value="both">Both Weekdays & Weekends</option>
+              </select>
+              <div
+                class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 transform"
+              >
+                <i class="ri-arrow-down-s-line text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label for="experience" class="mb-2 block font-medium text-gray-700"
+            >Relevant Experience</label
+          >
+          <textarea
+            id="experience"
+            name="experience"
+            rows="4"
+            class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+            placeholder="Tell us about your previous work experience, especially in customer service or food service"
+          ></textarea>
+        </div>
+
+        <div class="mb-6">
+          <label for="why-join" class="mb-2 block font-medium text-gray-700"
+            >Why do you want to join Get Yo? *</label
+          >
+          <textarea
+            id="why-join"
+            name="why-join"
+            required
+            rows="4"
+            class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+            placeholder="Tell us why you'd like to join our team and what makes you a great fit"
+          ></textarea>
+        </div>
+
+        <div class="mb-6">
+          <label class="custom-checkbox flex items-start">
+            <input
+              type="checkbox"
+              name="terms"
+              id="consent-checkbox"
+              required
+            />
+            <span class="checkmark"></span>
+            <span class="ml-6 cursor-pointer select-none text-gray-700"
+              >I confirm that all information provided is accurate and I consent
+              to reference checks *</span
+            >
+          </label>
+        </div>
+
+        <!-- reCAPTCHA -->
+        <div class="recaptcha-wrapper mb-6 overflow-visible">
+          <div
+            class="g-recaptcha"
+            id="careers-recaptcha"
+            style="transform: scale(0.9); transform-origin: 0 0;"
+          >
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="flex w-full items-center justify-center whitespace-nowrap rounded-button bg-primary px-6 py-3 font-medium text-white hover:bg-opacity-90 md:w-auto"
+          data-requires-recaptcha="true"
+        >
+          <i class="ri-send-plane-line mr-2"></i>
+          Submit Application
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

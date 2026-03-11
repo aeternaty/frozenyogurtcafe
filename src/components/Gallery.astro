@@ -1,0 +1,309 @@
+<section class="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
+        Visit Our Stores
+      </h2>
+      <p class="mx-auto max-w-3xl text-lg text-gray-600">
+        Experience the vibrant atmosphere of our premium frozen yogurt cafes
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+      <div
+        class="gallery-item aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105"
+        data-index="0"
+      >
+        <img
+          src="/assets/images/store/1.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Get Yo Store Interior"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105"
+        data-index="1"
+      >
+        <img
+          src="/assets/images/store/2.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Frozen Yogurt Station"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105"
+        data-index="2"
+      >
+        <img
+          src="/assets/images/store/3.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Toppings Bar"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105"
+        data-index="3"
+      >
+        <img
+          src="/assets/images/store/4.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Store Exterior"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105"
+        data-index="4"
+      >
+        <img
+          src="/assets/images/store/5.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Fresh Toppings"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105"
+        data-index="5"
+      >
+        <img
+          src="/assets/images/store/6.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Yogurt Machines"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105"
+        data-index="6"
+      >
+        <img
+          src="/assets/images/store/7.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Store Ambiance"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105"
+        data-index="7"
+      >
+        <img
+          src="/assets/images/store/8.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Customer Service"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item hidden aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 md:block"
+        data-index="8"
+      >
+        <img
+          src="/assets/images/store/9.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Seating Area"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item hidden aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 md:block"
+        data-index="9"
+      >
+        <img
+          src="/assets/images/store/10.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Store Details"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item hidden aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 md:block"
+        data-index="10"
+      >
+        <img
+          src="/assets/images/store/11.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Fresh Ingredients"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="gallery-item hidden aspect-square cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 md:block"
+        data-index="11"
+      >
+        <img
+          src="/assets/images/store/12.webp"
+          loading="lazy"
+          width="400"
+          height="400"
+          alt="Welcome Sign"
+          class="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<div
+  id="gallery-modal"
+  class="fixed inset-0 z-[200] flex hidden items-center justify-center bg-black bg-opacity-90 p-4"
+>
+  <button
+    id="close-modal-btn"
+    class="absolute right-4 top-4 z-10 text-4xl text-white hover:text-gray-300"
+  >
+    <i class="ri-close-line"></i>
+  </button>
+
+  <button
+    id="prev-modal-btn"
+    class="absolute left-4 top-1/2 z-10 -translate-y-1/2 text-4xl text-white hover:text-gray-300"
+  >
+    <i class="ri-arrow-left-s-line"></i>
+  </button>
+
+  <button
+    id="next-modal-btn"
+    class="absolute right-4 top-1/2 z-10 -translate-y-1/2 text-4xl text-white hover:text-gray-300"
+  >
+    <i class="ri-arrow-right-s-line"></i>
+  </button>
+
+  <div class="flex max-h-[90vh] w-full max-w-5xl items-center justify-center">
+    <img
+      id="gallery-modal-image"
+      src="/assets/images/logo.webp"
+      alt="Store Gallery"
+      class="max-h-[85vh] max-w-full rounded-lg object-contain transition-opacity duration-300"
+    />
+  </div>
+
+  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-white">
+    <span id="image-counter"></span>
+  </div>
+</div>
+
+<script>
+  function initGallery() {
+    const galleryImages = [
+      "/assets/images/store/1.webp",
+      "/assets/images/store/2.webp",
+      "/assets/images/store/3.webp",
+      "/assets/images/store/4.webp",
+      "/assets/images/store/5.webp",
+      "/assets/images/store/6.webp",
+      "/assets/images/store/7.webp",
+      "/assets/images/store/8.webp",
+      "/assets/images/store/9.webp",
+      "/assets/images/store/10.webp",
+      "/assets/images/store/11.webp",
+      "/assets/images/store/12.webp",
+    ];
+
+    let currentImageIndex = 0;
+    const modal = document.getElementById("gallery-modal");
+    const modalImage = document.getElementById(
+      "gallery-modal-image",
+    ) as HTMLImageElement;
+    const imageCounter = document.getElementById("image-counter");
+
+    if (!modal || !modalImage || !imageCounter) return;
+
+    function updateModalImage() {
+      if (modalImage && imageCounter) {
+        modalImage.classList.add("opacity-0");
+        setTimeout(() => {
+          modalImage.src = galleryImages[currentImageIndex];
+          imageCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+          modalImage.onload = () => {
+            modalImage.classList.remove("opacity-0");
+          };
+        }, 200);
+      }
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (!modal || modal.classList.contains("hidden")) return;
+      if (e.key === "Escape") closeModal();
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") previousImage();
+    });
+
+    function closeModal() {
+      modal?.classList.add("hidden");
+      document.body.style.overflow = "";
+      document.querySelector("header")?.classList.remove("hidden");
+    }
+
+    function nextImage() {
+      currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+      updateModalImage();
+    }
+
+    function previousImage() {
+      currentImageIndex =
+        (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+      updateModalImage();
+    }
+
+    document
+      .getElementById("close-modal-btn")
+      ?.addEventListener("click", closeModal);
+    document
+      .getElementById("next-modal-btn")
+      ?.addEventListener("click", nextImage);
+    document
+      .getElementById("prev-modal-btn")
+      ?.addEventListener("click", previousImage);
+
+    // bind clicks properly
+    document.querySelectorAll(".gallery-item").forEach((item) => {
+      item.addEventListener("click", (e) => {
+        const index = parseInt(
+          (e.currentTarget as HTMLElement).getAttribute("data-index") || "0",
+          10,
+        );
+        currentImageIndex = index;
+        // Immediate show for first click
+        modalImage.src = galleryImages[currentImageIndex];
+        imageCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+        modalImage.classList.remove("opacity-0");
+        modal?.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+        document.querySelector("header")?.classList.add("hidden");
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initGallery);
+  } else {
+    initGallery();
+  }
+</script>

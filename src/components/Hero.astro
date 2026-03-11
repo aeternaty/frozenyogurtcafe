@@ -1,0 +1,120 @@
+<section class="hero-section relative min-h-screen">
+  <div class="absolute inset-0 overflow-hidden">
+    <img
+      src="/assets/images/hero-background.webp"
+      alt="Delicious Frozen Yogurt with Toppings"
+      class="h-full w-full object-cover"
+      width="1920"
+      height="1080"
+      fetchpriority="high"
+      loading="eager"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/80 to-white/0"
+    >
+    </div>
+  </div>
+
+  <div
+    class="relative z-10 flex min-h-[85vh] items-center pt-16 sm:min-h-screen sm:pt-24"
+  >
+    <div class="mx-auto max-w-7xl px-4 py-8">
+      <div class="max-w-2xl">
+        <h1
+          class="mb-4 text-3xl font-bold leading-tight tracking-tight text-gray-900 sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl"
+          style="letter-spacing: -0.02em;"
+        >
+          Refreshing & Delicious<br class="hidden sm:block" />
+          <span class="text-primary">Frozen Yogurt</span>
+        </h1>
+
+        <p
+          class="mb-6 text-base font-medium leading-relaxed text-gray-800 sm:mb-8 sm:text-lg md:text-xl lg:text-2xl"
+        >
+          Indulge in our premium frozen yogurt made with the high quality
+          ingredients and topped with your favorite treats. No Sugar Added,
+          Non-Fat, Low Fat and Dairy Free options
+        </p>
+
+        <div class="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:gap-4">
+          <a
+            href="#locations"
+            class="inline-flex items-center justify-center rounded-button bg-primary px-5 py-3.5 text-center text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-7 sm:text-base"
+          >
+            <i class="ri-map-pin-line mr-2"></i>
+            Find Nearest Location
+          </a>
+          <a
+            href="#menu"
+            class="inline-flex items-center justify-center rounded-button border-2 border-primary bg-white px-5 py-3.5 text-center text-sm font-semibold text-primary sm:px-7 sm:text-base"
+          >
+            <i class="ri-restaurant-line mr-2"></i>
+            View Our Menu
+          </a>
+        </div>
+
+        <a
+          href="https://get-yo-web-app.vercel.app/api/download"
+          target="_blank"
+          class="mb-6 flex items-center gap-3 rounded-lg bg-white/90 p-4 shadow-sm backdrop-blur transition-all hover:shadow-md sm:mb-8"
+        >
+          <div
+            class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:h-12 sm:w-12"
+          >
+            <i class="ri-vip-crown-line text-lg text-primary sm:text-xl"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold text-gray-800 sm:text-base">
+              Join <span
+                class="font-['Pacifico'] text-base text-primary sm:text-lg"
+                >Ounce&Bounce</span
+              >
+              Rewards
+            </p>
+            <p class="text-xs text-gray-600 sm:text-sm">
+              Get 100 bonus points today!
+            </p>
+          </div>
+          <button
+            class="flex-shrink-0 rounded-button bg-primary px-3 py-2 text-sm font-medium text-white transition-all hover:bg-opacity-90 sm:px-4"
+            aria-label="Join Ounce and Bounce Rewards"
+          >
+            <i class="ri-arrow-right-line"></i>
+          </button>
+        </a>
+
+        <div class="rounded-lg bg-white/90 p-4 shadow-sm backdrop-blur">
+          <p class="mb-3 text-sm font-semibold text-gray-800 sm:text-base">
+            Today's Hours (<span id="current-date">Loading...</span>)
+          </p>
+          <div class="space-y-2 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
+            <div
+              class="flex items-center justify-between border-b border-gray-200 py-1 sm:border-b-0"
+            >
+              <p class="text-sm font-semibold text-primary sm:text-base">
+                Marlboro
+              </p>
+              <p
+                class="text-xs font-semibold text-gray-700 sm:text-sm"
+                id="marlboro-hours"
+              >
+                Loading...
+              </p>
+            </div>
+            <div class="flex items-center justify-between py-1">
+              <p class="text-sm font-semibold text-primary sm:text-base">
+                New Providence
+              </p>
+              <p
+                class="text-xs font-semibold text-gray-700 sm:text-sm"
+                id="providence-hours"
+              >
+                Loading...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

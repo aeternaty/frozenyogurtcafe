@@ -1,0 +1,245 @@
+<!-- Contact Section -->
+<section id="contact" class="bg-gray-50 py-16">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
+        Get in Touch
+      </h2>
+      <p class="mx-auto max-w-3xl text-lg text-gray-600">
+        Have questions or feedback? We'd love to hear from you! Reach out to us
+        using the form below or contact one of our locations directly.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <!-- Contact Form -->
+      <div class="rounded-lg bg-white p-6 shadow-sm lg:col-span-2">
+        <form id="contact-form" class="contact-form">
+          <!-- Honeypot fields for spam protection -->
+          <div style="display:none">
+            <input
+              type="text"
+              name="website"
+              autocomplete="off"
+              tabindex="-1"
+            />
+            <input
+              type="text"
+              name="email_confirm"
+              autocomplete="off"
+              tabindex="-1"
+            />
+          </div>
+
+          <div class="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div>
+              <label for="name" class="mb-2 block font-medium text-gray-700"
+                >Your Name</label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                pattern="^[a-zA-Z\s]{2,50}$"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+                placeholder="Enter your name"
+              />
+            </div>
+            <div>
+              <label for="email" class="mb-2 block font-medium text-gray-700"
+                >Email Address</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+                placeholder="Enter your email"
+              />
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label for="subject" class="mb-2 block font-medium text-gray-700"
+              >Subject</label
+            >
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              required
+              class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              placeholder="Enter subject"
+            />
+          </div>
+
+          <div class="mb-6">
+            <label for="message" class="mb-2 block font-medium text-gray-700"
+              >Message</label
+            >
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              maxlength="500"
+              class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+              placeholder="Enter your message"></textarea>
+            <div class="mt-1 text-sm text-gray-500">
+              Characters remaining: <span id="message-chars">500</span>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label class="custom-checkbox flex items-start">
+              <input type="checkbox" name="newsletter" value="subscribed" />
+              <span class="checkmark"></span>
+              <span class="ml-6 text-gray-700"
+                >Subscribe to our newsletter for updates and special offers</span
+              >
+            </label>
+          </div>
+
+          <!-- reCAPTCHA -->
+          <div class="recaptcha-wrapper mb-6 overflow-visible">
+            <div
+              class="g-recaptcha"
+              id="contact-recaptcha"
+              style="transform: scale(0.9); transform-origin: 0 0;"
+            >
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="flex items-center whitespace-nowrap rounded-button bg-primary px-6 py-3 font-medium text-white hover:bg-opacity-90"
+            data-requires-recaptcha="true"
+          >
+            <i class="ri-send-plane-line mr-2"></i>
+            Send Message
+          </button>
+        </form>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="overflow-hidden rounded-xl bg-white shadow-lg">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-primary to-orange-400 px-6 py-5">
+          <div class="flex items-center justify-center gap-4">
+            <div
+              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/20"
+            >
+              <i class="ri-phone-fill text-2xl text-white"></i>
+            </div>
+            <h3
+              class="m-0 text-2xl font-extrabold leading-none tracking-tight text-white"
+            >
+              Contact Information
+            </h3>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <!-- Marlboro -->
+          <div
+            class="mb-5 rounded-lg border-l-4 border-primary bg-orange-50/50 p-4"
+          >
+            <h4 class="mb-3 text-base font-bold text-gray-900">
+              <i class="ri-store-2-line mr-1 text-primary"></i> Marlboro
+            </h4>
+            <div class="space-y-2.5">
+              <a
+                href="https://maps.google.com/?q=450+Union+Hill+Road+Morganville+NJ+07751"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-start gap-3 text-sm text-gray-600 transition-colors hover:text-primary"
+              >
+                <i class="ri-map-pin-2-fill mt-0.5 text-base text-primary"></i>
+                <span>450 Union Hill Road<br />Morganville, NJ 07751</span>
+              </a>
+              <a
+                href="tel:+17326176332"
+                class="flex items-center gap-3 text-sm font-medium text-gray-700 transition-colors hover:text-primary"
+              >
+                <i class="ri-phone-fill text-base text-primary"></i>
+                <span>(732) 617-6332</span>
+              </a>
+              <a
+                href="mailto:info@getyocafe.com"
+                class="flex items-center gap-3 text-sm text-gray-600 transition-colors hover:text-primary"
+              >
+                <i class="ri-mail-fill text-base text-primary"></i>
+                <span>info@getyocafe.com</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- New Providence -->
+          <div
+            class="mb-5 rounded-lg border-l-4 border-blue-400 bg-blue-50/50 p-4"
+          >
+            <h4 class="mb-3 text-base font-bold text-gray-900">
+              <i class="ri-store-2-line mr-1 text-blue-500"></i> New Providence
+            </h4>
+            <div class="space-y-2.5">
+              <a
+                href="https://maps.google.com/?q=12+South+Street+New+Providence+NJ+07974"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-start gap-3 text-sm text-gray-600 transition-colors hover:text-blue-500"
+              >
+                <i class="ri-map-pin-2-fill mt-0.5 text-base text-blue-500"></i>
+                <span>12 South Street<br />New Providence, NJ 07974</span>
+              </a>
+              <a
+                href="tel:+19082194338"
+                class="flex items-center gap-3 text-sm font-medium text-gray-700 transition-colors hover:text-blue-500"
+              >
+                <i class="ri-phone-fill text-base text-blue-500"></i>
+                <span>(908) 219-4338</span>
+              </a>
+              <a
+                href="mailto:info@getyocafe.com"
+                class="flex items-center gap-3 text-sm text-gray-600 transition-colors hover:text-blue-500"
+              >
+                <i class="ri-mail-fill text-base text-blue-500"></i>
+                <span>info@getyocafe.com</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Social Media -->
+          <div class="rounded-lg bg-gray-50 p-4">
+            <h4
+              class="mb-3 text-sm font-bold uppercase tracking-wider text-gray-500"
+            >
+              Follow Us
+            </h4>
+            <div class="flex gap-3">
+              <a
+                href="https://www.instagram.com/getyo_marlboro/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-md transition-all hover:scale-110 hover:shadow-lg"
+                aria-label="Follow us on Instagram"
+              >
+                <i class="ri-instagram-line text-lg"></i>
+              </a>
+              <a
+                href="https://www.tiktok.com/@getyofrozenyogurtcafe"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-md transition-all hover:scale-110 hover:shadow-lg"
+                aria-label="Follow us on TikTok"
+              >
+                <i class="ri-tiktok-line text-lg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

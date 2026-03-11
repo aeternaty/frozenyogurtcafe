@@ -1,0 +1,372 @@
+<section id="menu" class="bg-gray-50 py-16">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
+        Our Menu
+      </h2>
+      <p class="mx-auto max-w-3xl text-lg text-gray-600">
+        Discover our delicious selection of frozen yogurt flavors and toppings.
+        Mix and match to create your perfect treat!
+      </p>
+    </div>
+
+    <!-- Location Tabs -->
+    <div class="mx-auto mb-12 max-w-3xl">
+      <div class="mb-6">
+        <h3 class="mb-4 text-xl font-bold text-gray-800">Select Location</h3>
+        <div
+          id="location-tabs"
+          class="flex rounded-full bg-white p-1 shadow-sm"
+        >
+          <!-- Dynamically generated -->
+        </div>
+      </div>
+
+      <!-- Menu Type Tabs -->
+      <div class="flex rounded-full bg-white p-1 shadow-sm">
+        <button
+          class="menu-tab active flex-1 rounded-full px-4 py-3 font-medium transition-all duration-200"
+          data-tab="flavors"
+        >
+          <i class="ri-ice-cream-line mr-2"></i>Flavors
+        </button>
+        <button
+          class="menu-tab flex-1 rounded-full px-4 py-3 font-medium transition-all duration-200"
+          data-tab="toppings"
+        >
+          <i class="ri-leaf-line mr-2"></i>Toppings
+        </button>
+      </div>
+    </div>
+
+    <!-- Flavors Content -->
+    <div class="menu-content" id="flavors-content">
+      <div class="mb-8">
+        <div id="flavor-category-filters" class="mb-6 flex flex-wrap gap-3">
+          <!-- Dynamically generated -->
+        </div>
+
+        <div class="mb-6 rounded-xl bg-white p-6 shadow-sm">
+          <h3 class="mb-4 text-lg font-semibold text-gray-800">
+            Allergen Information
+          </h3>
+          <p class="mb-4 text-gray-600">
+            Click on an allergen to see associated flavors. All products are
+            produced in a shared facility.
+          </p>
+          <div id="flavor-allergen-filters" class="flex flex-wrap gap-3">
+            <!-- Dynamically generated -->
+          </div>
+        </div>
+      </div>
+
+      <div id="flavor-results-info" class="mb-6 text-center text-gray-600">
+      </div>
+      <div
+        id="flavors-grid"
+        class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        <div class="col-span-full py-12 text-center">
+          <div
+            class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-orange-500 border-t-transparent"
+          >
+          </div>
+          <p class="text-gray-600">Loading delicious flavors...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toppings Content -->
+    <div class="menu-content hidden" id="toppings-content">
+      <div class="mb-8">
+        <div id="topping-category-filters" class="mb-6 flex flex-wrap gap-3">
+          <!-- Dynamically generated -->
+        </div>
+
+        <div class="mb-6 rounded-xl bg-white p-6 shadow-sm">
+          <h3 class="mb-4 text-lg font-semibold text-gray-800">
+            Allergen Information
+          </h3>
+          <p class="mb-4 text-gray-600">
+            Click on an allergen to see associated toppings. All products are
+            produced in a shared facility.
+          </p>
+          <div id="topping-allergen-filters" class="flex flex-wrap gap-3">
+            <!-- Dynamically generated -->
+          </div>
+        </div>
+      </div>
+
+      <div id="topping-results-info" class="mb-6 text-center text-gray-600">
+      </div>
+      <div id="topping-categories" class="space-y-8">
+        <div class="py-12 text-center">
+          <div
+            class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-orange-500 border-t-transparent"
+          >
+          </div>
+          <p class="text-gray-600">Loading toppings...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Flavor Modal -->
+<div
+  id="flavor-modal"
+  class="fixed inset-0 z-[200] flex hidden items-center justify-center bg-black bg-opacity-60 p-4"
+>
+  <div
+    class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+  >
+    <div
+      class="sticky top-0 flex items-center justify-between rounded-t-2xl border-b border-gray-200 bg-white px-6 py-4"
+    >
+      <h2 id="modal-title" class="text-2xl font-bold text-gray-800"></h2>
+      <button
+        id="close-flavor-modal"
+        class="text-2xl text-gray-400 hover:text-gray-600"
+      >
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+
+    <div class="p-6">
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div class="space-y-4">
+          <img
+            id="modal-image"
+            src=""
+            alt=""
+            class="h-64 w-full rounded-xl object-cover"
+          />
+          <div id="modal-certifications" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div class="space-y-4">
+          <p
+            id="modal-description"
+            class="text-lg leading-relaxed text-gray-600"
+          >
+          </p>
+          <div id="modal-categories" class="flex flex-wrap gap-2"></div>
+          <div id="modal-nutrition" class="rounded-lg bg-gray-50 p-4">
+            <h4 class="mb-2 font-semibold text-gray-800">
+              Nutrition (per serving)
+            </h4>
+            <div class="grid grid-cols-2 gap-2 text-sm"></div>
+          </div>
+          <div id="modal-allergens" class="rounded-lg bg-red-50 p-4">
+            <h4 class="mb-2 font-semibold text-red-800">Allergens</h4>
+            <p class="text-sm text-red-700"></p>
+          </div>
+          <div id="modal-ingredients" class="rounded-lg bg-blue-50 p-4">
+            <h4 class="mb-2 font-semibold text-blue-800">Ingredients</h4>
+            <p class="text-sm text-blue-700"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Topping Modal -->
+<div
+  id="topping-modal"
+  class="fixed inset-0 z-[200] flex hidden items-center justify-center bg-black bg-opacity-60 p-4"
+>
+  <div
+    class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+  >
+    <div
+      class="sticky top-0 flex items-center justify-between rounded-t-2xl border-b border-gray-200 bg-white px-6 py-4"
+    >
+      <h2 id="topping-modal-title" class="text-2xl font-bold text-gray-800">
+      </h2>
+      <button
+        id="close-topping-modal"
+        class="text-2xl text-gray-400 hover:text-gray-600"
+      >
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+
+    <div class="p-6">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="space-y-4">
+          <img
+            id="topping-modal-image"
+            src=""
+            alt=""
+            class="h-48 w-full rounded-xl object-cover"
+          />
+          <div id="topping-modal-certifications" class="flex flex-wrap gap-2">
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <p
+            id="topping-modal-description"
+            class="text-lg leading-relaxed text-gray-600"
+          >
+          </p>
+          <div id="topping-modal-categories" class="flex flex-wrap gap-2"></div>
+          <div id="topping-modal-allergens" class="rounded-lg bg-red-50 p-4">
+            <h4 class="mb-2 font-semibold text-red-800">Allergens</h4>
+            <p class="text-sm text-red-700"></p>
+          </div>
+          <div id="topping-modal-locations" class="rounded-lg bg-blue-50 p-4">
+            <h4 class="mb-2 font-semibold text-blue-800">
+              Available Locations
+            </h4>
+            <p class="text-sm text-blue-700"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .flavor-card,
+  .topping-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .flavor-card:hover,
+  .topping-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .flavor-image,
+  .topping-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .flavor-card:hover .flavor-image,
+  .topping-card:hover .topping-image {
+    transform: scale(1.05);
+  }
+
+  .filter-btn {
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+    background: white;
+    color: #374151;
+    cursor: pointer;
+  }
+
+  .filter-btn:hover {
+    background: #f3f4f6;
+  }
+
+  .filter-btn.active {
+    background: #f58220;
+    color: white;
+    border-color: #f58220;
+  }
+
+  .badge {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .badge-dairy-free {
+    background: #f3e8ff;
+    color: #7c3aed;
+  }
+  .badge-no-sugar {
+    background: #dbeafe;
+    color: #2563eb;
+  }
+  .badge-non-fat {
+    background: #d1fae5;
+    color: #059669;
+  }
+  .badge-low-fat {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  .cert-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    border-radius: 6px;
+    background: white;
+    padding: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .category-badge {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 500;
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  @media (max-width: 640px) {
+    .flavor-card,
+    .topping-card {
+      border-radius: 12px;
+    }
+
+    .flavor-image,
+    .topping-image {
+      height: 160px;
+    }
+
+    .cert-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<script>
+  import { DynamicMenuSystem } from "../scripts/menu.js";
+  (window as any).menuSystem = new DynamicMenuSystem();
+  (window as any).menuSystem.init();
+</script>

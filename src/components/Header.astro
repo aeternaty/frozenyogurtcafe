@@ -1,0 +1,176 @@
+---
+
+---
+
+<header
+  class="sticky top-0 z-[100] w-full bg-white shadow-sm transition-all duration-300"
+>
+  <div class="container mx-auto max-w-full overflow-x-hidden px-4 py-4">
+    <div class="flex w-full items-center justify-between">
+      <!-- Mobile Menu Button -->
+      <div
+        id="mobile-menu-button"
+        class="flex h-10 w-10 cursor-pointer items-center justify-center lg:hidden"
+      >
+        <i
+          id="menu-icon"
+          class="ri-menu-line text-xl text-gray-700 transition-all duration-300"
+        ></i>
+      </div>
+
+      <!-- Desktop Navigation - Left -->
+      <nav class="hidden flex-1 items-center space-x-8 lg:flex">
+        <a
+          href="#home"
+          class="text-lg font-semibold text-gray-700 transition-colors hover:text-primary"
+          >Home</a
+        >
+        <a
+          href="#locations"
+          class="text-lg font-semibold text-gray-700 transition-colors hover:text-primary"
+          >Locations</a
+        >
+        <a
+          href="#menu"
+          class="text-lg font-semibold text-gray-700 transition-colors hover:text-primary"
+          >Menu</a
+        >
+        <a
+          href="#careers"
+          class="text-lg font-semibold text-gray-700 transition-colors hover:text-primary"
+          >Careers</a
+        >
+      </nav>
+
+      <!-- Logo - Centered -->
+      <div class="flex flex-1 items-center justify-center lg:flex-initial">
+        <a href="/">
+          <img
+            src="/assets/images/logo.webp"
+            alt="Get Yo Frozen Yogurt Logo - Best Froyo Near Me"
+            class="h-14 w-auto sm:h-16 md:h-20"
+            width="200"
+            height="67"
+          />
+        </a>
+      </div>
+
+      <!-- Desktop Navigation - Right -->
+      <nav class="hidden flex-1 items-center justify-end space-x-8 lg:flex">
+        <a
+          href="#contact"
+          class="text-lg font-semibold text-gray-700 transition-colors hover:text-primary"
+          >Contact</a
+        >
+        <a
+          href="#locations"
+          class="whitespace-nowrap rounded-button bg-primary px-5 py-2.5 text-lg font-semibold text-white transition-all hover:bg-orange-600 hover:shadow-md"
+          >Find Us</a
+        >
+      </nav>
+
+      <!-- Mobile Find Us Button -->
+      <div class="flex lg:hidden">
+        <a
+          href="#locations"
+          class="flex h-10 w-10 items-center justify-center rounded-button bg-primary text-white transition-all hover:bg-orange-600"
+          aria-label="Find frozen yogurt locations near me"
+        >
+          <i class="ri-map-pin-line text-lg"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Menu -->
+  <div
+    id="mobile-menu"
+    class="hidden lg:hidden"
+    style="position: absolute; top: 100%; left: 0; right: 0; z-index: 1000;"
+  >
+    <div class="bg-white shadow-md">
+      <div class="container mx-auto max-w-full px-4">
+        <nav class="flex flex-col py-2">
+          <a
+            href="#home"
+            class="mobile-menu-link border-b border-gray-100 px-4 py-3 font-medium text-gray-700 transition-all hover:bg-gray-50 hover:text-primary"
+          >
+            <i class="ri-home-line mr-3"></i>Home
+          </a>
+          <a
+            href="#locations"
+            class="mobile-menu-link border-b border-gray-100 px-4 py-3 font-medium text-gray-700 transition-all hover:bg-gray-50 hover:text-primary"
+          >
+            <i class="ri-map-pin-line mr-3"></i>Locations
+          </a>
+          <a
+            href="#menu"
+            class="mobile-menu-link border-b border-gray-100 px-4 py-3 font-medium text-gray-700 transition-all hover:bg-gray-50 hover:text-primary"
+          >
+            <i class="ri-restaurant-line mr-3"></i>Menu
+          </a>
+          <a
+            href="#careers"
+            class="mobile-menu-link border-b border-gray-100 px-4 py-3 font-medium text-gray-700 transition-all hover:bg-gray-50 hover:text-primary"
+          >
+            <i class="ri-briefcase-line mr-3"></i>Careers
+          </a>
+          <a
+            href="#contact"
+            class="mobile-menu-link px-4 py-3 font-medium text-gray-700 transition-all hover:bg-gray-50 hover:text-primary"
+          >
+            <i class="ri-mail-line mr-3"></i>Contact
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const menuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIcon = document.getElementById("menu-icon");
+    const menuLinks = document.querySelectorAll(".mobile-menu-link");
+
+    if (!menuButton || !mobileMenu || !menuIcon) return;
+
+    let isMenuOpen = false;
+
+    function toggleMenu() {
+      isMenuOpen = !isMenuOpen;
+
+      if (isMenuOpen) {
+        mobileMenu!.classList.remove("hidden");
+        menuIcon!.classList.remove("ri-menu-line");
+        menuIcon!.classList.add("ri-close-line");
+      } else {
+        mobileMenu!.classList.add("hidden");
+        menuIcon!.classList.remove("ri-close-line");
+        menuIcon!.classList.add("ri-menu-line");
+      }
+    }
+
+    menuButton.addEventListener("click", toggleMenu);
+
+    // Close menu when clicking a link
+    menuLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (isMenuOpen) toggleMenu();
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+      const target = e.target as Node;
+      if (
+        isMenuOpen &&
+        !mobileMenu!.contains(target) &&
+        !menuButton.contains(target)
+      ) {
+        toggleMenu();
+      }
+    });
+  });
+</script>
