@@ -5,19 +5,19 @@ class StoreHoursManager {
             CACHE_DURATION: 15 * 60 * 1000,
             UPDATE_INTERVAL: 60 * 1000
         };
-        
+
         this.state = {
             hoursData: null,
             cache: null,
             lastUpdate: null
         };
-        
+
         this.updateInterval = null;
     }
 
     async init() {
         // log removed
-        
+
         try {
             await this.loadHoursData();
             this.updateAllDisplays();
@@ -38,23 +38,23 @@ class StoreHoursManager {
 
         try {
             const response = await fetch(`${this.config.API_BASE_URL}/hours`);
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
-            
+
             const result = await response.json();
-            
+
             if (!result.success || !result.data) {
                 throw new Error(result.message || 'Invalid API response');
             }
-            
+
             this.state.hoursData = result.data;
             this.setCachedData(result.data);
             this.state.lastUpdate = new Date();
-            
+
             // log removed
-            
+
         } catch (error) {
             console.error('Failed to load hours from API:', error);
             throw error;
@@ -77,16 +77,16 @@ class StoreHoursManager {
 
     getCurrentEasternTime() {
         const now = new Date();
-        return new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+        return new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
     }
 
     formatTimeDisplay(time24) {
         if (!time24) return '';
-        
+
         const [hours, minutes] = time24.split(':').map(Number);
         const period = hours >= 12 ? 'PM' : 'AM';
         const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-        
+
         return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
     }
 
@@ -103,7 +103,7 @@ class StoreHoursManager {
     isHolidayToday(holidays) {
         const today = this.getCurrentEasternTime();
         const todayStr = today.toISOString().split('T')[0];
-        
+
         return holidays.find(holiday => holiday.date === todayStr);
     }
 
@@ -178,7 +178,7 @@ class StoreHoursManager {
         for (let i = 0; i <= 7; i++) {
             const checkDate = new Date(easternTime);
             checkDate.setDate(checkDate.getDate() + i);
-            
+
             const checkDay = checkDate.getDay();
             const checkDayName = dayNames[checkDay];
             const checkDateStr = checkDate.toISOString().split('T')[0];
@@ -190,7 +190,7 @@ class StoreHoursManager {
 
             const specialHours = store.special_hours.find(sh => sh.date === checkDateStr);
             let dayHours;
-            
+
             if (specialHours) {
                 dayHours = specialHours;
             } else {
@@ -202,7 +202,7 @@ class StoreHoursManager {
             }
 
             const openTime = this.getTimeInMinutes(dayHours.open_time);
-            
+
             if (i === 0) {
                 const currentTimeMinutes = this.getCurrentTimeInMinutes(easternTime);
                 if (currentTimeMinutes < openTime) {
@@ -230,13 +230,13 @@ class StoreHoursManager {
         const store = this.state.hoursData.stores[storeSlug];
         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
         const dayLabels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        
+
         return dayNames.map((day, index) => {
             const dayHours = store.regular_hours[day];
             return {
                 day: dayLabels[index],
-                hours: dayHours && !dayHours.is_closed ? 
-                    `${this.formatTimeDisplay(dayHours.open_time)} - ${this.formatTimeDisplay(dayHours.close_time)}` : 
+                hours: dayHours && !dayHours.is_closed ?
+                    `${this.formatTimeDisplay(dayHours.open_time)} - ${this.formatTimeDisplay(dayHours.close_time)}` :
                     'Closed'
             };
         });
@@ -261,9 +261,9 @@ class StoreHoursManager {
         if (!element) return;
 
         const status = this.getStoreStatus(storeSlug);
-        
+
         let displayHtml = status.hours;
-        
+
         if (includeStatus) {
             if (status.isHoliday) {
                 displayHtml += ` <span class="text-red-600 font-medium">• ${status.holidayName}</span>`;
@@ -273,21 +273,21 @@ class StoreHoursManager {
                 displayHtml += ' <span class="text-red-600 font-medium">• Closed</span>';
             }
         }
-        
+
         element.innerHTML = displayHtml;
     }
 
     updateLocationHours() {
         const marlboroHoursElement = document.getElementById('marlboro-location-hours');
         const providenceHoursElement = document.getElementById('providence-location-hours');
-        
+
         if (marlboroHoursElement) {
             const weeklyHours = this.getWeeklyHours('marlboro');
             if (weeklyHours) {
                 marlboroHoursElement.innerHTML = this.generateWeeklyHoursHTML(weeklyHours);
             }
         }
-        
+
         if (providenceHoursElement) {
             const weeklyHours = this.getWeeklyHours('newprovidence');
             if (weeklyHours) {
@@ -309,7 +309,7 @@ class StoreHoursManager {
     groupConsecutiveDays(weeklyHours) {
         const groups = [];
         let currentGroup = null;
-        
+
         weeklyHours.forEach((dayHours, index) => {
             if (!currentGroup || currentGroup.hours !== dayHours.hours) {
                 if (currentGroup) {
@@ -330,11 +330,11 @@ class StoreHoursManager {
                 }
             }
         });
-        
+
         if (currentGroup) {
             groups.push(currentGroup);
         }
-        
+
         return groups;
     }
 
@@ -346,11 +346,11 @@ class StoreHoursManager {
     updateFooterStoreStatus(storeSlug, statusElementId, textElementId) {
         const statusElement = document.getElementById(statusElementId);
         const textElement = document.getElementById(textElementId);
-        
+
         if (!statusElement || !textElement) return;
 
         const status = this.getStoreStatus(storeSlug);
-        
+
         if (status.isOpen) {
             statusElement.className = 'px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm font-medium';
             textElement.textContent = 'Open';
@@ -363,14 +363,14 @@ class StoreHoursManager {
     updateFooterHours() {
         const marlboroFooterHours = document.getElementById('marlboro-footer-hours');
         const providenceFooterHours = document.getElementById('providence-footer-hours');
-        
+
         if (marlboroFooterHours) {
             const weeklyHours = this.getWeeklyHours('marlboro');
             if (weeklyHours) {
                 marlboroFooterHours.innerHTML = this.generateFooterHoursHTML(weeklyHours);
             }
         }
-        
+
         if (providenceFooterHours) {
             const weeklyHours = this.getWeeklyHours('newprovidence');
             if (weeklyHours) {
@@ -381,33 +381,33 @@ class StoreHoursManager {
 
     generateFooterHoursHTML(weeklyHours) {
         const groupedHours = this.groupConsecutiveDays(weeklyHours);
-        return `<div class="space-y-3">` + 
+        return `<div class="space-y-3">` +
             groupedHours.map(group => `
                 <div class="flex justify-between items-center py-2 px-4 bg-gray-800/50 rounded-lg">
                     <span class="text-gray-300">${group.days}</span>
                     <span class="text-white font-semibold">${group.hours}</span>
                 </div>
-            `).join('') + 
+            `).join('') +
             `</div>`;
     }
 
     updateAllDisplays() {
         // log removed
-        
+
         this.updateCurrentDate();
-        
+
         this.updateStoreDisplay('marlboro', 'marlboro-hours');
         this.updateStoreDisplay('newprovidence', 'providence-hours');
-        
+
         this.updateStoreDisplay('marlboro', 'marlboro-hours', false);
         this.updateStoreDisplay('newprovidence', 'providence-hours', false);
-        
+
         this.updateLocationHours();
         this.updateFooterStatus();
         this.updateFooterHours();
-        
+
         this.checkForHolidayBanner();
-        
+
         // log removed
     }
 
@@ -416,9 +416,9 @@ class StoreHoursManager {
 
         const easternTime = this.getCurrentEasternTime();
         const todayStr = easternTime.toISOString().split('T')[0];
-        
+
         let holidayInfo = null;
-        
+
         Object.values(this.state.hoursData.stores).forEach(store => {
             const holiday = store.holidays.find(h => h.date === todayStr);
             if (holiday && holiday.is_closed) {
@@ -438,7 +438,7 @@ class StoreHoursManager {
                 <i class="ri-calendar-line mr-2"></i>
                 Holiday Notice: ${holidayInfo.name} - All stores are closed today
             `;
-            
+
             document.body.insertBefore(banner, document.body.firstChild);
         }
     }
@@ -454,23 +454,22 @@ class StoreHoursManager {
 
         const widget = document.createElement('div');
         widget.className = 'store-hours-widget bg-white rounded-lg p-4 shadow-sm border';
-        
+
         widget.innerHTML = `
             <div class="flex items-center justify-between mb-3">
                 <h3 class="font-bold text-gray-800">${displayName}</h3>
-                <span class="px-3 py-1 text-xs font-medium rounded-full ${
-                    status.isOpen ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }">
+                <span class="px-3 py-1 text-xs font-medium rounded-full ${status.isOpen ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }">
                     ${status.isOpen ? 'Open' : 'Closed'}
                 </span>
             </div>
             <p class="text-gray-700 mb-2">Today: ${status.hours}</p>
-            ${!status.isOpen && status.nextOpening ? 
-                `<p class="text-sm text-gray-500">Opens ${status.nextOpening.day} at ${status.nextOpening.time}</p>` : 
+            ${!status.isOpen && status.nextOpening ?
+                `<p class="text-sm text-gray-500">Opens ${status.nextOpening.day} at ${status.nextOpening.time}</p>` :
                 ''
             }
         `;
-        
+
         return widget;
     }
 
@@ -478,7 +477,7 @@ class StoreHoursManager {
         const displayName = storeSlug === 'marlboro' ? 'Marlboro' : 'New Providence';
         const widget = document.createElement('div');
         widget.className = 'store-hours-widget bg-white rounded-lg p-4 shadow-sm border';
-        
+
         widget.innerHTML = `
             <div class="flex items-center justify-between mb-3">
                 <h3 class="font-bold text-gray-800">${displayName}</h3>
@@ -488,7 +487,7 @@ class StoreHoursManager {
             </div>
             <p class="text-gray-500 text-sm">Hours information not available</p>
         `;
-        
+
         return widget;
     }
 
@@ -507,7 +506,7 @@ class StoreHoursManager {
         if (this.updateInterval) {
             clearInterval(this.updateInterval);
         }
-        
+
         this.updateInterval = setInterval(() => {
             this.updateAllDisplays();
         }, this.config.UPDATE_INTERVAL);
@@ -516,12 +515,12 @@ class StoreHoursManager {
         const tomorrow = new Date(easternTime);
         tomorrow.setDate(tomorrow.getDate() + 1);
         tomorrow.setHours(0, 0, 1, 0);
-        
+
         const msUntilMidnight = tomorrow.getTime() - easternTime.getTime();
-        
+
         setTimeout(async () => {
             await this.refresh();
-            
+
             setInterval(async () => {
                 await this.refresh();
             }, 24 * 60 * 60 * 1000);
@@ -535,7 +534,7 @@ class StoreHoursManager {
                 element.innerHTML = '<span class="text-red-600">Hours unavailable</span>';
             }
         });
-        
+
         console.error('Store hours could not be loaded');
     }
 
@@ -544,22 +543,22 @@ class StoreHoursManager {
             clearInterval(this.updateInterval);
             this.updateInterval = null;
         }
-        
+
         const banner = document.querySelector('.holiday-banner');
         if (banner) {
             banner.remove();
         }
-        
+
         // log removed
     }
 }
 
 window.storeHoursManager = new StoreHoursManager();
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
         window.storeHoursManager.init();
-    }, 1500);
+    }, 2500);
 });
 
 window.updateStoreHours = () => window.storeHoursManager.updateAllDisplays();
