@@ -11,9 +11,9 @@
     "preview": "astro preview",
     "check": "astro check && prettier --check \"**/*.{astro,tsx,ts,md,json,css,mjs}\"",
     "fix": "prettier --write \"**/*.{astro,tsx,ts,md,json,css,mjs}\" && astro check",
-    "lighthouse": "unlighthouse --site http://localhost:4321",
-    "lighthouse:ci": "unlighthouse-ci --site http://localhost:4321",
-    "lighthouse:live": "unlighthouse --site https://frozenyogurtcafe.com",
+    "lighthouse": "npx unlighthouse --site http://localhost:4321",
+    "lighthouse:ci": "npx unlighthouse-ci --site http://localhost:4321",
+    "lighthouse:live": "npx unlighthouse --site https://frozenyogurtcafe.com",
     "astro": "astro"
   },
   "dependencies": {
