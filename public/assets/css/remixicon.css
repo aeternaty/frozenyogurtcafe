@@ -2,8 +2,7 @@
   font-family: remixicon;
   src: url(../fonts/remixicon.eot?t=1734404658139);
   src:
-    url(../fonts/remixicon.eot?t=1734404658139#iefix)
-      format("embedded-opentype"),
+    url(../fonts/remixicon.eot?t=1734404658139#iefix) format("embedded-opentype"),
     url(../fonts/remixicon.woff2?t=1734404658139) format("woff2"),
     url(../fonts/remixicon.woff?t=1734404658139) format("woff"),
     url(../fonts/remixicon.ttf?t=1734404658139) format("truetype"),

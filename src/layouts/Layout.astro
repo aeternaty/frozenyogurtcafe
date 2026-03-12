@@ -243,37 +243,49 @@ const {
 
     <meta name="theme-color" content="#F58220" />
 
+    <!-- Preconnect to external API (store-hours + menu) -->
+    <link
+      rel="preconnect"
+      href="https://get-yo-web-app.vercel.app"
+      crossorigin
+    />
+    <link rel="dns-prefetch" href="https://get-yo-web-app.vercel.app" />
+
+    <!-- Preload LCP hero image -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/assets/images/hero-background.webp"
+      fetchpriority="high"
+    />
+
     <!-- Favicons -->
     <link rel="icon" type="image/webp" href="/assets/images/favicon.webp" />
     <link rel="apple-touch-icon" href="/assets/images/favicon.webp" />
     <link rel="canonical" href="https://frozenyogurtcafe.com/" />
 
-    <!-- Fonts & Icons -->
-    <link rel="preload" as="style" href="/assets/css/remixicon.min.css" />
+    <!-- Fonts & Icons (non-render-blocking) -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/assets/fonts/remixicon.woff2?t=1734404658139"
+      crossorigin
+    />
     <link
       id="css-icons"
-      href="/assets/css/remixicon.min.css"
       rel="stylesheet"
+      href="/assets/css/remixicon.min.css"
+      media="print"
     />
     <script is:inline>
-      (function () {
-        var el = document.getElementById("css-icons");
-        if (el) {
-          if (el.sheet) {
-            el.media = "all";
-          } else {
-            el.onload = function () {
-              this.media = "all";
-            };
-          }
-        }
-      })();
+      document.getElementById("css-icons").onload = function () {
+        this.media = "all";
+      };
     </script>
     <noscript>
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
-      />
+      <link rel="stylesheet" href="/assets/css/remixicon.min.css" />
     </noscript>
 
     <!-- Google Analytics + reCAPTCHA -->
