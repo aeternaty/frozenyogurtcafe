@@ -35,7 +35,8 @@ p {
 
 /* Color Variables */
 :root {
-  --primary-color: #f58220;
+  --primary-color: #e67429;
+  /* Darker orange for better WCAG AA contrast */
   --secondary-color: #4bd4ff;
   --gray-50: #f9fafb;
   --gray-100: #f3f4f6;
@@ -1779,6 +1780,7 @@ footer a:hover {
     transform: none;
   }
 }
+
 /* Critical Z-Index and Layout Fixes */
 
 /* Header and Mobile Menu */
