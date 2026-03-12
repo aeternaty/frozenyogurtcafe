@@ -16,13 +16,10 @@ class StoreHoursManager {
     }
 
     async init() {
-        // log removed
-
         try {
             await this.loadHoursData();
             this.updateAllDisplays();
             this.startAutoUpdate();
-            // log removed
         } catch (error) {
             console.error('Failed to initialize Store Hours Manager:', error);
             this.showError();
@@ -32,7 +29,6 @@ class StoreHoursManager {
     async loadHoursData() {
         if (this.getCachedData()) {
             this.state.hoursData = this.getCachedData();
-            // log removed
             return;
         }
 
@@ -52,8 +48,6 @@ class StoreHoursManager {
             this.state.hoursData = result.data;
             this.setCachedData(result.data);
             this.state.lastUpdate = new Date();
-
-            // log removed
 
         } catch (error) {
             console.error('Failed to load hours from API:', error);
@@ -392,8 +386,6 @@ class StoreHoursManager {
     }
 
     updateAllDisplays() {
-        // log removed
-
         this.updateCurrentDate();
 
         this.updateStoreDisplay('marlboro', 'marlboro-hours');
@@ -407,8 +399,6 @@ class StoreHoursManager {
         this.updateFooterHours();
 
         this.checkForHolidayBanner();
-
-        // log removed
     }
 
     checkForHolidayBanner() {
@@ -496,7 +486,6 @@ class StoreHoursManager {
             this.state.cache = null;
             await this.loadHoursData();
             this.updateAllDisplays();
-            // log removed
         } catch (error) {
             console.error('Failed to refresh hours data:', error);
         }
@@ -548,8 +537,6 @@ class StoreHoursManager {
         if (banner) {
             banner.remove();
         }
-
-        // log removed
     }
 }
 
@@ -567,4 +554,3 @@ window.getStoreStatus = (storeSlug) => window.storeHoursManager.getStoreStatus(s
 window.createHoursWidget = (storeSlug) => window.storeHoursManager.createHoursWidget(storeSlug);
 window.getWeeklyHours = (storeSlug) => window.storeHoursManager.getWeeklyHours(storeSlug);
 
-// log removed
