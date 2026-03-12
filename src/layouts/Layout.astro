@@ -239,73 +239,42 @@ const {
     <link rel="canonical" href="https://frozenyogurtcafe.com/" />
 
     <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-    <!-- Fonts & Icons: preload → stylesheet (onload via script, not attribute, avoids TS hints) -->
-    <link
-      id="css-fonts"
-      rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap"
-      as="style"
-    />
-    <link
-      id="css-icons"
-      rel="preload"
-      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
-      as="style"
-    />
+    <link rel="preload" as="style" href="/assets/css/remixicon.css" />
+    <link id="css-icons" href="/assets/css/remixicon.css" rel="stylesheet" />
     <script is:inline>
       (function () {
-        var ids = ["css-fonts", "css-icons"];
-        ids.forEach(function (id) {
-          var el = document.getElementById(id);
-          if (el)
+        var el = document.getElementById("css-icons");
+        if (el) {
+          if (el.sheet) {
+            el.media = "all";
+          } else {
             el.onload = function () {
-              this.rel = "stylesheet";
+              this.media = "all";
             };
-        });
+          }
+        }
       })();
     </script>
     <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-      />
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
       />
     </noscript>
 
-    <!-- Google Analytics -->
-    <script
-      is:inline
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-D8M5Z9J4KL"></script>
+    <!-- Google Analytics + reCAPTCHA -->
+    <!-- DO NOT DELETE: Google Analytics is temporarily paused. Uncomment to enable. -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-D8M5Z9J4KL"></script> -->
+  </head>
+  <body id="home" class="bg-gray-50 font-sans text-gray-700 antialiased">
+    <Header />
+    <slot />
+    <Footer />
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-D8M5Z9J4KL", {
-        enhanced_conversions: true,
-        custom_map: {
-          custom_parameter_1: "gmb_source",
-          custom_parameter_2: "location_id",
-        },
-      });
-
-      function trackGMBClick(location) {
-        gtag("event", "gmb_website_click", {
-          event_category: "GMB",
-          event_label: location,
-          custom_parameter_1: "gmb",
-          custom_parameter_2: location,
-          value: 1,
-        });
       }
 
       window.trackPhoneClick = function (location) {
@@ -324,44 +293,78 @@ const {
         });
       };
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const utmSource = urlParams.get("utm_source");
-        const utmCampaign = urlParams.get("utm_campaign");
-
-        if (utmSource === "gmb") {
-          const location = utmCampaign || "unknown";
-          trackGMBClick(location);
-        }
-      });
-    </script>
-  </head>
-  <body id="home" class="bg-gray-50 font-sans text-gray-700 antialiased">
-    <Header />
-    <slot />
-    <Footer />
-    <!-- Global Scripts -->
-    <script
-      is:inline
-      src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit"
-      async
-      defer></script>
-    <script src="/assets/js/main.js" is:inline></script>
-    <script src="/assets/js/forms.js" is:inline></script>
-    <script src="/assets/js/store-hours.js" is:inline></script>
-    <script src="/assets/js/gmb-tracking.js" is:inline></script>
-    <!-- Vercel Analytics: injected automatically by Vercel in production -->
-    <script is:inline>
-      if (typeof window !== "undefined" && window.va) window.va("event", {});
-    </script>
-    <script is:inline>
       window.onRecaptchaLoad = function () {
-        setTimeout(() => {
+        setTimeout(function () {
           if (typeof window.initializeRecaptcha === "function") {
             window.initializeRecaptcha();
           }
         }, 500);
       };
+
+      gtag("js", new Date());
+      gtag("config", "G-D8M5Z9J4KL", {
+        enhanced_conversions: true,
+        custom_map: {
+          custom_parameter_1: "gmb_source",
+          custom_parameter_2: "location_id",
+        },
+      });
+
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("utm_source") === "gmb") {
+        gtag("event", "gmb_website_click", {
+          event_category: "GMB",
+          event_label: urlParams.get("utm_campaign") || "unknown",
+          value: 1,
+        });
+      }
+
+      // 2. reCAPTCHA: ONLY load when user scrolls near a form (Best Practices 100 & Perf max)
+      (function () {
+        var rcLoaded = false;
+        function loadRC() {
+          if (rcLoaded) return;
+          rcLoaded = true;
+          var rc = document.createElement("script");
+          rc.src =
+            "https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit";
+          rc.async = true;
+          rc.defer = true;
+          document.head.appendChild(rc);
+        }
+
+        if ("IntersectionObserver" in window) {
+          var formObserver = new IntersectionObserver(
+            function (entries, observer) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  loadRC();
+                  observer.disconnect();
+                }
+              });
+            },
+            { rootMargin: "300px" },
+          );
+
+          window.addEventListener("DOMContentLoaded", function () {
+            var forms = document.querySelectorAll("form");
+            if (forms.length > 0) {
+              forms.forEach(function (f) {
+                formObserver.observe(f);
+              });
+            } else {
+              setTimeout(loadRC, 10000); // fallback
+            }
+          });
+        } else {
+          setTimeout(loadRC, 8000); // fallback for old browsers
+        }
+      })();
     </script>
+
+    <script src="/assets/js/main.js" is:inline></script>
+    <script src="/assets/js/forms.js" is:inline></script>
+    <script src="/assets/js/store-hours.js" is:inline></script>
+    <script src="/assets/js/gmb-tracking.js" is:inline></script>
   </body>
 </html>
