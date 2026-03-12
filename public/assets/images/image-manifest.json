@@ -1,0 +1,509 @@
+{
+  "cert/gluten-free_cert.png": {
+    "original": "cert/gluten-free_cert.png",
+    "quality": 90,
+    "sizes": [
+      {
+        "width": 200,
+        "file": "gluten-free_cert.webp"
+      }
+    ],
+    "srcset": "/assets/images/cert/gluten-free_cert.webp 200w"
+  },
+  "cert/kof-k-dairy_cert.png": {
+    "original": "cert/kof-k-dairy_cert.png",
+    "quality": 90,
+    "sizes": [
+      {
+        "width": 100,
+        "file": "kof-k-dairy_cert.webp"
+      }
+    ],
+    "srcset": "/assets/images/cert/kof-k-dairy_cert.webp 100w"
+  },
+  "cert/kosher-logo.png": {
+    "original": "cert/kosher-logo.png",
+    "quality": 90,
+    "sizes": [
+      {
+        "width": 160,
+        "file": "kosher-logo.webp"
+      }
+    ],
+    "srcset": "/assets/images/cert/kosher-logo.webp 160w"
+  },
+  "cert/ok-dairy-kosher_cert.png": {
+    "original": "cert/ok-dairy-kosher_cert.png",
+    "quality": 90,
+    "sizes": [
+      {
+        "width": 200,
+        "file": "ok-dairy-kosher_cert.webp"
+      }
+    ],
+    "srcset": "/assets/images/cert/ok-dairy-kosher_cert.webp 200w"
+  },
+  "cert/orthodox-union-dairy-kosher_cert.png": {
+    "original": "cert/orthodox-union-dairy-kosher_cert.png",
+    "quality": 90,
+    "sizes": [
+      {
+        "width": 200,
+        "file": "orthodox-union-dairy-kosher_cert.webp"
+      }
+    ],
+    "srcset": "/assets/images/cert/orthodox-union-dairy-kosher_cert.webp 200w"
+  },
+  "cert/orthodox-union-kosher_cert.png": {
+    "original": "cert/orthodox-union-kosher_cert.png",
+    "quality": 90,
+    "sizes": [
+      {
+        "width": 200,
+        "file": "orthodox-union-kosher_cert.webp"
+      }
+    ],
+    "srcset": "/assets/images/cert/orthodox-union-kosher_cert.webp 200w"
+  },
+  "cert/star-d-kosher_cert.png": {
+    "original": "cert/star-d-kosher_cert.png",
+    "quality": 90,
+    "sizes": [
+      {
+        "width": 200,
+        "file": "star-d-kosher_cert.webp"
+      }
+    ],
+    "srcset": "/assets/images/cert/star-d-kosher_cert.webp 200w"
+  },
+  "favicon.png": {
+    "original": "favicon.png",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 1200,
+        "file": "favicon.webp"
+      }
+    ],
+    "srcset": "/assets/images/favicon.webp 1200w"
+  },
+  "hero-background.jpg": {
+    "original": "hero-background.jpg",
+    "quality": 65,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "hero-background-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "hero-background-400w.webp"
+      },
+      {
+        "width": 768,
+        "file": "hero-background-768w.webp"
+      },
+      {
+        "width": 800,
+        "file": "hero-background-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "hero-background-1200w.webp"
+      },
+      {
+        "width": 1920,
+        "file": "hero-background-1920w.webp"
+      }
+    ],
+    "srcset": "/assets/images/hero-background-208w.webp 208w, /assets/images/hero-background-400w.webp 400w, /assets/images/hero-background-768w.webp 768w, /assets/images/hero-background-800w.webp 800w, /assets/images/hero-background-1200w.webp 1200w, /assets/images/hero-background-1920w.webp 1920w"
+  },
+  "logo.png": {
+    "original": "logo.png",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "logo-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "logo-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "logo-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "logo-1200w.webp"
+      }
+    ],
+    "srcset": "/assets/images/logo-208w.webp 208w, /assets/images/logo-400w.webp 400w, /assets/images/logo-800w.webp 800w, /assets/images/logo-1200w.webp 1200w"
+  },
+  "map-placeholder.png": {
+    "original": "map-placeholder.png",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 1280,
+        "file": "map-placeholder.webp"
+      }
+    ],
+    "srcset": "/assets/images/map-placeholder.webp 1280w"
+  },
+  "placeholder.jpg": {
+    "original": "placeholder.jpg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 612,
+        "file": "placeholder.webp"
+      }
+    ],
+    "srcset": "/assets/images/placeholder.webp 612w"
+  },
+  "rewards-app-mockup.png": {
+    "original": "rewards-app-mockup.png",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 712,
+        "file": "rewards-app-mockup.webp"
+      }
+    ],
+    "srcset": "/assets/images/rewards-app-mockup.webp 712w"
+  },
+  "store/1.jpg": {
+    "original": "store/1.jpg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "1-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "1-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "1-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "1-1200w.webp"
+      },
+      {
+        "width": 1920,
+        "file": "1-1920w.webp"
+      },
+      {
+        "width": 2720,
+        "file": "1-2720w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/1-208w.webp 208w, /assets/images/store/1-400w.webp 400w, /assets/images/store/1-800w.webp 800w, /assets/images/store/1-1200w.webp 1200w, /assets/images/store/1-1920w.webp 1920w, /assets/images/store/1-2720w.webp 2720w"
+  },
+  "store/10.jpeg": {
+    "original": "store/10.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "10-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "10-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "10-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "10-1200w.webp"
+      },
+      {
+        "width": 1920,
+        "file": "10-1920w.webp"
+      },
+      {
+        "width": 4032,
+        "file": "10-4032w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/10-208w.webp 208w, /assets/images/store/10-400w.webp 400w, /assets/images/store/10-800w.webp 800w, /assets/images/store/10-1200w.webp 1200w, /assets/images/store/10-1920w.webp 1920w, /assets/images/store/10-4032w.webp 4032w"
+  },
+  "store/11.jpeg": {
+    "original": "store/11.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "11-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "11-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "11-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "11-1200w.webp"
+      },
+      {
+        "width": 1920,
+        "file": "11-1920w.webp"
+      },
+      {
+        "width": 4032,
+        "file": "11-4032w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/11-208w.webp 208w, /assets/images/store/11-400w.webp 400w, /assets/images/store/11-800w.webp 800w, /assets/images/store/11-1200w.webp 1200w, /assets/images/store/11-1920w.webp 1920w, /assets/images/store/11-4032w.webp 4032w"
+  },
+  "store/12.jpeg": {
+    "original": "store/12.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "12-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "12-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "12-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "12-1200w.webp"
+      },
+      {
+        "width": 1920,
+        "file": "12-1920w.webp"
+      },
+      {
+        "width": 4032,
+        "file": "12-4032w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/12-208w.webp 208w, /assets/images/store/12-400w.webp 400w, /assets/images/store/12-800w.webp 800w, /assets/images/store/12-1200w.webp 1200w, /assets/images/store/12-1920w.webp 1920w, /assets/images/store/12-4032w.webp 4032w"
+  },
+  "store/2.jpg": {
+    "original": "store/2.jpg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "2-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "2-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "2-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "2-1200w.webp"
+      },
+      {
+        "width": 1360,
+        "file": "2-1360w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/2-208w.webp 208w, /assets/images/store/2-400w.webp 400w, /assets/images/store/2-800w.webp 800w, /assets/images/store/2-1200w.webp 1200w, /assets/images/store/2-1360w.webp 1360w"
+  },
+  "store/3.jpeg": {
+    "original": "store/3.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "3-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "3-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "3-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "3-1200w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/3-208w.webp 208w, /assets/images/store/3-400w.webp 400w, /assets/images/store/3-800w.webp 800w, /assets/images/store/3-1200w.webp 1200w"
+  },
+  "store/4.jpeg": {
+    "original": "store/4.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "4-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "4-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "4-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "4-1200w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/4-208w.webp 208w, /assets/images/store/4-400w.webp 400w, /assets/images/store/4-800w.webp 800w, /assets/images/store/4-1200w.webp 1200w"
+  },
+  "store/5.jpeg": {
+    "original": "store/5.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "5-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "5-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "5-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "5-1200w.webp"
+      },
+      {
+        "width": 1600,
+        "file": "5-1600w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/5-208w.webp 208w, /assets/images/store/5-400w.webp 400w, /assets/images/store/5-800w.webp 800w, /assets/images/store/5-1200w.webp 1200w, /assets/images/store/5-1600w.webp 1600w"
+  },
+  "store/6.jpeg": {
+    "original": "store/6.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "6-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "6-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "6-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "6-1200w.webp"
+      },
+      {
+        "width": 1600,
+        "file": "6-1600w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/6-208w.webp 208w, /assets/images/store/6-400w.webp 400w, /assets/images/store/6-800w.webp 800w, /assets/images/store/6-1200w.webp 1200w, /assets/images/store/6-1600w.webp 1600w"
+  },
+  "store/7.jpeg": {
+    "original": "store/7.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "7-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "7-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "7-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "7-1200w.webp"
+      },
+      {
+        "width": 1600,
+        "file": "7-1600w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/7-208w.webp 208w, /assets/images/store/7-400w.webp 400w, /assets/images/store/7-800w.webp 800w, /assets/images/store/7-1200w.webp 1200w, /assets/images/store/7-1600w.webp 1600w"
+  },
+  "store/8.jpeg": {
+    "original": "store/8.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "8-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "8-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "8-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "8-1200w.webp"
+      },
+      {
+        "width": 1600,
+        "file": "8-1600w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/8-208w.webp 208w, /assets/images/store/8-400w.webp 400w, /assets/images/store/8-800w.webp 800w, /assets/images/store/8-1200w.webp 1200w, /assets/images/store/8-1600w.webp 1600w"
+  },
+  "store/9.jpeg": {
+    "original": "store/9.jpeg",
+    "quality": 80,
+    "sizes": [
+      {
+        "width": 208,
+        "file": "9-208w.webp"
+      },
+      {
+        "width": 400,
+        "file": "9-400w.webp"
+      },
+      {
+        "width": 800,
+        "file": "9-800w.webp"
+      },
+      {
+        "width": 1200,
+        "file": "9-1200w.webp"
+      },
+      {
+        "width": 1600,
+        "file": "9-1600w.webp"
+      }
+    ],
+    "srcset": "/assets/images/store/9-208w.webp 208w, /assets/images/store/9-400w.webp 400w, /assets/images/store/9-800w.webp 800w, /assets/images/store/9-1200w.webp 1200w, /assets/images/store/9-1600w.webp 1600w"
+  }
+}

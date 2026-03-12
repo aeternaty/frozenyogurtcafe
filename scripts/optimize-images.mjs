@@ -3,12 +3,27 @@ import fs from "fs";
 import path from "path";
 
 const inputDir = "_backup/assets/images";
-const outputBaseDir = "public/assets/images"; // Astro'da resimlerin gideceği yer
+const outputBaseDir = "public/assets/images";
+
+// Responsive boyutlar — Lighthouse "Properly size images" uyarısını kapatır
+const RESPONSIVE_WIDTHS = [208, 400, 800, 1200, 1920];
+
+// Bu dosyalar küçültülmez, sadece WebP'ye çevrilir (favicon, UI öğeleri)
+const NO_RESIZE_PATTERNS = [
+  /favicon/i,
+  /placeholder/i,
+  /map-placeholder/i,
+  /rewards-app-mockup/i,
+];
+
+// Sertifikalar — küçük ve net olması lazım, kalite yüksek tutulur
+const HIGH_QUALITY_PATTERNS = [/cert\//i, /kosher/i, /gluten/i];
 
 function getFiles(dir, files_ = []) {
+  if (!fs.existsSync(dir)) return files_;
   const files = fs.readdirSync(dir);
-  for (const i in files) {
-    const name = path.join(dir, files[i]);
+  for (const file of files) {
+    const name = path.join(dir, file);
     if (fs.statSync(name).isDirectory()) {
       getFiles(name, files_);
     } else {
@@ -18,47 +33,141 @@ function getFiles(dir, files_ = []) {
   return files_;
 }
 
-// Görselleri listele
+function shouldSkipResize(filePath) {
+  const normalized = filePath.replace(/\\/g, "/");
+  return NO_RESIZE_PATTERNS.some((p) => p.test(normalized));
+}
+
+function getQuality(filePath) {
+  const normalized = filePath.replace(/\\/g, "/");
+  if (normalized.includes("hero-background")) return 65;
+  return HIGH_QUALITY_PATTERNS.some((p) => p.test(normalized)) ? 90 : 80;
+}
+
+// Görselin gerçek genişliğini ffprobe ile al
+function getImageWidth(imagePath) {
+  try {
+    const result = execSync(
+      `ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "${imagePath}"`,
+      { stdio: ["ignore", "pipe", "ignore"] },
+    );
+    return parseInt(result.toString().trim(), 10);
+  } catch {
+    return null;
+  }
+}
+
+if (!fs.existsSync(inputDir)) {
+  console.error(`Giriş dizini bulunamadı: ${inputDir}`);
+  process.exit(1);
+}
+
 const allFiles = getFiles(inputDir);
 const images = allFiles.filter((f) => /\.(jpg|jpeg|png)$/i.test(f));
 
-console.log(`Toplam ${images.length} görsel bulundu. Optimizasyon başlıyor...`);
+console.log(
+  `Toplam ${images.length} görsel bulundu. Optimizasyon başlıyor...\n`,
+);
+
+// Astro'da srcset için kullanılacak manifest
+const manifest = {};
 
 images.forEach((imagePath) => {
-  const relativePath = path.relative(inputDir, imagePath);
-  const outputDir = path.join(outputBaseDir, path.dirname(relativePath));
+  const relativePath = path.relative(inputDir, imagePath).replace(/\\/g, "/");
+  const outputDirRelative = path.dirname(relativePath);
+  const outputDir = path.join(outputBaseDir, outputDirRelative);
+  const baseName = path.parse(relativePath).name;
+  const quality = getQuality(relativePath);
+  const skipResize = shouldSkipResize(relativePath);
 
-  // Klasör oluştur
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  const outputFileName = path.parse(relativePath).name + ".webp";
-  const outputPath = path.join(
-    outputBaseDir,
-    path.dirname(relativePath),
-    outputFileName,
-  );
+  console.log(`İşleniyor: ${relativePath}`);
 
-  console.log(`İşleniyor: ${relativePath} -> ${outputFileName}`);
+  const originalWidth = getImageWidth(imagePath);
+  const generatedSizes = [];
 
-  try {
-    // FFmpeg ile WebP dönüşümü
-    // -q:v 80: Kalite %80 (genelde yeterli ve çok yer kazandırır)
-    // -vf "scale='min(1920,iw)':-1": Eğer resim 1920px'den genişse ölçekle, değilse olduğu gibi bırak.
-    const cmd = `ffmpeg -i "${imagePath}" -q:v 80 -vf "scale='min(1920,iw)':-1" -y "${outputPath}"`;
-    execSync(cmd, { stdio: "ignore" });
+  if (skipResize) {
+    // Sadece WebP'ye çevir, boyutlandırma yapma
+    const outputPath = path.join(outputDir, `${baseName}.webp`);
+    try {
+      execSync(`ffmpeg -i "${imagePath}" -q:v ${quality} -y "${outputPath}"`, {
+        stdio: "ignore",
+      });
+      const oldKB = (fs.statSync(imagePath).size / 1024).toFixed(1);
+      const newKB = (fs.statSync(outputPath).size / 1024).toFixed(1);
+      console.log(`  ✓ ${baseName}.webp — ${oldKB}KB → ${newKB}KB`);
+      generatedSizes.push({ width: originalWidth, file: `${baseName}.webp` });
+    } catch (err) {
+      console.error(`  ✗ Hata: ${err.message}`);
+    }
+  } else {
+    // Her responsive boyut için ayrı WebP üret
+    const widthsToGenerate = originalWidth
+      ? RESPONSIVE_WIDTHS.filter(
+          (w) =>
+            w <= originalWidth ||
+            (w <= 1920 && imagePath.includes("hero-background")),
+        )
+      : RESPONSIVE_WIDTHS;
 
-    const oldSize = (fs.statSync(imagePath).size / 1024).toFixed(2);
-    const newSize = (fs.statSync(outputPath).size / 1024).toFixed(2);
-    const ratio = ((1 - newSize / oldSize) * 100).toFixed(2);
+    // En az bir boyut üretilsin (orijinal küçükse bile)
+    if (widthsToGenerate.length === 0) {
+      widthsToGenerate.push(originalWidth || RESPONSIVE_WIDTHS[0]);
+    }
 
-    console.log(`  Bitti: ${oldSize}KB -> ${newSize}KB (Kazanç: %${ratio})`);
-  } catch (err) {
-    console.error(`  Hata (${relativePath}):`, err.message);
+    // Orijinal boyutu da ekle (eğer listede yoksa)
+    if (originalWidth && !widthsToGenerate.includes(originalWidth)) {
+      widthsToGenerate.push(originalWidth);
+    }
+
+    widthsToGenerate.sort((a, b) => a - b);
+
+    widthsToGenerate.forEach((width) => {
+      const suffix = widthsToGenerate.length > 1 ? `-${width}w` : "";
+      const outputFileName = `${baseName}${suffix}.webp`;
+      const outputPath = path.join(outputDir, outputFileName);
+
+      try {
+        const scaleFilter =
+          width === originalWidth
+            ? "scale=iw:ih" // Orijinal boyut — scale yapma
+            : `scale=${width}:-2`; // -2: yüksekliği çift piksele yuvarla (codec uyumu)
+
+        execSync(
+          `ffmpeg -i "${imagePath}" -q:v ${quality} -vf "${scaleFilter}" -y "${outputPath}"`,
+          { stdio: "ignore" },
+        );
+
+        const newKB = (fs.statSync(outputPath).size / 1024).toFixed(1);
+        console.log(`  ✓ ${outputFileName} (${width}px) — ${newKB}KB`);
+        generatedSizes.push({ width, file: outputFileName });
+      } catch (err) {
+        console.error(`  ✗ ${outputFileName} hatası: ${err.message}`);
+      }
+    });
   }
+
+  // Manifest'e ekle
+  manifest[relativePath] = {
+    original: relativePath,
+    quality,
+    sizes: generatedSizes,
+    srcset: generatedSizes
+      .map(
+        (s) =>
+          `/assets/images/${outputDirRelative === "." ? "" : outputDirRelative + "/"}${s.file} ${s.width}w`,
+      )
+      .join(", "),
+  };
+
+  console.log("");
 });
 
-console.log(
-  '\nTüm görseller optimize edildi ve "public/assets/images" klasörüne taşındı.',
-);
+// Manifest'i kaydet
+const manifestPath = path.join(outputBaseDir, "image-manifest.json");
+fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+console.log(`\n✅ Tüm görseller optimize edildi.`);
+console.log(`📄 Manifest: ${manifestPath}`);
