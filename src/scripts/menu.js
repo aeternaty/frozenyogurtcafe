@@ -898,8 +898,8 @@ export class DynamicMenuSystem {
         document.querySelectorAll('.location-tab').forEach(tab => {
             const isActive = tab.dataset.location === this.state.activeLocation;
             tab.className = `location-tab flex-1 py-3 px-4 rounded-full font-medium transition-all duration-300 ${isActive
-                    ? 'active'
-                    : ''
+                ? 'active'
+                : ''
                 }`;
         });
     }

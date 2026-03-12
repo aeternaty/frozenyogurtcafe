@@ -11,7 +11,7 @@ interface Props {
 
 const {
   title,
-  description = "Get Yo serves fresh froyo with 14 flavors & endless toppings in Marlboro & New Providence NJ.",
+  description = "Get YO Frozen Yogurt Cafe serves fresh froyo with 16 main flavors & fresh toppings daily in Marlboro & New Providence NJ.",
 } = Astro.props;
 ---
 
@@ -45,7 +45,7 @@ const {
           {
             "@type": "Organization",
             "@id": "https://frozenyogurtcafe.com/#organization",
-            "name": "Get Yo Frozen Yogurt Cafe",
+            "name": "Get YO Frozen Yogurt Cafe",
             "url": "https://frozenyogurtcafe.com",
             "logo": {
               "@type": "ImageObject",
@@ -68,8 +68,7 @@ const {
           {
             "@type": "LocalBusiness",
             "@id": "https://frozenyogurtcafe.com/#marlboro-location",
-            "name": "Get Yo Frozen Yogurt Cafe - Marlboro",
-            "description": "Premium frozen yogurt cafe serving 14+ flavors with fresh toppings, dairy-free options. Kosher certified location in Marlboro, NJ.",
+            "description": "Best frozen yogurt near me! Get YO serves 16 main flavors and fresh toppings daily. Kosher certified, dairy-free options available. Self-serve experience with unlimited creativity and super fun.",
             "url": "https://frozenyogurtcafe.com",
             "telephone": "(732) 617-6332",
             "email": "info@getyocafe.com",
@@ -128,7 +127,17 @@ const {
               },
               {
                 "@type": "LocationFeatureSpecification",
-                "name": "Wheelchair Accessible",
+                "name": "Wheelchair Accessible Entrance",
+                "value": true
+              },
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Wheelchair Accessible Restroom",
+                "value": true
+              },
+              {
+                "@type": "LocationFeatureSpecification",
+                "name": "Wheelchair Accessible Parking",
                 "value": true
               }
             ],
@@ -143,8 +152,8 @@ const {
           {
             "@type": "LocalBusiness",
             "@id": "https://frozenyogurtcafe.com/#newprovidence-location",
-            "name": "Get Yo Frozen Yogurt Cafe - New Providence",
-            "description": "Premium frozen yogurt cafe serving 14+ flavors with fresh toppings, dairy-free options in New Providence, NJ.",
+            "name": "Get YO Frozen Yogurt Cafe - New Providence",
+            "description": "Best frozen yogurt near me! Get YO serves 16 main flavors and fresh toppings daily. Dairy-free options available in New Providence, NJ.",
             "url": "https://frozenyogurtcafe.com",
             "telephone": "(908) 219-4338",
             "email": "info@getyocafe.com",
@@ -240,9 +249,12 @@ const {
     <link rel="canonical" href="https://frozenyogurtcafe.com/" />
 
     <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="/assets/css/remixicon.css" />
-    <link id="css-icons" href="/assets/css/remixicon.css" rel="stylesheet" />
+    <link rel="preload" as="style" href="/assets/css/remixicon.min.css" />
+    <link
+      id="css-icons"
+      href="/assets/css/remixicon.min.css"
+      rel="stylesheet"
+    />
     <script is:inline>
       (function () {
         var el = document.getElementById("css-icons");
@@ -274,10 +286,12 @@ const {
     <Footer />
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
+      /* Analytics functions paused
       function gtag() {
         dataLayer.push(arguments);
       }
-
+      */
+      /* GMB Tracking paused
       window.trackPhoneClick = function (location) {
         gtag("event", "phone_click", {
           event_category: "Contact",
@@ -293,6 +307,7 @@ const {
           value: 1,
         });
       };
+      */
 
       window.onRecaptchaLoad = function () {
         setTimeout(function () {
@@ -302,6 +317,7 @@ const {
         }, 500);
       };
 
+      /* Analytics paused
       gtag("js", new Date());
       gtag("config", "G-D8M5Z9J4KL", {
         enhanced_conversions: true,
@@ -319,6 +335,7 @@ const {
           value: 1,
         });
       }
+      */
 
       // 2. reCAPTCHA: ONLY load when user scrolls near a form (Best Practices 100 & Perf max)
       (function () {
@@ -366,7 +383,7 @@ const {
     <script src="/assets/js/main.js" is:inline></script>
     <script src="/assets/js/forms.js" is:inline></script>
     <script src="/assets/js/store-hours.js" is:inline></script>
-    <script src="/assets/js/gmb-tracking.js" is:inline></script>
+    <!-- <script src="/assets/js/gmb-tracking.js" is:inline></script> -->
     <Analytics />
   </body>
 </html>
