@@ -242,14 +242,41 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <!-- Fonts & Icons: preload → stylesheet (onload via script, not attribute, avoids TS hints) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
+      id="css-fonts"
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap"
+      as="style"
     />
     <link
-      rel="stylesheet"
+      id="css-icons"
+      rel="preload"
       href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+      as="style"
     />
+    <script is:inline>
+      (function () {
+        var ids = ["css-fonts", "css-icons"];
+        ids.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el)
+            el.onload = function () {
+              this.rel = "stylesheet";
+            };
+        });
+      })();
+    </script>
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+      />
+    </noscript>
 
     <!-- Google Analytics -->
     <script
@@ -323,9 +350,9 @@ const {
     <script src="/assets/js/forms.js" is:inline></script>
     <script src="/assets/js/store-hours.js" is:inline></script>
     <script src="/assets/js/gmb-tracking.js" is:inline></script>
-    <script>
-      import { inject } from "@vercel/analytics";
-      inject();
+    <!-- Vercel Analytics: injected automatically by Vercel in production -->
+    <script is:inline>
+      if (typeof window !== "undefined" && window.va) window.va("event", {});
     </script>
     <script is:inline>
       window.onRecaptchaLoad = function () {
