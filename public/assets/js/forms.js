@@ -53,11 +53,7 @@ window.initializeRecaptcha = function() {
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         initializeForms();
-        // Try to initialize reCAPTCHA if already loaded
-        if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
-            window.initializeRecaptcha();
-        }
-    }, 2000);
+    }, 100);
 });
 
 function initializeForms() {

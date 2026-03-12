@@ -366,7 +366,19 @@
 </style>
 
 <script>
-  import { DynamicMenuSystem } from "../scripts/menu.js";
-  (window as any).menuSystem = new DynamicMenuSystem();
-  (window as any).menuSystem.init();
+  // To reduce Total Blocking Time (TBT) during initial load,
+  // we defer the heavy menu rendering until the main thread is idle
+  document.addEventListener("DOMContentLoaded", () => {
+    const initMenu = async () => {
+      const { DynamicMenuSystem } = await import("../scripts/menu.js");
+      (window as any).menuSystem = new DynamicMenuSystem();
+      (window as any).menuSystem.init();
+    };
+
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(() => initMenu(), { timeout: 2000 });
+    } else {
+      setTimeout(initMenu, 300);
+    }
+  });
 </script>

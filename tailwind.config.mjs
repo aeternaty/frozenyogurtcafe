@@ -9,7 +9,10 @@ export default {
     },
     extend: {
       colors: {
-        primary: "#F58220", // Orange - exact match from Get Yo logo
+        primary: {
+          DEFAULT: "#F58220", // Brand color (Logo)
+          dark: "#A3560D", // Functional variant for links/buttons (WCAG AA)
+        },
         secondary: "#4bd4ff", // Blue from existing CSS
         pink: {
           50: "#fdf2f8",
@@ -17,8 +20,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        display: ["Inter", "sans-serif"],
+        pacifico: ["Pacifico", "cursive"],
       },
       borderRadius: {
         button: "12px",
