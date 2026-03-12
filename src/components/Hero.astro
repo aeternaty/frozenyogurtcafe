@@ -1,13 +1,16 @@
 <section class="hero-section relative min-h-screen">
   <div class="absolute inset-0 overflow-hidden">
     <img
-      src="/assets/images/hero-background.webp"
-      alt="Delicious Frozen Yogurt with Toppings"
+      src="/assets/images/hero-background-768w.webp"
+      srcset="/assets/images/hero-background-400w.webp 400w, /assets/images/hero-background-768w.webp 768w, /assets/images/hero-background-1200w.webp 1200w, /assets/images/hero-background-1920w.webp 1920w"
+      sizes="100vw"
+      alt="Delicious frozen yogurt with fresh fruit toppings"
       class="h-full w-full object-cover"
-      width="1920"
-      height="1080"
       fetchpriority="high"
       loading="eager"
+      width="1920"
+      height="1080"
+      decoding="async"
     />
     <div
       class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/80 to-white/0"
@@ -39,14 +42,14 @@
         <div class="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:gap-4">
           <a
             href="#locations"
-            class="inline-flex items-center justify-center rounded-button bg-primary px-5 py-3.5 text-center text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-7 sm:text-base"
+            class="inline-flex items-center justify-center rounded-button bg-primary px-5 py-3.5 text-center text-sm font-semibold text-white transition-all hover:scale-105 hover:shadow-lg sm:px-7 sm:text-base"
           >
             <i class="ri-map-pin-line mr-2"></i>
             Find Nearest Location
           </a>
           <a
             href="#menu"
-            class="inline-flex items-center justify-center rounded-button border-2 border-primary bg-white px-5 py-3.5 text-center text-sm font-semibold text-primary sm:px-7 sm:text-base"
+            class="inline-flex items-center justify-center rounded-button border-2 border-primary bg-white px-5 py-3.5 text-center text-sm font-semibold text-primary transition-all hover:bg-orange-50 sm:px-7 sm:text-base"
           >
             <i class="ri-restaurant-line mr-2"></i>
             View Our Menu
@@ -61,7 +64,8 @@
           <div
             class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 sm:h-12 sm:w-12"
           >
-            <i class="ri-vip-crown-line text-lg text-primary sm:text-xl"></i>
+            <i class="ri-vip-crown-line text-lg text-primary-dark sm:text-xl"
+            ></i>
           </div>
           <div class="min-w-0 flex-1">
             <p class="text-sm font-semibold text-gray-800 sm:text-base">
@@ -76,7 +80,7 @@
             </p>
           </div>
           <button
-            class="flex-shrink-0 rounded-button bg-primary px-3 py-2 text-sm font-medium text-white transition-all hover:bg-opacity-90 sm:px-4"
+            class="flex-shrink-0 rounded-button bg-primary px-3 py-2 text-sm font-medium text-white transition-all hover:bg-orange-600 sm:px-4"
             aria-label="Join Ounce and Bounce Rewards"
           >
             <i class="ri-arrow-right-line"></i>
@@ -91,7 +95,7 @@
             <div
               class="flex items-center justify-between border-b border-gray-200 py-1 sm:border-b-0"
             >
-              <p class="text-sm font-semibold text-primary sm:text-base">
+              <p class="text-sm font-semibold text-primary-dark sm:text-base">
                 Marlboro
               </p>
               <p
@@ -102,7 +106,7 @@
               </p>
             </div>
             <div class="flex items-center justify-between py-1">
-              <p class="text-sm font-semibold text-primary sm:text-base">
+              <p class="text-sm font-semibold text-primary-dark sm:text-base">
                 New Providence
               </p>
               <p
