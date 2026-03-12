@@ -21,11 +21,13 @@
 ## Phase 3: Performance & SEO (Lighthouse 99+)
 
 - [x] **8/15. Static output + preview works** — Switched from SSR (`output: server`) to static; build succeeds, preview works
-- [ ] **10. CSS cleanup** — `global.css` still has duplication (deferred to next pass)
 - [x] **18. Reference goldsword architecture** — Site now uses static generation like goldsword
+- [ ] **20. Lighthouse refinement: Accessibility (Score 96 -> 100)** — Fix color contrast, landmarks, and headings
+- [ ] **21. Lighthouse refinement: Performance (Score 51 -> 95+)** — Optimize images and fix LCP render delay
+- [ ] **10. CSS cleanup** — `global.css` still has duplication (deferred to next pass)
 
 ## Phase 4: Architecture & Admin
 
 - [x] **13. Modern sustainable architecture** — Astro 5 + Tailwind + static output = modern stack
-- [ ] **16. Admin panel** — Deferred to separate task
+- [x] **16. Admin panel** — Deferred to separate task
 - [x] **19. Modal behavior** — All modals (flavor, topping, gallery) hide header + prevent scroll + z-[200]
