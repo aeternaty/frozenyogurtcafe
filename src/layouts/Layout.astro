@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import Analytics from "@vercel/analytics/astro";
 
 interface Props {
   title: string;
@@ -366,5 +367,6 @@ const {
     <script src="/assets/js/forms.js" is:inline></script>
     <script src="/assets/js/store-hours.js" is:inline></script>
     <script src="/assets/js/gmb-tracking.js" is:inline></script>
+    <Analytics />
   </body>
 </html>
